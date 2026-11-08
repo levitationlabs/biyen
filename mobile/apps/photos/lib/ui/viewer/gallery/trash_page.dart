@@ -136,8 +136,8 @@ class _TrashPageState extends State<_TrashPage> {
         selectedFiles: _selectedFiles,
         initialFiles: null,
         emptyState: EmptyStateComponent(
-          assetPath: "assets/ente-trash-ducky.riv",
-          animated: true,
+          assetPath: "assets/ducky_garbage_bin_opened.png",
+          animated: false,
           illustrationSize: const Size(204, 161),
           title: l10n.deletedItemsStayHereForThirtyDays,
         ),

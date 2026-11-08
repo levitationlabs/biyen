@@ -170,7 +170,7 @@ class _MemoriesStripWidgetState extends State<MemoriesStripWidget> {
         if (snapshot.connectionState != ConnectionState.done) {
           return SizedBox(height: cardHeight + 24);
         }
-        final rewind = RewindEntry.current();
+        final RewindEntry? rewind = null; // Rewind feature held for Biyen Photos
         if (_memories.isEmpty && rewind == null) {
           return const SizedBox.shrink();
         }

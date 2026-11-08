@@ -281,8 +281,8 @@ class _AllLinksPageState extends State<AllLinksPage> {
             SliverFillRemaining(
               hasScrollBody: false,
               child: EmptyStateComponent(
-                assetPath: "assets/ente-links-ducky.riv",
-                animated: true,
+                assetPath: "assets/ducky_share.png",
+                animated: false,
                 illustrationSize: const Size(204, 171),
                 title: context.strings.activeLinksWillShowUpHere,
               ),

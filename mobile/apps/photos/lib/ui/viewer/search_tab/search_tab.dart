@@ -287,7 +287,7 @@ class _AllSearchSectionsState extends State<AllSearchSections> {
               _RitualsDiscoverySection(
                 resultLimit: widget.previewLimits.ritualResults,
               ),
-            const RewindSearchTicket(),
+            // RewindSearchTicket held for Biyen Photos
             ContactsSectionLoader(
               resultLimit: widget.previewLimits.contactResults,
             ),

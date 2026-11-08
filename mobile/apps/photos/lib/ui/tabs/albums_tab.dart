@@ -539,8 +539,8 @@ class _AlbumsTabState extends State<AlbumsTab>
       child: TickerMode(
         enabled: widget.isActive,
         child: EmptyStateComponent(
-          assetPath: "assets/ente-nomatch-ducky.riv",
-          animated: true,
+          assetPath: "assets/ducky_smart_feature.png",
+          animated: false,
           illustrationSize: const Size(181, 138),
           title: strings.noMatchesFound,
           textWidth: 240,

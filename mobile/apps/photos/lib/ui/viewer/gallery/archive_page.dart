@@ -141,8 +141,8 @@ class _ArchivePageState extends State<ArchivePage> {
       initialFiles: null,
       emptyState: _archivedCollections.isEmpty
           ? EmptyStateComponent(
-              assetPath: "assets/ente-archive-ducky.riv",
-              animated: true,
+              assetPath: "assets/on_ente.png",
+              animated: false,
               illustrationSize: const Size(204, 173),
               title: context.strings.archivedItemsWillShowUpHere,
             )
