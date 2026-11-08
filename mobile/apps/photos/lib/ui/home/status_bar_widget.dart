@@ -134,22 +134,13 @@ class _StatusBarWidgetState extends State<StatusBarWidget> {
                   },
                   child: const SyncStatusWidget(),
                 )
-              : const Text(
-                  "biyen",
-                  style: TextStyle(
-                    fontFamily: 'Outfit',
-                    fontWeight: FontWeight.w900,
-                    fontSize: 27,
-                    letterSpacing: -1.2,
-                  ),
-                ),
+              : const SizedBox.shrink(),
         ),
         _showErrorBanner
             ? Divider(height: 8, color: getEnteColorScheme(context).strokeFaint)
             : const SizedBox.shrink(),
         if (_showErrorBanner) HeaderErrorWidget(error: _syncError),
         if (_shouldShowLargeBackupBanner) _largeBackupBanner(context),
-        if (_showMlBanner && !_showErrorBanner) const _MachineLearningBanner(),
         if (_showVerificationBanner()) const _RecoveryKeyBanner(),
       ],
     );

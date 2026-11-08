@@ -56,6 +56,21 @@ class _EmptyStateIllustrationState extends State<EmptyStateIllustration> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.assetPath.contains("ducky") || widget.assetPath.contains("ente")) {
+      final fallbackImage = widget.assetPath.contains("nomatch")
+          ? "assets/ducky_smart_feature.png"
+          : widget.assetPath.contains("links")
+              ? "assets/ducky_share.png"
+              : "assets/on_ente.png";
+      return SizedBox(
+        width: widget.size.width,
+        height: widget.size.height,
+        child: Image.asset(
+          fallbackImage,
+          fit: BoxFit.contain,
+        ),
+      );
+    }
     final controller = _controller;
     return SizedBox(
       width: widget.size.width,

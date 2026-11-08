@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" width="100%" height="100%">
+  <defs>
+    <linearGradient id="elephantSkin" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#F5EFE6"/>
+      <stop offset="50%" stop-color="#EBE2D5"/>
+      <stop offset="100%" stop-color="#D6C7B5"/>
+    </linearGradient>
+
+    <radialGradient id="earInner" cx="45%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#F7C9BC"/>
+      <stop offset="70%" stop-color="#EEA896"/>
+      <stop offset="100%" stop-color="#DE8C78"/>
+    </radialGradient>
+
+    <linearGradient id="bandanaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA6842"/>
+      <stop offset="60%" stop-color="#D95C38"/>
+      <stop offset="100%" stop-color="#B84220"/>
+    </linearGradient>
+
+    <linearGradient id="amberGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD175"/>
+      <stop offset="100%" stop-color="#E59430"/>
+    </linearGradient>
+
+    <filter id="charShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A2818" flood-opacity="0.12"/>
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#3A1708" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#charShadow)">
+    <!-- Ears -->
+    <g transform="translate(145, 250) rotate(-12)">
+      <ellipse cx="0" cy="0" rx="90" ry="105" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+      <ellipse cx="10" cy="0" rx="64" ry="78" fill="url(#earInner)" opacity="0.85"/>
+    </g>
+    <g transform="translate(455, 250) rotate(12)">
+      <ellipse cx="0" cy="0" rx="90" ry="105" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+      <ellipse cx="-10" cy="0" rx="64" ry="78" fill="url(#earInner)" opacity="0.85"/>
+    </g>
+
+    <!-- Body -->
+    <ellipse cx="300" cy="430" rx="155" ry="145" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+    <ellipse cx="300" cy="445" rx="110" ry="95" fill="#FAF5ED" opacity="0.6"/>
+
+    <!-- Feet -->
+    <g transform="translate(180, 540)">
+      <ellipse cx="0" cy="0" rx="48" ry="32" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+      <ellipse cx="0" cy="4" rx="34" ry="22" fill="#FAF5ED"/>
+      <circle cx="-18" cy="2" r="7" fill="#E8D9C5"/><circle cx="0" cy="-4" r="8" fill="#E8D9C5"/><circle cx="18" cy="2" r="7" fill="#E8D9C5"/>
+    </g>
+    <g transform="translate(420, 540)">
+      <ellipse cx="0" cy="0" rx="48" ry="32" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+      <ellipse cx="0" cy="4" rx="34" ry="22" fill="#FAF5ED"/>
+      <circle cx="-18" cy="2" r="7" fill="#E8D9C5"/><circle cx="0" cy="-4" r="8" fill="#E8D9C5"/><circle cx="18" cy="2" r="7" fill="#E8D9C5"/>
+    </g>
+
+    <!-- Bandana -->
+    <g transform="translate(300, 375)">
+      <path d="M -115 -18 Q 0 10 115 -18 Q 0 75 -115 -18 Z" fill="url(#bandanaGrad)" stroke="#B84220" stroke-width="2"/>
+      <ellipse cx="0" cy="28" rx="14" ry="10" fill="#EA6842"/>
+      <path d="M -8 32 L -18 64 L 0 54 L 18 64 L 8 32 Z" fill="#D95C38"/>
+      <circle cx="-50" cy="0" r="5" fill="url(#amberGlow)"/><circle cx="50" cy="0" r="5" fill="url(#amberGlow)"/>
+    </g>
+
+    <!-- Head -->
+    <circle cx="300" cy="240" r="135" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+    
+    <!-- Curious Winking Eyes for Search -->
+    <g transform="translate(245, 215)">
+      <ellipse cx="0" cy="0" rx="16" ry="22" fill="#2C201A"/>
+      <circle cx="5" cy="-6" r="6.5" fill="#FFFFFF"/>
+      <circle cx="-3" cy="8" r="3.5" fill="#FFFFFF"/>
+    </g>
+    <!-- Right Eye Open Wide Curious -->
+    <g transform="translate(355, 215)">
+      <ellipse cx="0" cy="0" rx="18" ry="24" fill="#2C201A"/>
+      <circle cx="6" cy="-7" r="7.5" fill="#FFFFFF"/>
+      <circle cx="-4" cy="9" r="4" fill="#FFFFFF"/>
+    </g>
+
+    <!-- Cheeks & Happy Smile -->
+    <ellipse cx="210" cy="255" rx="20" ry="12" fill="#F48F78" opacity="0.75"/>
+    <ellipse cx="390" cy="255" rx="20" ry="12" fill="#F48F78" opacity="0.75"/>
+    <path d="M 285 285 Q 300 302 315 285" fill="none" stroke="#7C4632" stroke-width="3.5" stroke-linecap="round"/>
+
+    <!-- TRUNK HOLDING MAGNIFYING GLASS -->
+    <g id="searchTrunk">
+      <path d="M 282 260 
+               Q 270 320 295 365 
+               Q 335 415 395 380 
+               Q 430 355 425 315 
+               Q 415 280 375 295 
+               Q 350 310 360 335" 
+            fill="none" 
+            stroke="url(#elephantSkin)" 
+            stroke-width="36" 
+            stroke-linecap="round"/>
+      
+      <!-- Magnifying Glass -->
+      <g transform="translate(425, 255) rotate(-25)">
+        <line x1="0" y1="55" x2="0" y2="105" stroke="#C44F2C" stroke-width="12" stroke-linecap="round"/>
+        <circle cx="0" cy="0" r="55" fill="none" stroke="#D98226" stroke-width="10"/>
+        <circle cx="0" cy="0" r="50" fill="#FAF4EB" opacity="0.6"/>
+        <path d="M -25 -25 A 35 35 0 0 1 20 -30" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
+        <!-- Star inside lens -->
+        <path d="M 0,-15 Q 0,0 15,0 Q 0,0 0,15 Q 0,0 -15,0 Q 0,0 0,-15 Z" fill="#D98226"/>
+      </g>
+    </g>
+
+    <!-- Sparkles -->
+    <g transform="translate(130, 150)">
+      <path d="M 0,-12 Q 0,0 12,0 Q 0,0 0,12 Q 0,0 -12,0 Q 0,0 0,-12 Z" fill="url(#amberGlow)"/>
+    </g>
+  </g>
+</svg>
