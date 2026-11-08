@@ -61,7 +61,11 @@ class _EmptyStateIllustrationState extends State<EmptyStateIllustration> {
           ? "assets/ducky_smart_feature.png"
           : widget.assetPath.contains("links")
               ? "assets/ducky_share.png"
-              : "assets/on_ente.png";
+              : widget.assetPath.contains("trash")
+                  ? "assets/ducky_garbage_bin_opened.png"
+                  : widget.assetPath.contains("archive")
+                      ? "assets/empty-uncategorized.png"
+                      : "assets/on_ente.png";
       return SizedBox(
         width: widget.size.width,
         height: widget.size.height,

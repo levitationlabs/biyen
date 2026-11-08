@@ -186,7 +186,7 @@ class _HomeNavBar extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: colorScheme.strokeFaint,
-            width: 1.0,
+            width: 0.5,
           ),
         ),
       ),
@@ -196,8 +196,8 @@ class _HomeNavBar extends StatelessWidget {
           final tabIndex = tabIndices[index];
           final tab = _tabs[tabIndex];
           final isSelected = selectedIndex == tabIndex;
-          final activeColor = colorScheme.primary500;
-          final inactiveColor = colors.iconColor.withValues(alpha: 0.55);
+          final activeColor = colorScheme.textBase;
+          final inactiveColor = colorScheme.textFaint;
 
           return Expanded(
             child: Semantics(
