@@ -161,9 +161,11 @@ func (c *UsageController) canUploadFile(ctx context.Context, userID int64, size 
 
 	if size != nil {
 		newUsage += *size
-		subStorage += StorageOverflowAboveSubscriptionLimit
+		if subStorage > 0 {
+			subStorage += StorageOverflowAboveSubscriptionLimit
+		}
 	}
-	if newUsage > subStorage {
+	if subStorage <= 0 || newUsage > subStorage {
 		if bonus == nil {
 			bonus, err = c.UserCacheCtrl.GetActiveStorageBonus(ctx, subscriptionAdminID)
 			if err != nil {
@@ -171,7 +173,7 @@ func (c *UsageController) canUploadFile(ctx context.Context, userID int64, size 
 			}
 		}
 		var eligibleBonus = bonus.GetUsableBonus(subStorage)
-		if newUsage > (subStorage + eligibleBonus) {
+		if (subStorage+eligibleBonus) <= 0 || newUsage > (subStorage+eligibleBonus) {
 			if lockerUsage == nil && lUsageErr == nil {
 				lockerUsage, lUsageErr = c.UsageRepo.GetLockerUsage(ctx, subscriptionUserIDs)
 				if lUsageErr != nil {

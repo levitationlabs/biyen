@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	FreePlanStorage       int64 = 10 * 1024 * 1024 * 1024
+	FreePlanStorage       int64 = 0
 	FreePlanProductID           = "free"
 	FreePlanTransactionID       = "none"
 	TrialPeriodDuration         = 100

@@ -1,54 +1,19 @@
-import 'package:ente_components/theme/text_styles.dart';
 import 'package:ente_pure_utils/ente_pure_utils.dart';
 import "package:ente_strings/ente_strings.dart";
-import "package:ente_ui/components/loading_widget.dart";
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
-import 'package:photos/core/constants.dart';
 import "package:photos/core/errors.dart";
 import 'package:photos/models/user_details.dart';
 import 'package:photos/service_locator.dart';
 import 'package:photos/states/user_details_state.dart';
-import 'package:photos/theme/colors.dart';
 import 'package:photos/ui/payment/subscription.dart';
-import 'package:photos/ui/settings/storage_progress_widget.dart';
 
 class StorageCardWidget extends StatefulWidget {
   const StorageCardWidget({super.key});
 
   @override
   State<StorageCardWidget> createState() => _StorageCardWidgetState();
-}
-
-class _DotsPainter extends CustomPainter {
-  static const double _dotRadius = 1.45;
-  static const double _horizontalSpacing = 15.65;
-  static const double _verticalSpacing = 15.65;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.024)
-      ..style = PaintingStyle.fill;
-
-    final horizontalCount = (size.width / _horizontalSpacing).ceil() + 1;
-    final verticalCount = (size.height / _verticalSpacing).ceil() + 1;
-
-    for (int row = 0; row < verticalCount; row++) {
-      for (int col = 0; col < horizontalCount; col++) {
-        final x = col * _horizontalSpacing + (_horizontalSpacing / 2);
-        final y = row * _verticalSpacing + (_verticalSpacing / 2);
-
-        if (x <= size.width + _dotRadius && y <= size.height + _dotRadius) {
-          canvas.drawCircle(Offset(x, y), _dotRadius, paint);
-        }
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class _StorageCardWidgetState extends State<StorageCardWidget> {
@@ -174,7 +139,9 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isFree = userDetails.subscription.isFreePlan();
     final String planName;
-    if (isFree) {
+    if (totalStorageInBytes == 0) {
+      planName = isId ? "Belum Berlangganan" : "No Plan";
+    } else if (isFree) {
       planName = isId ? "Paket Gratis" : "Free Plan";
     } else {
       if (totalStorageInGB >= 1024) {
@@ -208,7 +175,7 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                   decoration: BoxDecoration(
-                    color: isFree
+                    color: (totalStorageInBytes == 0 || isFree)
                         ? (isDark ? const Color(0xFF262626) : const Color(0xFFF3EEEA))
                         : (isDark ? const Color(0xFF4A2518) : const Color(0xFFFDE8E1)),
                     borderRadius: BorderRadius.circular(10),
@@ -219,7 +186,7 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
                       fontFamily: "Outfit",
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
-                      color: isFree
+                      color: (totalStorageInBytes == 0 || isFree)
                           ? (isDark ? const Color(0xFFAAAAAA) : const Color(0xFF756860))
                           : const Color(0xFFC8502E),
                     ),
@@ -301,51 +268,5 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
         ),
       ],
     );
-  }
-
-  List<TextSpan> _usedStorageDetails({
-    required bool isMobileScreenSmall,
-    required bool shouldShowUsedStorageInTBs,
-    required bool shouldShowTotalStorageInTBs,
-    required bool shouldShowUsedStorageInMBs,
-    required int usedStorageInBytes,
-    required num usedStorageInGB,
-    required int totalStorageInGB,
-    required num usedStorageInTB,
-    required num totalStorageInTB,
-  }) {
-    if (isMobileScreenSmall) {
-      return [TextSpan(text: '$usedStorageInGB/$totalStorageInGB GB')];
-    }
-    late num currentUsage, totalStorage;
-    late String currentUsageUnit, totalStorageUnit;
-
-    if (shouldShowUsedStorageInTBs) {
-      currentUsage = usedStorageInTB;
-      currentUsageUnit = "TB";
-    } else if (shouldShowUsedStorageInMBs) {
-      currentUsage = convertBytesToMBs(usedStorageInBytes);
-      currentUsageUnit = "MB";
-    } else {
-      currentUsage = usedStorageInGB;
-      currentUsageUnit = "GB";
-    }
-
-    if (shouldShowTotalStorageInTBs) {
-      totalStorage = totalStorageInTB;
-      totalStorageUnit = "TB";
-    } else {
-      totalStorage = totalStorageInGB;
-      totalStorageUnit = "GB";
-    }
-
-    return [
-      TextSpan(text: '$currentUsage $currentUsageUnit  '),
-      const TextSpan(
-        text: 'of',
-        style: TextStyle(color: textMutedDark),
-      ),
-      TextSpan(text: '  $totalStorage $totalStorageUnit used'),
-    ];
   }
 }
