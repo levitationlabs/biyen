@@ -45,15 +45,8 @@ class SubscriptionPlanWidget extends StatelessWidget {
           : isPopular
           ? context.strings.mostPopular
           : null,
-      includedAllowance: isActive
-          ? _LockerAllowance(
-              count: price.isEmpty ? 100 : 1000,
-              color: colors.specialWhite,
-            )
-          : null,
-      onIncludedAllowanceTap: isActive
-          ? () => showSubscriptionLockerSheet(context)
-          : null,
+      includedAllowance: null,
+      onIncludedAllowanceTap: null,
       price: _Price(
         price: price,
         period: period,

@@ -158,6 +158,7 @@ class _MemoriesWidgetSettingsState extends State<MemoriesWidgetSettings> {
                         const SizedBox(height: 8),
                       ],
                       MenuGroupComponent(
+                        backgroundColor: Colors.transparent,
                         items: [
                           MenuComponent(
                             title: context.strings.pastYearsMemories,

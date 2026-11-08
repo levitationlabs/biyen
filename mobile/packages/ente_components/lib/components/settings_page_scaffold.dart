@@ -33,12 +33,14 @@ class SettingsPageScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.componentColors;
+    final isLight = Theme.of(context).brightness == Brightness.light;
+    final defaultBg = isLight ? Colors.white : colors.backgroundBase;
 
     return Scaffold(
-      backgroundColor: backgroundColor ?? colors.backgroundBase,
+      backgroundColor: backgroundColor ?? defaultBg,
       bottomNavigationBar: bottomNavigationBar,
       body: AppBarComponent(
-        backgroundColor: backgroundColor,
+        backgroundColor: backgroundColor ?? defaultBg,
         title: title,
         subtitle: subtitle,
         actions: actions,

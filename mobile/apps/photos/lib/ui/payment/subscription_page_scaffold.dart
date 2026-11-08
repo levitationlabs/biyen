@@ -93,16 +93,7 @@ class _SubscriptionPageScaffoldState extends State<SubscriptionPageScaffold> {
         ],
       ),
     );
-    final note = SizeChangedLayoutNotifier(child: _buildLockerNote());
-    final footer = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        actions,
-        if (widget.actions.isNotEmpty) const SizedBox(height: 10),
-        note,
-      ],
-    );
+    final footer = actions;
     final footerHeight =
         _fadeHeight +
         _actionsHeight +
@@ -162,19 +153,7 @@ class _SubscriptionPageScaffoldState extends State<SubscriptionPageScaffold> {
                           : actionsFooterHeight
                     : Spacing.xxl,
               ),
-              child: hasFloatingActions
-                  ? Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        widget.body,
-                        Padding(
-                          padding: const EdgeInsets.only(top: Spacing.lg),
-                          child: note,
-                        ),
-                      ],
-                    )
-                  : widget.body,
+              child: widget.body,
             ),
           ),
           if (hasPinnedFooter)
@@ -219,62 +198,6 @@ class _SubscriptionPageScaffoldState extends State<SubscriptionPageScaffold> {
   }
 
   Widget _buildLockerNote() {
-    final colors = context.componentColors;
-    final label = context.strings
-        .subscriptionPaidPlansLockerNote(count: 1000, appName: "\uFFFC")
-        .split("\uFFFC");
-    return Semantics(
-      button: true,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => showSubscriptionLockerSheet(context),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            minHeight: kMinInteractiveDimension,
-          ),
-          child: Align(
-            alignment: Alignment.topCenter,
-            heightFactor: 1,
-            child: Row(
-              key: _noteKey,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ExcludeSemantics(
-                  child: HugeIcon(
-                    icon: HugeIcons.strokeRoundedInformationCircle,
-                    size: 20,
-                    color: colors.textLight,
-                  ),
-                ),
-                const SizedBox(width: Spacing.xs),
-                Flexible(
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(text: label[0]),
-                        TextSpan(
-                          text: "Locker",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            decorationStyle: TextDecorationStyle.dotted,
-                            decorationColor: colors.textLight,
-                          ),
-                        ),
-                        TextSpan(text: label[1]),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                    style: TextStyles.mini.copyWith(
-                      color: colors.textLight,
-                      height: 18 / 12,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+    return const SizedBox.shrink();
   }
 }

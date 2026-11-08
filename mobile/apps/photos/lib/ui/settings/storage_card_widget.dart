@@ -170,6 +170,20 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
         ? (usedStorageInBytes / totalStorageInBytes).clamp(0.0, 1.0)
         : 0.0;
 
+    final isId = Localizations.localeOf(context).languageCode == 'id';
+    final isFree = userDetails.subscription.isFreePlan();
+    final String planName;
+    if (isFree) {
+      planName = isId ? "Paket Gratis" : "Free Plan";
+    } else {
+      if (totalStorageInGB >= 1024) {
+        final tb = (totalStorageInGB / 1024).toStringAsFixed(0);
+        planName = isId ? "Paket $tb TB" : "$tb TB Plan";
+      } else {
+        planName = isId ? "Paket $totalStorageInGB GB" : "$totalStorageInGB GB Plan";
+      }
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,14 +191,40 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              context.strings.storage,
-              style: const TextStyle(
-                fontFamily: "Outfit",
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF2C2523),
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.strings.storage,
+                  style: const TextStyle(
+                    fontFamily: "Outfit",
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF2C2523),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: isFree
+                        ? const Color(0xFFF3EEEA)
+                        : const Color(0xFFFDE8E1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    planName,
+                    style: TextStyle(
+                      fontFamily: "Outfit",
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: isFree
+                          ? const Color(0xFF756860)
+                          : const Color(0xFFC8502E),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Text(
               "$currentUsage $currentUsageUnit / $totalStorage $totalStorageUnit",
@@ -236,20 +276,20 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
                 color: Color(0xFF8C7D73),
               ),
             ),
-            const Row(
+            Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Kelola",
-                  style: TextStyle(
+                  isId ? "Kelola" : "Manage",
+                  style: const TextStyle(
                     fontFamily: "Outfit",
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFFC8502E),
                   ),
                 ),
-                SizedBox(width: 2),
-                Icon(
+                const SizedBox(width: 2),
+                const Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 9,
                   color: Color(0xFFC8502E),

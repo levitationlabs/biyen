@@ -538,6 +538,18 @@ class OnboardingPageScaffoldState extends State<OnboardingPageScaffold> {
   }
 
   Widget _buildIllustration() {
+    if (widget.illustration == OnboardingIllustration.pricing) {
+      return RepaintBoundary(
+        child: SizedBox(
+          width: widget.illustration.width,
+          height: widget.illustration.height,
+          child: Image.asset(
+            "assets/ducky_10gb_free.png",
+            fit: BoxFit.contain,
+          ),
+        ),
+      );
+    }
     if (_fileLoader == null) return const SizedBox.shrink();
     return RepaintBoundary(
       child: SizedBox(

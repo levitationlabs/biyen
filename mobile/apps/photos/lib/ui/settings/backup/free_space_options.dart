@@ -129,7 +129,16 @@ class _FreeUpSpaceOptionsScreenState extends State<FreeUpSpaceOptionsScreen> {
       ),
     ];
 
-    return MenuGroupComponent(items: options);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (var index = 0; index < options.length; index++) ...[
+          if (index > 0) const SizedBox(height: Spacing.sm),
+          options[index],
+        ],
+      ],
+    );
   }
 
   SettingsItem _buildFreeSpaceOption({

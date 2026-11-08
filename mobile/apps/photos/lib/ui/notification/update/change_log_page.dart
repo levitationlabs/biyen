@@ -38,9 +38,7 @@ class _ChangeLogPageState extends State<ChangeLogPage> {
     final colors = context.componentColors;
     final isLocalGallery = isLocalGalleryMode;
     final continueButton = ButtonComponent(
-      variant: isLocalGallery
-          ? ButtonComponentVariant.primary
-          : ButtonComponentVariant.secondary,
+      variant: ButtonComponentVariant.primary,
       size: ButtonComponentSize.large,
       label: l10n.continueLabel,
       shouldSurfaceExecutionStates: false,
@@ -57,52 +55,17 @@ class _ChangeLogPageState extends State<ChangeLogPage> {
       content: _getChangeLog(),
       actions: [
         continueButton,
-        Theme(
-          data: Theme.of(context).copyWith(
-            extensions: [
-              ComponentColorTokens(
-                ComponentTheme.colorsForApp(
-                  ComponentApp.locker,
-                  brightness: Theme.of(context).brightness,
-                ),
-              ),
-            ],
-          ),
-          child: ButtonComponent(
-            variant: isLocalGallery
-                ? ButtonComponentVariant.secondary
-                : ButtonComponentVariant.primary,
+        if (isLocalGallery)
+          ButtonComponent(
+            variant: ButtonComponentVariant.secondary,
             size: ButtonComponentSize.large,
-            label: isLocalGallery ? l10n.rateUs : l10n.meetEnteLocker,
-            leading: isLocalGallery
-                ? Icon(Icons.favorite_rounded, color: colors.primary)
-                : const EnteAppIcon(app: ComponentApp.locker),
+            label: l10n.rateUs,
+            leading: Icon(Icons.favorite_rounded, color: colors.primary),
             shouldSurfaceExecutionStates: false,
             onTap: () async {
-              if (isLocalGallery) {
-                await ReviewService.launch();
-              } else {
-                final navigator = Navigator.of(context);
-                final route = ModalRoute.of(context);
-                bool launched;
-                try {
-                  launched = await launchUrlString(
-                    'https://ente.com/locker/get',
-                    mode: LaunchMode.externalApplication,
-                  );
-                } catch (_) {
-                  launched = false;
-                }
-                if (!context.mounted || route?.isCurrent != true) return;
-                if (launched) {
-                  navigator.pop();
-                } else {
-                  showShortToast(context, l10n.somethingWentWrong);
-                }
-              }
+              await ReviewService.launch();
             },
           ),
-        ),
       ],
     );
   }

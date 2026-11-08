@@ -69,6 +69,8 @@ class _SettingsBody extends StatelessWidget {
     final hasConfiguredAccount = Configuration.instance.hasConfiguredAccount();
     final showLoginEntry = isLocalGalleryMode && !hasConfiguredAccount;
 
+    final isId = Localizations.localeOf(context).languageCode == 'id';
+
     return AnimatedBuilder(
       animation: emailNotifier,
       builder: (context, _) {
@@ -107,7 +109,9 @@ class _SettingsBody extends StatelessWidget {
             if (hasLoggedIn && !isLocalGalleryMode) ...[
               const StorageCardWidget(),
               _buildDivider(),
-              _buildSectionHeader("Penyimpanan & Cadangan"),
+              _buildSectionHeader(
+                isId ? "Penyimpanan & Cadangan" : "Storage & Backup",
+              ),
               _buildMenuItem(
                 title: context.strings.account,
                 icon: HugeIcons.strokeRoundedUser,
@@ -135,7 +139,9 @@ class _SettingsBody extends StatelessWidget {
               ),
               _buildDivider(),
             ],
-            _buildSectionHeader("Keamanan & Akses"),
+            _buildSectionHeader(
+              isId ? "Keamanan & Akses" : "Security & Access",
+            ),
             _buildMenuItem(
               title: context.strings.security,
               icon: HugeIcons.strokeRoundedSecurityCheck,
@@ -149,7 +155,9 @@ class _SettingsBody extends StatelessWidget {
               _buildReferralsMenuItem(context),
             ],
             _buildDivider(),
-            _buildSectionHeader("Preferensi & Fitur"),
+            _buildSectionHeader(
+              isId ? "Preferensi & Fitur" : "Preferences & Features",
+            ),
             _buildMenuItem(
               title: context.strings.appearance,
               icon: HugeIcons.strokeRoundedPaintBoard,
@@ -214,7 +222,9 @@ class _SettingsBody extends StatelessWidget {
             ],
             _buildMapsMenuItem(context),
             _buildDivider(),
-            _buildSectionHeader("Bantuan & Informasi"),
+            _buildSectionHeader(
+              isId ? "Bantuan & Informasi" : "Help & Information",
+            ),
             _buildMenuItem(
               title: context.strings.helpAndSupport,
               icon: HugeIcons.strokeRoundedHelpCircle,
@@ -233,7 +243,9 @@ class _SettingsBody extends StatelessWidget {
                 !isLocalGalleryMode &&
                 (flagService.flags.internalUser || kDebugMode)) ...[
               _buildDivider(),
-              _buildSectionHeader("Pengembang"),
+              _buildSectionHeader(
+                isId ? "Pengembang" : "Developer",
+              ),
               _buildMenuItem(
                 title: "Debug",
                 icon: HugeIcons.strokeRoundedBug02,
@@ -253,7 +265,7 @@ class _SettingsBody extends StatelessWidget {
               const SizedBox(height: 16),
               _buildLogoutCard(context),
             ],
-            _buildBiyenFooter(context),
+            _buildBiyenFooter(context, isId: isId),
           ],
         );
       },
@@ -343,7 +355,7 @@ class _SettingsBody extends StatelessWidget {
     );
   }
 
-  Widget _buildBiyenFooter(BuildContext context) {
+  Widget _buildBiyenFooter(BuildContext context, {required bool isId}) {
     return Padding(
       padding: const EdgeInsets.only(top: 28, bottom: 48),
       child: Column(
@@ -360,9 +372,9 @@ class _SettingsBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 3),
-          const Text(
-            "oleh Levitation",
-            style: TextStyle(
+          Text(
+            isId ? "oleh Levitation" : "by Levitation",
+            style: const TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w500,
               color: Color(0xFFA89A90),
