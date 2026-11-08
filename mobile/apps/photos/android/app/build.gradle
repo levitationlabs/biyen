@@ -55,6 +55,7 @@ repositories {
 
 android {
     namespace = "io.ente.photos"
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         coreLibraryDesugaringEnabled = true

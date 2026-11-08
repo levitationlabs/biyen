@@ -27,14 +27,14 @@ class EnteColorScheme extends ThemeExtension<EnteColorScheme> {
         ],
       ),
       EnteApp.photos => (
-        primary700: const Color.fromRGBO(8, 194, 37, 1),
-        primary500: const Color.fromRGBO(8, 194, 37, 1),
-        primary400: const Color.fromRGBO(6, 157, 30, 1),
-        primary300: const Color.fromRGBO(5, 124, 24, 1),
-        gradientButtonBgColor: const Color.fromRGBO(8, 194, 37, 1),
+        primary700: const Color(0xFFA53C1F),
+        primary500: const Color(0xFFC8502E),
+        primary400: const Color(0xFFDE643F),
+        primary300: const Color(0xFFE88162),
+        gradientButtonBgColor: const Color(0xFFC8502E),
         gradientButtonBgColors: const [
-          Color.fromRGBO(8, 194, 37, 1),
-          Color.fromRGBO(6, 157, 30, 1),
+          Color(0xFFC8502E),
+          Color(0xFFDE643F),
         ],
       ),
     };

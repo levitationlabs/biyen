@@ -246,14 +246,14 @@ const EnteColorScheme darkScheme = EnteColorScheme(
   redLightDark,
 );
 
-const Color backgroundColorLight = Color.fromRGBO(244, 244, 244, 1);
-const Color backgroundColorDark = Color.fromRGBO(22, 22, 22, 1);
+const Color backgroundColorLight = Color(0xFFFBF8F2);
+const Color backgroundColorDark = Color(0xFF1A1513);
 
-const Color backgroundElevatedLight = Color.fromRGBO(255, 255, 255, 1);
-const Color backgroundElevated2Light = Color.fromRGBO(251, 251, 251, 1);
+const Color backgroundElevatedLight = Color(0xFFFFFFFF);
+const Color backgroundElevated2Light = Color(0xFFF5ECE0);
 
-const Color backgroundElevatedDark = Color.fromRGBO(27, 27, 27, 1);
-const Color backgroundElevated2Dark = Color.fromRGBO(37, 37, 37, 1);
+const Color backgroundElevatedDark = Color(0xFF261F1C);
+const Color backgroundElevated2Dark = Color(0xFF332A26);
 
 const Color backdropBaseLight = Color.fromRGBO(255, 255, 255, 0.92);
 const Color backdropMutedLight = Color.fromRGBO(255, 255, 255, 0.75);
@@ -318,10 +318,10 @@ const Color strokeSolidFaintLight = Color.fromRGBO(221, 221, 221, 1);
 // Keep light for scanability.
 const Color qrBoxColor = Color.fromRGBO(245, 245, 247, 1);
 
-const Color _primary700 = Color.fromRGBO(0, 179, 60, 1);
-const Color _primary500 = Color.fromRGBO(29, 185, 84, 1);
-const Color _primary400 = Color.fromRGBO(38, 203, 95, 1);
-const Color _primary300 = Color.fromRGBO(1, 222, 77, 1);
+const Color _primary700 = Color(0xFFA53C1F);
+const Color _primary500 = Color(0xFFC8502E);
+const Color _primary400 = Color(0xFFDE643F);
+const Color _primary300 = Color(0xFFE88162);
 
 const Color _warning700 = Color.fromRGBO(234, 63, 63, 1);
 const Color _warning500 = Color.fromRGBO(255, 101, 101, 1);
@@ -334,13 +334,13 @@ const Color _caution500 = Color.fromRGBO(255, 194, 71, 1);
 const Color _golden700 = Color(0xFFFDB816);
 const Color _golden500 = Color(0xFFFFC336);
 
-const Color green = Color.fromRGBO(8, 194, 37, 1);
-const Color greenLightLight = Color.fromRGBO(231, 246, 233, 1);
-const Color greenLightDark = Color.fromRGBO(33, 33, 33, 1);
-const Color greenDark = Color.fromRGBO(6, 157, 30, 1);
-const Color greenDarker = Color.fromRGBO(5, 124, 24, 1);
-const Color greenStrokeLight = Color.fromRGBO(186, 236, 194, 1);
-const Color greenStrokeDark = Color.fromRGBO(28, 65, 34, 1);
+const Color green = Color(0xFFC8502E);
+const Color greenLightLight = Color(0xFFFBECE6);
+const Color greenLightDark = Color(0xFF2C1E19);
+const Color greenDark = Color(0xFFA53C1F);
+const Color greenDarker = Color(0xFF8B3016);
+const Color greenStrokeLight = Color(0xFFF0CBC0);
+const Color greenStrokeDark = Color(0xFF5E2719);
 
 const Color red = Color.fromRGBO(246, 58, 58, 1);
 const Color redLightLight = Color.fromRGBO(250, 235, 235, 1);

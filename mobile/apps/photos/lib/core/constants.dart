@@ -33,15 +33,15 @@ const mediaManagementHintDeleteAttemptThreshold = 3;
 
 const dragSensitivity = 8;
 
-const supportEmail = 'support@ente.com';
+const supportEmail = 'halo@biyen.levitation.web.id';
 
 const multipartPartSize = 20 * 1024 * 1024;
 
-const kDefaultProductionEndpoint = 'https://api.ente.com';
-const kLegacyProductionEndpoint = 'https://api.ente.io';
-const kUploadProxyEndpoint = 'https://uploader.ente.com';
-const kPhotosWebDomain = 'photos.ente.com';
-const kFamilyUrl = 'https://family.ente.io';
+const kDefaultProductionEndpoint = 'https://api.biyen.levitation.web.id';
+const kLegacyProductionEndpoint = 'https://api.biyen.levitation.web.id';
+const kUploadProxyEndpoint = 'https://uploader.biyen.levitation.web.id';
+const kPhotosWebDomain = 'biyen.levitation.web.id';
+const kFamilyUrl = 'https://biyen.levitation.web.id';
 
 const int intMaxValue = 9223372036854775807;
 
