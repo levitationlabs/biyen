@@ -15,6 +15,7 @@ export 'components/loading/loading_component.dart';
 export 'components/loading/loading_dialog_component.dart';
 export 'components/menu_component.dart';
 export 'components/menu_group_component.dart';
+export 'src/components/menu_component_surface_style.dart';
 export 'components/more_from_ente_section.dart';
 export 'components/navigation_card_component.dart';
 export 'components/pin_input_component.dart';

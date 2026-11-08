@@ -48,11 +48,8 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ComponentTheme.lightTheme(),
-      child: SettingsStateContainer(
-        child: _SettingsBody(emailNotifier: emailNotifier),
-      ),
+    return SettingsStateContainer(
+      child: _SettingsBody(emailNotifier: emailNotifier),
     );
   }
 }
@@ -70,6 +67,7 @@ class _SettingsBody extends StatelessWidget {
     final showLoginEntry = isLocalGalleryMode && !hasConfiguredAccount;
 
     final isId = Localizations.localeOf(context).languageCode == 'id';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AnimatedBuilder(
       animation: emailNotifier,
@@ -77,7 +75,7 @@ class _SettingsBody extends StatelessWidget {
         final email = hasLoggedIn ? emailNotifier.value ?? "" : "";
 
         return SettingsPageScaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: isDark ? const Color(0xFF161616) : Colors.white,
           title: context.strings.settings,
           backButton: IconButtonComponent(
             variant: IconButtonComponentVariant.primary,
@@ -88,7 +86,7 @@ class _SettingsBody extends StatelessWidget {
           actions: _buildHeaderActions(context),
           children: [
             if (hasLoggedIn && email.isNotEmpty)
-              _buildMinimalistProfileHeader(context, email),
+              _buildMinimalistProfileHeader(context, email, isDark: isDark),
             if (showLoginEntry) ...[
               OfflineSettingsBanner(
                 onGetStarted: () {
@@ -108,9 +106,10 @@ class _SettingsBody extends StatelessWidget {
             ],
             if (hasLoggedIn && !isLocalGalleryMode) ...[
               const StorageCardWidget(),
-              _buildDivider(),
+              _buildDivider(isDark: isDark),
               _buildSectionHeader(
                 isId ? "Penyimpanan & Cadangan" : "Storage & Backup",
+                isDark: isDark,
               ),
               _buildMenuItem(
                 title: context.strings.account,
@@ -137,10 +136,11 @@ class _SettingsBody extends StatelessWidget {
                   );
                 },
               ),
-              _buildDivider(),
+              _buildDivider(isDark: isDark),
             ],
             _buildSectionHeader(
               isId ? "Keamanan & Akses" : "Security & Access",
+              isDark: isDark,
             ),
             _buildMenuItem(
               title: context.strings.security,
@@ -154,9 +154,10 @@ class _SettingsBody extends StatelessWidget {
               _buildFamilyMenuItem(context),
               _buildReferralsMenuItem(context),
             ],
-            _buildDivider(),
+            _buildDivider(isDark: isDark),
             _buildSectionHeader(
               isId ? "Preferensi & Fitur" : "Preferences & Features",
+              isDark: isDark,
             ),
             _buildMenuItem(
               title: context.strings.appearance,
@@ -221,9 +222,10 @@ class _SettingsBody extends StatelessWidget {
                 ),
             ],
             _buildMapsMenuItem(context),
-            _buildDivider(),
+            _buildDivider(isDark: isDark),
             _buildSectionHeader(
               isId ? "Bantuan & Informasi" : "Help & Information",
+              isDark: isDark,
             ),
             _buildMenuItem(
               title: context.strings.helpAndSupport,
@@ -242,9 +244,10 @@ class _SettingsBody extends StatelessWidget {
             if (hasLoggedIn &&
                 !isLocalGalleryMode &&
                 (flagService.flags.internalUser || kDebugMode)) ...[
-              _buildDivider(),
+              _buildDivider(isDark: isDark),
               _buildSectionHeader(
                 isId ? "Pengembang" : "Developer",
+                isDark: isDark,
               ),
               _buildMenuItem(
                 title: "Debug",
@@ -265,7 +268,7 @@ class _SettingsBody extends StatelessWidget {
               const SizedBox(height: 16),
               _buildLogoutCard(context),
             ],
-            _buildBiyenFooter(context, isId: isId),
+            _buildBiyenFooter(context, isId: isId, isDark: isDark),
           ],
         );
       },
@@ -274,8 +277,9 @@ class _SettingsBody extends StatelessWidget {
 
   Widget _buildMinimalistProfileHeader(
     BuildContext context,
-    String email,
-  ) {
+    String email, {
+    required bool isDark,
+  }) {
     final initial = email.isNotEmpty ? email[0].toUpperCase() : "B";
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -311,11 +315,11 @@ class _SettingsBody extends StatelessWidget {
             Expanded(
               child: Text(
                 email,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: "Outfit",
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF2C2523),
+                  color: isDark ? Colors.white : const Color(0xFF2C2523),
                   letterSpacing: -0.3,
                 ),
                 maxLines: 1,
@@ -328,56 +332,60 @@ class _SettingsBody extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(String title, {required bool isDark}) {
     return Padding(
       padding: const EdgeInsets.only(left: 4, top: 14, bottom: 4),
       child: Text(
         title.toUpperCase(),
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: "Outfit",
           fontSize: 11,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
-          color: Color(0xFF9E928A),
+          color: isDark ? const Color(0xFF888888) : const Color(0xFF9E928A),
         ),
       ),
     );
   }
 
-  Widget _buildDivider() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+  Widget _buildDivider({required bool isDark}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       child: Divider(
         height: 1,
         thickness: 0.5,
-        color: Color(0xFFF0EBE5),
+        color: isDark ? const Color(0xFF262626) : const Color(0xFFF0EBE5),
       ),
     );
   }
 
-  Widget _buildBiyenFooter(BuildContext context, {required bool isId}) {
+  Widget _buildBiyenFooter(
+    BuildContext context, {
+    required bool isId,
+    required bool isDark,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(top: 28, bottom: 48),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
+          Text(
             "Biyen Photos",
             style: TextStyle(
               fontFamily: "Outfit",
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF8C7D73),
+              color: isDark ? const Color(0xFFAAAAAA) : const Color(0xFF8C7D73),
               letterSpacing: 0.3,
             ),
           ),
           const SizedBox(height: 3),
           Text(
             isId ? "oleh Levitation" : "by Levitation",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: Color(0xFFA89A90),
+              color: isDark ? const Color(0xFF666666) : const Color(0xFFA89A90),
             ),
           ),
           const SizedBox(height: 8),

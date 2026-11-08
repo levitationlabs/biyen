@@ -19,7 +19,6 @@ class AboutUsPage extends StatelessWidget {
     final isId = Localizations.localeOf(context).languageCode == 'id';
 
     return SettingsPageScaffold(
-      backgroundColor: Colors.white,
       title: l10n.about,
       children: [
         SettingsItem(
@@ -62,32 +61,37 @@ class AboutUsPage extends StatelessWidget {
   }
 
   Widget _buildLegalNotice(BuildContext context, {required bool isId}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(top: Spacing.xl, bottom: Spacing.xxl),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9F7F5),
+        color: isDark ? const Color(0xFF202020) : const Color(0xFFF9F7F5),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFEFEBE6), width: 1),
+        border: Border.all(
+          color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFEFEBE6),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.gavel_rounded,
                 size: 16,
-                color: Color(0xFF756860),
+                color: isDark ? const Color(0xFFAAAAAA) : const Color(0xFF756860),
               ),
               const SizedBox(width: 8),
               Text(
                 isId ? "Kepatuhan Lisensi & Atribusi" : "License & Attribution",
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: "Outfit",
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF2C2523),
+                  color: isDark ? Colors.white : const Color(0xFF2C2523),
                 ),
               ),
             ],
@@ -97,10 +101,10 @@ class AboutUsPage extends StatelessWidget {
             isId
                 ? "Biyen Photos adalah proyek independen berbasis fork dari Ente Photos, ditenagai oleh arsitektur open-source Ente Technologies, Inc., dan dilisensikan di bawah GNU Affero General Public License v3 (AGPLv3)."
                 : "Biyen Photos is an independent fork of Ente Photos, powered by the open-source architecture of Ente Technologies, Inc., and licensed under the GNU Affero General Public License v3 (AGPLv3).",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               height: 1.5,
-              color: Color(0xFF6B5E56),
+              color: isDark ? const Color(0xFFB0A8A0) : const Color(0xFF6B5E56),
             ),
           ),
           const SizedBox(height: 8),
@@ -108,11 +112,11 @@ class AboutUsPage extends StatelessWidget {
             isId
                 ? "Biyen dikembangkan oleh Levitation dan tidak berafiliasi, disponsori, atau didukung secara resmi oleh Ente Technologies, Inc."
                 : "Biyen is developed by Levitation and is not affiliated with, endorsed by, or sponsored by Ente Technologies, Inc.",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               height: 1.5,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF8C7D73),
+              color: isDark ? const Color(0xFF888888) : const Color(0xFF8C7D73),
             ),
           ),
           const SizedBox(height: 10),

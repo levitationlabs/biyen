@@ -171,6 +171,7 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
         : 0.0;
 
     final isId = Localizations.localeOf(context).languageCode == 'id';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final isFree = userDetails.subscription.isFreePlan();
     final String planName;
     if (isFree) {
@@ -196,11 +197,11 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
               children: [
                 Text(
                   context.strings.storage,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: "Outfit",
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF2C2523),
+                    color: isDark ? Colors.white : const Color(0xFF2C2523),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -208,8 +209,8 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                   decoration: BoxDecoration(
                     color: isFree
-                        ? const Color(0xFFF3EEEA)
-                        : const Color(0xFFFDE8E1),
+                        ? (isDark ? const Color(0xFF262626) : const Color(0xFFF3EEEA))
+                        : (isDark ? const Color(0xFF4A2518) : const Color(0xFFFDE8E1)),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
@@ -219,7 +220,7 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
                       color: isFree
-                          ? const Color(0xFF756860)
+                          ? (isDark ? const Color(0xFFAAAAAA) : const Color(0xFF756860))
                           : const Color(0xFFC8502E),
                     ),
                   ),
@@ -228,11 +229,11 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
             ),
             Text(
               "$currentUsage $currentUsageUnit / $totalStorage $totalStorageUnit",
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: "Outfit",
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF756860),
+                color: isDark ? const Color(0xFFAAAAAA) : const Color(0xFF756860),
               ),
             ),
           ],
@@ -246,7 +247,7 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
             child: Stack(
               children: [
                 Container(
-                  color: const Color(0xFFE8E4DF),
+                  color: isDark ? const Color(0xFF262626) : const Color(0xFFE8E4DF),
                 ),
                 FractionallySizedBox(
                   widthFactor: fraction > 0 ? (fraction < 0.02 ? 0.02 : fraction) : 0.0,
@@ -270,10 +271,10 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
                 count: userDetails.fileCount,
                 formattedCount: NumberFormat().format(userDetails.fileCount),
               ),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF8C7D73),
+                color: isDark ? const Color(0xFF888888) : const Color(0xFF8C7D73),
               ),
             ),
             Row(

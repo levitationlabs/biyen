@@ -1,4 +1,5 @@
 import 'package:ente_components/components/app_bar_component.dart';
+import 'package:ente_components/src/components/menu_component_surface_style.dart';
 import 'package:ente_components/theme/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -36,27 +37,30 @@ class SettingsPageScaffold extends StatelessWidget {
     final isLight = Theme.of(context).brightness == Brightness.light;
     final defaultBg = isLight ? Colors.white : colors.backgroundBase;
 
-    return Scaffold(
-      backgroundColor: backgroundColor ?? defaultBg,
-      bottomNavigationBar: bottomNavigationBar,
-      body: AppBarComponent(
+    return MenuComponentSurfaceStyle(
+      backgroundColor: Colors.transparent,
+      child: Scaffold(
         backgroundColor: backgroundColor ?? defaultBg,
-        title: title,
-        subtitle: subtitle,
-        actions: actions,
-        backButton: backButton,
-        onTitleTap: onTitleTap,
-        onTitleDoubleTap: onTitleDoubleTap,
-        onTitleLongPress: onTitleLongPress,
-        slivers: [
-          SliverSafeArea(
-            top: false,
-            sliver: SliverPadding(
-              padding: padding,
-              sliver: SliverList.list(children: children),
+        bottomNavigationBar: bottomNavigationBar,
+        body: AppBarComponent(
+          backgroundColor: backgroundColor ?? defaultBg,
+          title: title,
+          subtitle: subtitle,
+          actions: actions,
+          backButton: backButton,
+          onTitleTap: onTitleTap,
+          onTitleDoubleTap: onTitleDoubleTap,
+          onTitleLongPress: onTitleLongPress,
+          slivers: [
+            SliverSafeArea(
+              top: false,
+              sliver: SliverPadding(
+                padding: padding,
+                sliver: SliverList.list(children: children),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
