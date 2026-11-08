@@ -18,7 +18,7 @@ import "package:photos/ui/rewind/widgets/rewind_reveal_layer.dart";
 import "package:photos/ui/rewind/widgets/rewind_stage.dart";
 import "package:photos/ui/rewind/widgets/rewind_text.dart";
 
-const _likeGreen = Color(0xFF08C225);
+const _likeGreen = Color(0xFFC8502E);
 const _button = Offset(290.8, 564.8);
 
 class CrowdFavouritePage extends RewindPage {

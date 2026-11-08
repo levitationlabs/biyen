@@ -97,10 +97,10 @@ class PublicLinkEnabledActionsWidget extends StatelessWidget {
                   return QrCodeDialog(
                     data: url,
                     title: collection.displayName,
-                    accentColor: const Color(0xFF08C225),
-                    shareFileName: 'ente_qr_${collection.displayName}.png',
+                    accentColor: const Color(0xFFC8502E),
+                    shareFileName: 'biyen_qr_${collection.displayName}.png',
                     shareText:
-                        'Scan this QR code to view my ${collection.displayName} album on ente',
+                        'Scan this QR code to view my ${collection.displayName} album on biyen',
                     dialogTitle: context.strings.qrCode,
                     shareButtonText: context.strings.share,
                     logoAssetPath: 'assets/qr_logo.png',

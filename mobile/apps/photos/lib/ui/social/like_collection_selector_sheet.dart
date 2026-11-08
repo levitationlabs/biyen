@@ -18,7 +18,7 @@ import "package:photos/ui/viewer/file/thumbnail_widget.dart";
 
 final _logger = Logger("LikeCollectionSelectorSheet");
 
-const _greenHeartColor = Color(0xFF08C225);
+const _greenHeartColor = Color(0xFFC8502E);
 
 class _CollectionLikeState {
   final Collection collection;

@@ -207,13 +207,13 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
               ),
               showFamilyBreakup
                   ? StorageProgressWidget(
-                      color: const Color(0xFFF4D93B),
+                      color: const Color(0xFFD98226),
                       fractionOfStorage:
                           ((usedStorageInBytes) / totalStorageInBytes),
                     )
                   : const SizedBox.shrink(),
               StorageProgressWidget(
-                color: const Color(0xFF08C225),
+                color: const Color(0xFFC8502E),
                 fractionOfStorage: (userDetails.usage / totalStorageInBytes),
               ),
             ],
@@ -230,7 +230,7 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
                           height: 7,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF08C225),
+                            color: Color(0xFFC8502E),
                           ),
                         ),
                         const SizedBox(width: 4),

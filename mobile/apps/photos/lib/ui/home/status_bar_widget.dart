@@ -134,14 +134,13 @@ class _StatusBarWidgetState extends State<StatusBarWidget> {
                   },
                   child: const SyncStatusWidget(),
                 )
-              : SvgPicture.asset(
-                  "assets/ente-branding.svg",
-                  height: 22,
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).brightness == Brightness.light
-                        ? const Color(0xFF1A1513)
-                        : Colors.white,
-                    BlendMode.srcIn,
+              : const Text(
+                  "biyen",
+                  style: TextStyle(
+                    fontFamily: 'Outfit',
+                    fontWeight: FontWeight.w900,
+                    fontSize: 27,
+                    letterSpacing: -1.2,
                   ),
                 ),
         ),
@@ -193,21 +192,89 @@ class _MachineLearningBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.strings;
+    final colors = context.componentColors;
+    final colorScheme = getEnteColorScheme(context);
     return _bannerPadding(
-      BannerComponent(
-        leadingIcon: HugeIcons.strokeRoundedAiBrain01,
-        title: l10n.machineLearning,
-        subtitle: l10n.machineLearningBannerSubtitle,
-        state: BannerComponentState.success,
-        trailingWidget: const Icon(Icons.arrow_forward),
-        onTap: () async {
-          if (await showMLConsentSheet(context)) {
-            Bus.instance.fire(
-              TabChangedEvent(searchTabIndex, TabChangedEventSource.mlConsent),
-            );
-          }
-        },
+      Container(
+        decoration: BoxDecoration(
+          color: colorScheme.backgroundElevated,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: colorScheme.strokeFaint),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x0D000000),
+              blurRadius: 8,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () async {
+              if (await showMLConsentSheet(context)) {
+                Bus.instance.fire(
+                  TabChangedEvent(searchTabIndex, TabChangedEventSource.mlConsent),
+                );
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFBECE6),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: HugeIcon(
+                        icon: HugeIcons.strokeRoundedAiBrain01,
+                        color: colorScheme.primary500,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Pencarian Cerdas & Wajah",
+                          style: TextStyle(
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14.5,
+                            color: colors.textBase,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          "Kelompokkan orang & cari foto otomatis secara lokal di HP Anda.",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: colors.textLight,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: colorScheme.primary500,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

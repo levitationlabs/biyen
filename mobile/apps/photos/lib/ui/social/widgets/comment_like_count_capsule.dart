@@ -43,7 +43,7 @@ class CommentLikeCountCapsule extends StatelessWidget {
             const Icon(
               EnteIcons.likeFilled,
               size: 14,
-              color: Color(0xFF08C225),
+              color: Color(0xFFC8502E),
             ),
             const SizedBox(width: 2),
             Text(

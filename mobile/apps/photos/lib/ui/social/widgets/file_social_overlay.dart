@@ -25,7 +25,7 @@ import "package:photos/ui/social/likes_bottom_sheet.dart";
 
 final _logger = Logger("FileSocialOverlay");
 
-const _likedColor = Color(0xFF08C225);
+const _likedColor = Color(0xFFC8502E);
 const _socialControlsSize = 48.0;
 // TODO: Restore both icons to 24px after updating their ente_icons assets to
 // follow HugeIcons sizing guidelines.

@@ -428,26 +428,26 @@ const PrimaryColorTokens bluePrimaryTokensDark = PrimaryColorTokens(
   primaryDarker: blueDarkerDark,
 );
 
-const Color greenLightLight = Color.fromRGBO(221, 238, 223, 1);
-const Color greenLightDark = Color.fromRGBO(41, 41, 41, 1);
+const Color greenLightLight = Color(0xFFFBECE6);
+const Color greenLightDark = Color(0xFF2C1E19);
 
-const Color greenLightHoverLight = Color.fromRGBO(205, 229, 208, 1);
-const Color greenLightHoverDark = Color.fromRGBO(31, 48, 35, 1);
+const Color greenLightHoverLight = Color(0xFFF5DDD4);
+const Color greenLightHoverDark = Color(0xFF3D2720);
 
-const Color greenLightPressedLight = Color.fromRGBO(184, 213, 187, 1);
-const Color greenLightPressedDark = Color.fromRGBO(44, 66, 50, 1);
+const Color greenLightPressedLight = Color(0xFFEBC8BD);
+const Color greenLightPressedDark = Color(0xFF4F3229);
 
-const Color greenStrokeLight = Color.fromRGBO(186, 236, 194, 1);
-const Color greenStrokeDark = Color.fromRGBO(28, 65, 34, 1);
+const Color greenStrokeLight = Color(0xFFF0CBC0);
+const Color greenStrokeDark = Color(0xFF5E2719);
 
-const Color greenDefaultLight = Color.fromRGBO(8, 194, 37, 1);
-const Color greenDefaultDark = Color.fromRGBO(8, 194, 37, 1);
+const Color greenDefaultLight = Color(0xFFC8502E);
+const Color greenDefaultDark = Color(0xFFC8502E);
 
-const Color greenDarkLight = Color.fromRGBO(6, 157, 30, 1);
-const Color greenDarkDark = Color.fromRGBO(6, 157, 30, 1);
+const Color greenDarkLight = Color(0xFFA53C1F);
+const Color greenDarkDark = Color(0xFFA53C1F);
 
-const Color greenDarkerLight = Color.fromRGBO(5, 124, 24, 1);
-const Color greenDarkerDark = Color.fromRGBO(5, 124, 24, 1);
+const Color greenDarkerLight = Color(0xFF8B3016);
+const Color greenDarkerDark = Color(0xFF8B3016);
 
 const Color purpleLightLight = Color.fromRGBO(244, 231, 252, 1);
 const Color purpleLightDark = Color.fromRGBO(39, 28, 50, 1);

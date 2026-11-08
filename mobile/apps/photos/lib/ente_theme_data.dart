@@ -218,7 +218,7 @@ extension CustomColorScheme on ColorScheme {
       ? const Color(0xFF424242)
       : const Color(0xFFFFFFFF);
 
-  Color get imageEditorPrimaryColor => const Color.fromRGBO(8, 194, 37, 1);
+  Color get imageEditorPrimaryColor => const Color(0xFFC8502E);
 
   Color get editorBackgroundColor => brightness == Brightness.light
       ? const Color(0xFFF5F5F5)
@@ -238,15 +238,13 @@ extension CustomColorScheme on ColorScheme {
   Color get inverseTextColor =>
       brightness != Brightness.light ? textBaseLight : textBaseDark;
 
-  Color get boxSelectColor => brightness == Brightness.light
-      ? const Color.fromRGBO(67, 186, 108, 1)
-      : const Color.fromRGBO(16, 32, 32, 1);
+  Color get boxSelectColor => const Color(0xFFC8502E);
 
   Color get boxUnSelectColor => brightness == Brightness.light
       ? const Color.fromRGBO(240, 240, 240, 1)
       : const Color.fromRGBO(8, 18, 18, 0.4);
 
-  Color get greenAlternative => const Color.fromRGBO(45, 194, 98, 1.0);
+  Color get greenAlternative => const Color(0xFFC8502E);
 
   Color get dynamicFABBackgroundColor => brightness == Brightness.light
       ? const Color.fromRGBO(0, 0, 0, 1)
@@ -262,8 +260,8 @@ extension CustomColorScheme on ColorScheme {
   ).style;
 
   Color get recoveryKeyBoxColor => brightness == Brightness.light
-      ? const Color.fromRGBO(49, 155, 86, 0.2)
-      : const Color(0xFF1DB954);
+      ? const Color(0x33C8502E)
+      : const Color(0xFFC8502E);
 
   Color get frostyBlurBackdropFilterColor => brightness == Brightness.light
       ? const Color.fromRGBO(238, 238, 238, 0.5)
@@ -277,7 +275,7 @@ extension CustomColorScheme on ColorScheme {
       ? const Color.fromRGBO(255, 255, 255, 1)
       : const Color.fromRGBO(10, 15, 15, 1.0);
 
-  Color get greenText => const Color.fromARGB(255, 40, 190, 113);
+  Color get greenText => const Color(0xFFC8502E);
 
   Color get cupertinoPickerTopColor => brightness == Brightness.light
       ? const Color.fromARGB(255, 238, 238, 238)

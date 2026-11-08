@@ -454,7 +454,7 @@ class _LikeListItem extends StatelessWidget {
                     ),
                   ),
           ),
-          const Icon(EnteIcons.likeFilled, color: Color(0xFF08C225), size: 20),
+          const Icon(EnteIcons.likeFilled, color: Color(0xFFC8502E), size: 20),
         ],
       ),
     );
