@@ -7,6 +7,7 @@ import "package:package_info_plus/package_info_plus.dart";
 import "package:photos/service_locator.dart";
 import "package:photos/ui/notification/toast.dart";
 import "package:photos/ui/notification/update/change_log_page.dart";
+import "package:photos/ui/settings/about/double_encryption_diagram.dart";
 import "package:photos/ui/settings/app_update_sheet.dart";
 import "package:url_launcher/url_launcher_string.dart";
 
@@ -16,7 +17,7 @@ class AboutUsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.strings;
-    final isId = Localizations.localeOf(context).languageCode == 'id';
+    final isId = Localizations.localeOf(context).languageCode == "id";
 
     return SettingsPageScaffold(
       title: l10n.about,
@@ -55,71 +56,61 @@ class AboutUsPage extends StatelessWidget {
             );
           },
         ),
-        _buildLegalNotice(context, isId: isId),
+        const DoubleEncryptionDiagram(),
+        _buildCenteredFooter(context, isId: isId),
       ],
     );
   }
 
-  Widget _buildLegalNotice(BuildContext context, {required bool isId}) {
+  Widget _buildCenteredFooter(BuildContext context, {required bool isId}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primaryTextColor =
+        isDark ? const Color(0xFFC0B8B2) : const Color(0xFF6E645E);
+    final mutedTextColor =
+        isDark ? const Color(0xFF7A706A) : const Color(0xFF9E928A);
 
-    return Container(
-      margin: const EdgeInsets.only(top: Spacing.xl, bottom: Spacing.xxl),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF202020) : const Color(0xFFF9F7F5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFEFEBE6),
-          width: 1,
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: Spacing.xl,
+        bottom: Spacing.xxl,
+        left: 16,
+        right: 16,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Icon(
-                Icons.gavel_rounded,
-                size: 16,
-                color: isDark ? const Color(0xFFAAAAAA) : const Color(0xFF756860),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                isId ? "Kepatuhan Lisensi & Atribusi" : "License & Attribution",
-                style: TextStyle(
-                  fontFamily: "Outfit",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: isDark ? Colors.white : const Color(0xFF2C2523),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            isId
-                ? "Biyen Photos adalah proyek independen berbasis fork dari Ente Photos, ditenagai oleh arsitektur open-source Ente Technologies, Inc., dan dilisensikan di bawah GNU Affero General Public License v3 (AGPLv3)."
-                : "Biyen Photos is an independent fork of Ente Photos, powered by the open-source architecture of Ente Technologies, Inc., and licensed under the GNU Affero General Public License v3 (AGPLv3).",
-            style: TextStyle(
-              fontSize: 11,
-              height: 1.5,
-              color: isDark ? const Color(0xFFB0A8A0) : const Color(0xFF6B5E56),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            isId
-                ? "Biyen dikembangkan oleh Levitation dan tidak berafiliasi, disponsori, atau didukung secara resmi oleh Ente Technologies, Inc."
-                : "Biyen is developed by Levitation and is not affiliated with, endorsed by, or sponsored by Ente Technologies, Inc.",
-            style: TextStyle(
-              fontSize: 11,
-              height: 1.5,
-              fontWeight: FontWeight.w500,
-              color: isDark ? const Color(0xFF888888) : const Color(0xFF8C7D73),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: Image.asset(
+              "assets/qr_logo.png",
+              width: 24,
+              height: 24,
             ),
           ),
           const SizedBox(height: 10),
+          Text(
+            "Biyen Photos",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: "Outfit",
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: isDark ? Colors.white : const Color(0xFF2C2523),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            isId
+                ? "Biyen Photos adalah proyek independen berbasis fork dari Ente Photos yang dilisensikan di bawah GNU Affero General Public License v3 (AGPLv3).\n\nDitenagai oleh arsitektur open-source Ente Technologies, Inc. Dikembangkan oleh Levitation tanpa afiliasi resmi dengan Ente Technologies, Inc."
+                : "Biyen Photos is an independent fork of Ente Photos licensed under the GNU Affero General Public License v3 (AGPLv3).\n\nPowered by the open-source architecture of Ente Technologies, Inc. Developed by Levitation and not affiliated with or endorsed by Ente Technologies, Inc.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 11,
+              height: 1.5,
+              color: primaryTextColor,
+            ),
+          ),
+          const SizedBox(height: 12),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () => launchUrlString(
@@ -145,6 +136,15 @@ class AboutUsPage extends StatelessWidget {
                   color: Color(0xFFC8502E),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            "Hak Cipta © 2026 Levitation & Ente Technologies, Inc.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 10,
+              color: mutedTextColor,
             ),
           ),
         ],
