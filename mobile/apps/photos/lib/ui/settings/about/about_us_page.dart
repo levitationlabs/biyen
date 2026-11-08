@@ -7,7 +7,7 @@ import "package:package_info_plus/package_info_plus.dart";
 import "package:photos/service_locator.dart";
 import "package:photos/ui/notification/toast.dart";
 import "package:photos/ui/notification/update/change_log_page.dart";
-import "package:photos/ui/settings/about/double_encryption_diagram.dart";
+import "package:photos/ui/settings/about/double_encryption_page.dart";
 import "package:photos/ui/settings/app_update_sheet.dart";
 import "package:url_launcher/url_launcher_string.dart";
 
@@ -27,6 +27,19 @@ class AboutUsPage extends StatelessWidget {
           icon: HugeIcons.strokeRoundedParty,
           showOnlyLoadingState: true,
           onTap: () => showChangeLogSheet(context),
+        ),
+        const SizedBox(height: Spacing.sm),
+        SettingsItem(
+          title: isId
+              ? "Arsitektur Enkripsi Ganda"
+              : "Double Encryption Architecture",
+          icon: HugeIcons.strokeRoundedShield01,
+          showOnlyLoadingState: true,
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const DoubleEncryptionPage(),
+            ),
+          ),
         ),
         const SizedBox(height: Spacing.sm),
         AboutSettingsSection(
@@ -56,7 +69,6 @@ class AboutUsPage extends StatelessWidget {
             );
           },
         ),
-        const DoubleEncryptionDiagram(),
         _buildCenteredFooter(context, isId: isId),
       ],
     );
@@ -101,8 +113,8 @@ class AboutUsPage extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             isId
-                ? "Biyen Photos adalah proyek independen berbasis fork dari Ente Photos yang dilisensikan di bawah GNU Affero General Public License v3 (AGPLv3).\n\nDitenagai oleh arsitektur open-source Ente Technologies, Inc. Dikembangkan oleh Levitation tanpa afiliasi resmi dengan Ente Technologies, Inc."
-                : "Biyen Photos is an independent fork of Ente Photos licensed under the GNU Affero General Public License v3 (AGPLv3).\n\nPowered by the open-source architecture of Ente Technologies, Inc. Developed by Levitation and not affiliated with or endorsed by Ente Technologies, Inc.",
+                ? "Biyen Photos adalah proyek independen berbasis fork dari Ente Photos yang dilisensikan di bawah GNU Affero General Public License v3 (AGPLv3).\n\nDitenagai oleh arsitektur open-source Ente Technologies, Inc. dengan sistem kriptografi E2EE yang telah diaudit secara independen oleh Cure53 dan Kudelski Security. Dikembangkan oleh Levitation tanpa afiliasi resmi dengan Ente Technologies, Inc."
+                : "Biyen Photos is an independent fork of Ente Photos licensed under the GNU Affero General Public License v3 (AGPLv3).\n\nPowered by the open-source architecture of Ente Technologies, Inc. featuring E2EE cryptography independently audited by Cure53 and Kudelski Security.\n\nDeveloped by Levitation and not affiliated with or endorsed by Ente Technologies, Inc.",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 11,
