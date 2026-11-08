@@ -94,32 +94,22 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
 
   Widget containerForUserDetails(UserDetails? userDetails) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
         width: double.infinity,
-        constraints: const BoxConstraints(minHeight: 130),
+        constraints: const BoxConstraints(minHeight: 120),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          gradient: const LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [Color(0xFF212121), Color(0xFF434343)],
+          borderRadius: BorderRadius.circular(16),
+          color: const Color(0xFF1E1A18),
+          border: Border.all(
+            color: const Color(0xFF38312B),
+            width: 0.8,
           ),
         ),
         child: userDetails != null
-            ? Stack(
-                children: [
-                  Positioned.fill(
-                    child: CustomPaint(
-                      painter: _DotsPainter(),
-                      size: Size.infinite,
-                    ),
-                  ),
-                  _userDetails(userDetails),
-                ],
-              )
+            ? _userDetails(userDetails)
             : const SizedBox(
-                height: 130,
+                height: 120,
                 child: Stack(
                   children: [EnteLoadingWidget(color: strokeBaseDark)],
                 ),

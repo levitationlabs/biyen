@@ -1,9 +1,10 @@
+import "dart:async";
+
 import "package:ente_components/ente_components.dart";
 import "package:ente_lock_screen/local_authentication_service.dart";
 import "package:ente_pure_utils/ente_pure_utils.dart";
 import "package:ente_strings/ente_strings.dart";
-import "package:ente_ui/components/settings/app_engagement_section.dart";
-import "package:ente_ui/components/settings/more_from_ente_footer.dart";
+import "package:ente_ui/components/settings/app_version_widget.dart";
 import "package:ente_ui/pages/settings_search_page.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -13,7 +14,6 @@ import "package:photos/emergency/emergency_page.dart";
 import "package:photos/models/user_details.dart";
 import "package:photos/service_locator.dart";
 import "package:photos/services/account/user_service.dart";
-import "package:photos/services/review_service.dart";
 import "package:photos/ui/account/email_entry_page.dart";
 import "package:photos/ui/account/login_page.dart";
 import "package:photos/ui/components/banners/offline_settings_banner.dart";
@@ -70,18 +70,19 @@ class _SettingsBody extends StatelessWidget {
       animation: emailNotifier,
       builder: (context, _) {
         final email = hasLoggedIn ? emailNotifier.value ?? "" : "";
-        final title = email.isEmpty ? context.strings.settings : email;
 
         return SettingsPageScaffold(
-          title: title,
+          title: context.strings.settings,
+          backButton: IconButtonComponent(
+            variant: IconButtonComponentVariant.primary,
+            shouldSurfaceExecutionStates: false,
+            icon: const HugeIcon(icon: HugeIcons.strokeRoundedCancel01),
+            onTap: () => Navigator.of(context).pop(),
+          ),
           actions: _buildHeaderActions(context),
-          onTitleDoubleTap: email.isEmpty
-              ? null
-              : () => _showVerifyIdentityDialog(context),
-          onTitleLongPress: email.isEmpty
-              ? null
-              : () => _showVerifyIdentityDialog(context),
           children: [
+            if (hasLoggedIn && email.isNotEmpty)
+              _buildMinimalistProfileHeader(context, email, colors),
             if (showLoginEntry) ...[
               OfflineSettingsBanner(
                 onGetStarted: () {
@@ -101,99 +102,303 @@ class _SettingsBody extends StatelessWidget {
             ],
             if (hasLoggedIn && !isLocalGalleryMode) ...[
               const StorageCardWidget(),
-              const SizedBox(height: 16),
-              _buildMenuItem(
-                title: context.strings.account,
-                icon: HugeIcons.strokeRoundedUser,
-                onTap: () async {
-                  await routeToPage(context, const AccountSettingsPage());
-                },
+              const SizedBox(height: 8),
+              _buildSectionHeader("Penyimpanan & Cadangan", colors),
+              MenuGroupComponent(
+                showDividers: true,
+                items: [
+                  _buildMenuItem(
+                    title: context.strings.account,
+                    icon: HugeIcons.strokeRoundedUser,
+                    onTap: () async {
+                      await routeToPage(context, const AccountSettingsPage());
+                    },
+                  ),
+                  _buildMenuItem(
+                    title: context.strings.backup,
+                    icon: HugeIcons.strokeRoundedCloudUpload,
+                    onTap: () async {
+                      await routeToPage(context, const BackupSettingsPage());
+                    },
+                  ),
+                  _buildMenuItem(
+                    title: context.strings.freeUpSpace,
+                    icon: HugeIcons.strokeRoundedRocket01,
+                    showOnlyLoadingState: true,
+                    onTap: () async {
+                      await routeToPage(
+                        context,
+                        const FreeUpSpaceOptionsScreen(),
+                      );
+                    },
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
-              _buildMenuItem(
-                title: context.strings.backup,
-                icon: HugeIcons.strokeRoundedCloudUpload,
-                onTap: () async {
-                  await routeToPage(context, const BackupSettingsPage());
-                },
-              ),
-              const SizedBox(height: 8),
             ],
-            _buildMenuItem(
-              title: context.strings.security,
-              icon: HugeIcons.strokeRoundedSecurityCheck,
-              onTap: () async {
-                await routeToPage(context, const SecuritySettingsPage());
-              },
+            _buildSectionHeader("Keamanan & Akses", colors),
+            MenuGroupComponent(
+              showDividers: true,
+              items: [
+                _buildMenuItem(
+                  title: context.strings.security,
+                  icon: HugeIcons.strokeRoundedSecurityCheck,
+                  onTap: () async {
+                    await routeToPage(context, const SecuritySettingsPage());
+                  },
+                ),
+                if (hasLoggedIn && !isLocalGalleryMode) ...[
+                  _buildLegacyMenuItem(context),
+                  _buildFamilyMenuItem(context),
+                  _buildReferralsMenuItem(context),
+                ],
+              ],
             ),
             const SizedBox(height: 8),
-            _buildMenuItem(
-              title: context.strings.appearance,
-              icon: HugeIcons.strokeRoundedPaintBoard,
-              onTap: () async {
-                await routeToPage(context, const AppearanceSettingsPage());
-              },
+            _buildSectionHeader("Preferensi & Fitur", colors),
+            MenuGroupComponent(
+              showDividers: true,
+              items: [
+                _buildMenuItem(
+                  title: context.strings.appearance,
+                  icon: HugeIcons.strokeRoundedPaintBoard,
+                  onTap: () async {
+                    await routeToPage(context, const AppearanceSettingsPage());
+                  },
+                ),
+                _buildMenuItem(
+                  title: context.strings.machineLearning,
+                  icon: HugeIcons.strokeRoundedMagicWand01,
+                  onTap: () async {
+                    await routeToPage(
+                      context,
+                      const MachineLearningSettingsPage(),
+                    );
+                  },
+                ),
+                _buildMenuItem(
+                  title: context.strings.memories,
+                  icon: HugeIcons.strokeRoundedSparkles,
+                  onTap: () async {
+                    await routeToPage(context, const MemoriesSettingsScreen());
+                  },
+                ),
+                _buildMenuItem(
+                  title: context.strings.notifications,
+                  icon: HugeIcons.strokeRoundedNotification01,
+                  onTap: () async {
+                    await routeToPage(
+                      context,
+                      const NotificationSettingsScreen(),
+                    );
+                  },
+                ),
+                _buildMenuItem(
+                  title: context.strings.widgets,
+                  icon: HugeIcons.strokeRoundedAlignBoxBottomRight,
+                  onTap: () async {
+                    await routeToPage(context, const WidgetSettingsScreen());
+                  },
+                ),
+                if (hasLoggedIn && !isLocalGalleryMode) ...[
+                  _buildMenuItem(
+                    title: context.strings.videoStreaming,
+                    icon: HugeIcons.strokeRoundedVideoCameraAi,
+                    onTap: () async {
+                      await routeToPage(
+                        context,
+                        const VideoStreamingSettingsPage(),
+                      );
+                    },
+                  ),
+                  if (flagService.enableMultiCast)
+                    _buildMenuItem(
+                      title: context.strings.castSessions,
+                      icon: HugeIcons.strokeRoundedTvSmart,
+                      showOnlyLoadingState: true,
+                      onTap: () async {
+                        await openCastSettingsPage(context);
+                      },
+                    ),
+                ],
+                _buildMapsMenuItem(context),
+              ],
             ),
             const SizedBox(height: 8),
-            if (isLocalGalleryMode) ...[
-              _buildOfflineFeaturesCard(context),
-              const SizedBox(height: 8),
-            ],
-            if (hasLoggedIn && !isLocalGalleryMode) ...[
-              _buildPersonalFeaturesCard(context),
-              const SizedBox(height: 8),
-              _buildFeaturesAndPlansCard(context),
-              const SizedBox(height: 8),
-            ],
-            AppEngagementSection(reviewUrl: ReviewService.url),
-            const SizedBox(height: 8),
-            _buildMenuItem(
-              title: context.strings.helpAndSupport,
-              icon: HugeIcons.strokeRoundedHelpCircle,
-              onTap: () async {
-                await routeToPage(context, const HelpSupportPage());
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildMenuItem(
-              title: context.strings.about,
-              icon: HugeIcons.strokeRoundedInformationCircle,
-              onTap: () async {
-                await routeToPage(context, const AboutUsPage());
-              },
-            ),
-            if (hasLoggedIn && !isLocalGalleryMode) ...[
-              const SizedBox(height: 8),
-              _buildLogoutCard(context),
-            ],
-            MoreFromEnteFooter(
-              currentApp: ComponentApp.photos,
-              onVersionTap: () => showChangeLogSheet(context),
+            _buildSectionHeader("Bantuan & Informasi", colors),
+            MenuGroupComponent(
+              showDividers: true,
+              items: [
+                _buildMenuItem(
+                  title: context.strings.helpAndSupport,
+                  icon: HugeIcons.strokeRoundedHelpCircle,
+                  onTap: () async {
+                    await routeToPage(context, const HelpSupportPage());
+                  },
+                ),
+                _buildMenuItem(
+                  title: context.strings.about,
+                  icon: HugeIcons.strokeRoundedInformationCircle,
+                  onTap: () async {
+                    await routeToPage(context, const AboutUsPage());
+                  },
+                ),
+              ],
             ),
             if (hasLoggedIn &&
                 !isLocalGalleryMode &&
                 (flagService.flags.internalUser || kDebugMode)) ...[
-              _buildMenuItem(
-                title: "Debug",
-                icon: HugeIcons.strokeRoundedBug02,
-                onTap: () async {
-                  await routeToPage(context, const DebugSettingsPage());
-                },
-              ),
               const SizedBox(height: 8),
-              _buildMenuItem(
-                title: "ML Debug",
-                icon: HugeIcons.strokeRoundedAiBrain01,
-                onTap: () async {
-                  await routeToPage(context, const MLDebugSettingsPage());
-                },
+              _buildSectionHeader("Pengembang", colors),
+              MenuGroupComponent(
+                showDividers: true,
+                items: [
+                  _buildMenuItem(
+                    title: "Debug",
+                    icon: HugeIcons.strokeRoundedBug02,
+                    onTap: () async {
+                      await routeToPage(context, const DebugSettingsPage());
+                    },
+                  ),
+                  _buildMenuItem(
+                    title: "ML Debug",
+                    icon: HugeIcons.strokeRoundedAiBrain01,
+                    onTap: () async {
+                      await routeToPage(context, const MLDebugSettingsPage());
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
             ],
-            const SizedBox(height: 60),
+            if (hasLoggedIn && !isLocalGalleryMode) ...[
+              const SizedBox(height: 16),
+              _buildLogoutCard(context),
+            ],
+            _buildBiyenFooter(context, colors),
           ],
         );
       },
+    );
+  }
+
+  Widget _buildMinimalistProfileHeader(
+    BuildContext context,
+    String email,
+    ColorTokens colors,
+  ) {
+    final initial = email.isNotEmpty ? email[0].toUpperCase() : "B";
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => _showVerifyIdentityDialog(context),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
+        child: Row(
+          children: [
+            Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                color: const Color(0xFFC8502E),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color(0xFFD98226).withValues(alpha: 0.35),
+                  width: 1.5,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  initial,
+                  style: const TextStyle(
+                    fontFamily: "Outfit",
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    email,
+                    style: TextStyle(
+                      fontFamily: "Outfit",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: colors.textBase,
+                      letterSpacing: -0.3,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    "Penyimpanan Privat & Terenkripsi",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: colors.textLight,
+                      letterSpacing: 0.1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title, ColorTokens colors) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 6, top: 14, bottom: 8),
+      child: Text(
+        title.toUpperCase(),
+        style: TextStyle(
+          fontFamily: "Outfit",
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2,
+          color: colors.textLight,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBiyenFooter(BuildContext context, ColorTokens colors) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 28, bottom: 48),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Biyen Photos",
+            style: TextStyle(
+              fontFamily: "Outfit",
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: colors.textLight,
+              letterSpacing: 0.3,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            "oleh Levitation",
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: colors.textLighter,
+            ),
+          ),
+          const SizedBox(height: 8),
+          AppVersionWidget(onTap: () => showChangeLogSheet(context)),
+        ],
+      ),
     );
   }
 
@@ -241,189 +446,91 @@ class _SettingsBody extends StatelessWidget {
     );
   }
 
+  SettingsItem _buildLegacyMenuItem(BuildContext context) {
+    return _buildMenuItem(
+      title: context.strings.legacy,
+      icon: HugeIcons.strokeRoundedFavourite,
+      showOnlyLoadingState: true,
+      onTap: () async {
+        final hasAuthenticated =
+            kDebugMode ||
+            await LocalAuthenticationService.instance
+                .requestLocalAuthentication(
+                  context,
+                  context.strings.authToManageLegacy,
+                );
+        if (hasAuthenticated) {
+          if (!context.mounted) return;
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return const EmergencyPage();
+              },
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  SettingsItem _buildFamilyMenuItem(BuildContext context) {
+    return _buildMenuItem(
+      title: context.strings.family,
+      icon: HugeIcons.strokeRoundedUserMultiple,
+      showOnlyLoadingState: true,
+      onTap: () async {
+        late final UserDetails userDetails;
+        try {
+          userDetails = await UserService.instance.getUserDetailsV2(
+            memoryCount: false,
+          );
+        } catch (error) {
+          if (!context.mounted) return;
+          await showGenericErrorDialog(context: context, error: error);
+          return;
+        }
+        if (!context.mounted) return;
+        await billingService.launchFamilyPortal(
+          context,
+          userDetails,
+          refreshOnOpen: false,
+        );
+      },
+    );
+  }
+
+  SettingsItem _buildReferralsMenuItem(BuildContext context) {
+    return _buildMenuItem(
+      title: context.strings.referrals,
+      icon: HugeIcons.strokeRoundedTicketStar,
+      showOnlyLoadingState: true,
+      onTap: () async {
+        await openReferralScreen(context);
+      },
+    );
+  }
+
   Widget _buildOfflineLoginCard(BuildContext context, ColorTokens colors) {
     return _buildMenuItem(
       title: context.strings.alreadyHaveAnAccount,
       icon: HugeIcons.strokeRoundedLogin01,
       subtitle: context.strings.loginToEnte,
       trailing: Container(
-        width: 40,
-        height: 40,
+        width: 38,
+        height: 38,
         decoration: BoxDecoration(
-          color: colors.green,
-          borderRadius: BorderRadius.circular(12),
+          color: const Color(0xFFC8502E),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(
           Icons.arrow_forward_rounded,
           color: colors.specialWhite,
-          size: 20,
+          size: 18,
         ),
       ),
       onTap: () async {
         await routeToPage(context, const LoginPage());
       },
-    );
-  }
-
-  Widget _buildOfflineFeaturesCard(BuildContext context) {
-    return MenuGroupComponent(
-      items: [
-        _buildMenuItem(
-          title: context.strings.machineLearning,
-          icon: HugeIcons.strokeRoundedMagicWand01,
-          onTap: () async {
-            await routeToPage(context, const MachineLearningSettingsPage());
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.memories,
-          icon: HugeIcons.strokeRoundedSparkles,
-          onTap: () async {
-            await routeToPage(context, const MemoriesSettingsScreen());
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.notifications,
-          icon: HugeIcons.strokeRoundedNotification01,
-          onTap: () async {
-            await routeToPage(context, const NotificationSettingsScreen());
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.widgets,
-          icon: HugeIcons.strokeRoundedAlignBoxBottomRight,
-          onTap: () async {
-            await routeToPage(context, const WidgetSettingsScreen());
-          },
-        ),
-        _buildMapsMenuItem(context),
-      ],
-    );
-  }
-
-  Widget _buildPersonalFeaturesCard(BuildContext context) {
-    return MenuGroupComponent(
-      items: [
-        _buildMenuItem(
-          title: context.strings.legacy,
-          icon: HugeIcons.strokeRoundedFavourite,
-          showOnlyLoadingState: true,
-          onTap: () async {
-            final hasAuthenticated =
-                kDebugMode ||
-                await LocalAuthenticationService.instance
-                    .requestLocalAuthentication(
-                      context,
-                      context.strings.authToManageLegacy,
-                    );
-            if (hasAuthenticated) {
-              if (!context.mounted) return;
-              await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return const EmergencyPage();
-                  },
-                ),
-              );
-            }
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.family,
-          icon: HugeIcons.strokeRoundedUserMultiple,
-          showOnlyLoadingState: true,
-          onTap: () async {
-            late final UserDetails userDetails;
-            try {
-              userDetails = await UserService.instance.getUserDetailsV2(
-                memoryCount: false,
-              );
-            } catch (error) {
-              if (!context.mounted) {
-                return;
-              }
-              await showGenericErrorDialog(context: context, error: error);
-              return;
-            }
-            if (!context.mounted) {
-              return;
-            }
-            await billingService.launchFamilyPortal(
-              context,
-              userDetails,
-              refreshOnOpen: false,
-            );
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.referrals,
-          icon: HugeIcons.strokeRoundedTicketStar,
-          showOnlyLoadingState: true,
-          onTap: () async {
-            await openReferralScreen(context);
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFeaturesAndPlansCard(BuildContext context) {
-    return MenuGroupComponent(
-      items: [
-        _buildMenuItem(
-          title: context.strings.freeUpSpace,
-          icon: HugeIcons.strokeRoundedRocket01,
-          showOnlyLoadingState: true,
-          onTap: () async {
-            await routeToPage(context, const FreeUpSpaceOptionsScreen());
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.machineLearning,
-          icon: HugeIcons.strokeRoundedMagicWand01,
-          onTap: () async {
-            await routeToPage(context, const MachineLearningSettingsPage());
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.memories,
-          icon: HugeIcons.strokeRoundedSparkles,
-          onTap: () async {
-            await routeToPage(context, const MemoriesSettingsScreen());
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.notifications,
-          icon: HugeIcons.strokeRoundedNotification01,
-          onTap: () async {
-            await routeToPage(context, const NotificationSettingsScreen());
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.widgets,
-          icon: HugeIcons.strokeRoundedAlignBoxBottomRight,
-          onTap: () async {
-            await routeToPage(context, const WidgetSettingsScreen());
-          },
-        ),
-        _buildMenuItem(
-          title: context.strings.videoStreaming,
-          icon: HugeIcons.strokeRoundedVideoCameraAi,
-          onTap: () async {
-            await routeToPage(context, const VideoStreamingSettingsPage());
-          },
-        ),
-        if (flagService.enableMultiCast)
-          _buildMenuItem(
-            title: context.strings.castSessions,
-            icon: HugeIcons.strokeRoundedTvSmart,
-            showOnlyLoadingState: true,
-            onTap: () async {
-              await openCastSettingsPage(context);
-            },
-          ),
-        _buildMapsMenuItem(context),
-      ],
     );
   }
 
