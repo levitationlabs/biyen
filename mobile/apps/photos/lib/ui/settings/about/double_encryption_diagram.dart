@@ -58,7 +58,7 @@ class DoubleEncryptionDiagram extends StatelessWidget {
           Expanded(
             child: _buildConnector(
               badgeLabel: "AES-256",
-              cipherLabel: "Backblaze",
+              cipherLabel: isId ? "At Rest" : "At Rest",
               badgeColor: amber,
               lineColor: amber,
             ),
@@ -66,7 +66,7 @@ class DoubleEncryptionDiagram extends StatelessWidget {
           _buildNode(
             icon: HugeIcons.strokeRoundedDatabase01,
             title: "Storage",
-            subtitle: isId ? "Cloud" : "Vault",
+            subtitle: isId ? "Cloud" : "Cloud",
             bgColor: nodeBg,
             borderColor: nodeBorder,
             primaryText: primaryText,
@@ -194,14 +194,12 @@ class _FlowArrowPainter extends CustomPainter {
     final y = size.height / 2;
     const arrowSize = 3.0;
 
-    // Draw connecting line
     canvas.drawLine(
       Offset(0, y),
       Offset(size.width - arrowSize, y),
       paint,
     );
 
-    // Draw arrowhead
     final fillPaint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;

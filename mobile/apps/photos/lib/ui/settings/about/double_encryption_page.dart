@@ -25,7 +25,7 @@ class DoubleEncryptionPage extends StatelessWidget {
           ? "Arsitektur Enkripsi Ganda"
           : "Double Encryption Architecture",
       children: [
-        // Top summary
+        // Intro summary card
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -71,8 +71,8 @@ class DoubleEncryptionPage extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 isId
-                    ? "Biyen Photos melindungi privasi kenangan Anda dengan dua lapisan kriptografi terpisah: Zero-Knowledge E2EE di perangkat Anda (diwariskan dari arsitektur Ente yang telah diaudit) dan Server-Side Encryption AES-256 pada infrastruktur penyimpanan cloud Backblaze B2."
-                    : "Biyen Photos protects your memories with two distinct cryptographic layers: Zero-Knowledge E2EE on your device (inherited from Ente's audited architecture) and Server-Side Encryption AES-256 on Backblaze B2 cloud storage.",
+                    ? "Biyen Photos mengamankan data Anda dengan dua lapis proteksi kriptografi independen: Zero-Knowledge E2EE di perangkat Anda dan enkripsi penyimpanan AES-256 di sisi server."
+                    : "Biyen Photos secures your memories with two independent cryptographic layers: Zero-Knowledge E2EE on your device and AES-256 storage encryption on the server.",
                 style: TextStyle(
                   fontSize: 11,
                   height: 1.5,
@@ -90,7 +90,7 @@ class DoubleEncryptionPage extends StatelessWidget {
 
         const SizedBox(height: Spacing.sm),
 
-        // Section 1: Audited Ente Architecture
+        // Section 1: Client-Side E2EE
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -112,8 +112,8 @@ class DoubleEncryptionPage extends StatelessWidget {
                   Expanded(
                     child: Text(
                       isId
-                          ? "1. Kriptografi E2EE Teruji & Diaudit"
-                          : "1. Audited & Battle-Tested E2EE",
+                          ? "1. Kriptografi E2EE Klien (Arsitektur Ente)"
+                          : "1. Client-Side E2EE (Ente Architecture)",
                       style: TextStyle(
                         fontFamily: "Outfit",
                         fontSize: 13,
@@ -125,19 +125,10 @@ class DoubleEncryptionPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              Wrap(
-                spacing: 6,
-                runSpacing: 4,
-                children: [
-                  _buildAuditBadge(label: "Diaudit oleh Cure53", color: terracotta),
-                  _buildAuditBadge(label: "Diaudit oleh Kudelski Security", color: terracotta),
-                ],
-              ),
-              const SizedBox(height: 10),
               Text(
                 isId
-                    ? "Arsitektur End-to-End Encryption (E2EE) yang digunakan Biyen mengadopsi protokol kriptografi open-source Ente yang telah diaudit independen secara resmi oleh firma keamanan siber global:"
-                    : "The End-to-End Encryption (E2EE) architecture used by Biyen inherits Ente's open-source cryptographic protocols, officially audited by global cybersecurity firms:",
+                    ? "Protokol End-to-End Encryption (E2EE) yang digunakan mengadopsi standar kriptografi open-source Ente yang telah melalui audit independen resmi oleh firma keamanan global Cure53 dan Kudelski Security."
+                    : "The End-to-End Encryption protocol inherits Ente's open-source cryptographic standards, officially and independently audited by global security firms Cure53 and Kudelski Security.",
                 style: TextStyle(
                   fontSize: 11,
                   height: 1.5,
@@ -145,56 +136,14 @@ class DoubleEncryptionPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              _buildBulletItem(
-                title: "Cure53 (Berlin)",
-                desc: isId
-                    ? "Audit penetrasi menyeluruh dan verifikasi kode sumber aplikasi."
-                    : "Comprehensive penetration testing and application source code audit.",
-                primaryText: primaryText,
-                secondaryText: secondaryText,
-              ),
-              const SizedBox(height: 6),
-              _buildBulletItem(
-                title: "Kudelski Security (Swiss)",
-                desc: isId
-                    ? "Audit mendalam atas integritas protokol kriptografi, pertukaran kunci, dan mekanisme derivasi."
-                    : "In-depth audit of cryptographic protocol integrity, key exchange, and key derivation.",
-                primaryText: primaryText,
-                secondaryText: secondaryText,
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.03)
-                      : Colors.black.withValues(alpha: 0.02),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      isId ? "Spesifikasi Kriptografi Klien:" : "Client Cryptography Specifications:",
-                      style: TextStyle(
-                        fontFamily: "Outfit",
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: primaryText,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      isId
-                          ? "• XChaCha20-Poly1305 (libsodium) untuk enkripsi & otentikasi data.\n• Argon2id untuk hashing password & derivasi kunci enkripsi.\n• Kunci privat hanya tersimpan di perangkat (Zero-Knowledge)."
-                          : "• XChaCha20-Poly1305 (libsodium) for data encryption and authentication.\n• Argon2id for password hashing and key derivation.\n• Private keys remain strictly on-device (Zero-Knowledge).",
-                      style: TextStyle(
-                        fontSize: 10,
-                        height: 1.45,
-                        color: mutedText,
-                      ),
-                    ),
-                  ],
+              Text(
+                isId
+                    ? "• XChaCha20-Poly1305 (libsodium) untuk enkripsi dan otentikasi data foto.\n• Argon2id untuk hashing password dan derivasi kunci privat.\n• Zero-Knowledge: Kunci privat disimpan secara lokal di perangkat dan tidak pernah dikirim ke server."
+                    : "• XChaCha20-Poly1305 (libsodium) for photo encryption and authentication.\n• Argon2id for password hashing and key derivation.\n• Zero-Knowledge: Private keys remain exclusively on your device and are never sent to any server.",
+                style: TextStyle(
+                  fontSize: 10.5,
+                  height: 1.5,
+                  color: mutedText,
                 ),
               ),
             ],
@@ -203,7 +152,7 @@ class DoubleEncryptionPage extends StatelessWidget {
 
         const SizedBox(height: Spacing.sm),
 
-        // Section 2: Server-Side AES-256 Storage (Backblaze B2)
+        // Section 2: Server-Side Storage Encryption
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -225,8 +174,8 @@ class DoubleEncryptionPage extends StatelessWidget {
                   Expanded(
                     child: Text(
                       isId
-                          ? "2. Enkripsi Penyimpanan Server (Backblaze B2)"
-                          : "2. Server-Side Storage Encryption (Backblaze B2)",
+                          ? "2. Enkripsi Penyimpanan Server (AES-256)"
+                          : "2. Server-Side Storage Encryption (AES-256)",
                       style: TextStyle(
                         fontFamily: "Outfit",
                         fontSize: 13,
@@ -238,19 +187,10 @@ class DoubleEncryptionPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              Wrap(
-                spacing: 6,
-                runSpacing: 4,
-                children: [
-                  _buildAuditBadge(label: "Backblaze B2 Cloud Storage", color: amber),
-                  _buildAuditBadge(label: "SSE AES-256 at Rest", color: amber),
-                ],
-              ),
-              const SizedBox(height: 10),
               Text(
                 isId
-                    ? "Di sisi server, seluruh berkas yang sudah terenkripsi E2EE disimpan di infrastruktur Backblaze B2 dengan enkripsi tingkat server (Server-Side Encryption / SSE) menggunakan standar industri AES-256."
-                    : "On the server side, all E2EE encrypted objects are stored on Backblaze B2 cloud infrastructure with Server-Side Encryption (SSE) utilizing industry-standard AES-256.",
+                    ? "Di sisi server, seluruh berkas yang telah terenkripsi E2EE kembali dienkripsi pada tingkat penyimpanan cloud (at rest) dengan standar keamanan industri AES-256."
+                    : "On the server, every E2EE encrypted file is re-encrypted at the cloud storage layer (at rest) with industry-standard AES-256.",
                 style: TextStyle(
                   fontSize: 11,
                   height: 1.5,
@@ -260,10 +200,10 @@ class DoubleEncryptionPage extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 isId
-                    ? "• Enkripsi at Rest: Setiap berkas dienkripsi secara otomatis menggunakan kunci unik AES-256 sebelum ditulis ke piringan disk fisik.\n• Perlindungan Ekstra: Mencegah risiko pembobolan hardware fisik pada data center.\n• Enkripsi in Transit: Seluruh jalur pengiriman data diamankan dengan TLS 1.3 / HTTPS."
-                    : "• Encryption at Rest: Every file is automatically encrypted with a unique AES-256 key before being committed to physical storage.\n• Physical Protection: Protects against physical hardware breaches in data centers.\n• In-Transit Security: All communication channels are secured with TLS 1.3 / HTTPS.",
+                    ? "• Enkripsi at Rest: Setiap berkas dilindungi kunci enkripsi unik sebelum ditulis ke media penyimpanan fisik.\n• Keamanan in Transit: Seluruh jalur pengiriman dilindungi dengan TLS 1.3 / HTTPS."
+                    : "• Encryption at Rest: Each file is secured with a unique encryption key before being written to physical storage.\n• In-Transit Security: All data transmission is encrypted via TLS 1.3 / HTTPS.",
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 10.5,
                   height: 1.5,
                   color: mutedText,
                 ),
@@ -274,9 +214,9 @@ class DoubleEncryptionPage extends StatelessWidget {
 
         const SizedBox(height: Spacing.sm),
 
-        // Section 3: Summary of Dual Security
+        // Section 3: Minimalist Summary
         Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             color: isDark
                 ? const Color(0xFF13100E)
@@ -299,8 +239,8 @@ class DoubleEncryptionPage extends StatelessWidget {
               Expanded(
                 child: Text(
                   isId
-                      ? "Kesimpulan: Data foto Anda memiliki proteksi ganda. Bahkan jika penyedia storage atau infrastruktur server disusupi secara fisik, isi foto Anda tetap mustahil dibuka tanpa kunci privat yang hanya tersimpan di perangkat Anda."
-                      : "Summary: Your photo data is doubly protected. Even if storage providers or server hardware are physically compromised, your photos remain mathematically impossible to decrypt without your on-device private key.",
+                      ? "Bahkan jika perangkat keras penyimpanan fisik server disusupi, foto Anda tetap mustahil dibaca tanpa kunci pribadi yang hanya tersimpan di perangkat Anda."
+                      : "Even if physical server storage hardware is compromised, your photos remain impossible to decrypt without the private key stored solely on your device.",
                   style: TextStyle(
                     fontSize: 10.5,
                     height: 1.45,
@@ -313,61 +253,6 @@ class DoubleEncryptionPage extends StatelessWidget {
         ),
 
         const SizedBox(height: Spacing.xl),
-      ],
-    );
-  }
-
-  Widget _buildAuditBadge({required String label, required Color color}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withValues(alpha: 0.25), width: 0.8),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontFamily: "Outfit",
-          fontSize: 10,
-          fontWeight: FontWeight.w700,
-          color: color,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBulletItem({
-    required String title,
-    required String desc,
-    required Color primaryText,
-    required Color secondaryText,
-  }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 4),
-          child: Icon(Icons.circle, size: 5, color: Color(0xFFC8502E)),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(fontSize: 11, height: 1.4, color: secondaryText),
-              children: [
-                TextSpan(
-                  text: "$title: ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: primaryText,
-                  ),
-                ),
-                TextSpan(text: desc),
-              ],
-            ),
-          ),
-        ),
       ],
     );
   }

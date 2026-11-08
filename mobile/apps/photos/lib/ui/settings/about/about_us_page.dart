@@ -18,10 +18,49 @@ class AboutUsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.strings;
     final isId = Localizations.localeOf(context).languageCode == "id";
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SettingsPageScaffold(
       title: l10n.about,
       children: [
+        // Brand Header at Top
+        Container(
+          margin: const EdgeInsets.only(top: 10, bottom: 20),
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  "assets/qr_logo.png",
+                  width: 60,
+                  height: 60,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Biyen Photos",
+                style: TextStyle(
+                  fontFamily: "Outfit",
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: isDark ? Colors.white : const Color(0xFF2C2523),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                isId ? "Dikembangkan oleh Levitation" : "Developed by Levitation",
+                style: const TextStyle(
+                  fontFamily: "Outfit",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFFC8502E),
+                ),
+              ),
+            ],
+          ),
+        ),
+
         SettingsItem(
           title: l10n.whatsNew,
           icon: HugeIcons.strokeRoundedParty,
@@ -83,38 +122,18 @@ class AboutUsPage extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(
-        top: Spacing.xl,
+        top: Spacing.xxl,
         bottom: Spacing.xxl,
-        left: 16,
-        right: 16,
+        left: 20,
+        right: 20,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: Image.asset(
-              "assets/qr_logo.png",
-              width: 24,
-              height: 24,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            "Biyen Photos",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: "Outfit",
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: isDark ? Colors.white : const Color(0xFF2C2523),
-            ),
-          ),
-          const SizedBox(height: 6),
           Text(
             isId
-                ? "Biyen Photos adalah proyek independen berbasis fork dari Ente Photos yang dilisensikan di bawah GNU Affero General Public License v3 (AGPLv3).\n\nDitenagai oleh arsitektur open-source Ente Technologies, Inc. dengan sistem kriptografi E2EE yang telah diaudit secara independen oleh Cure53 dan Kudelski Security. Dikembangkan oleh Levitation tanpa afiliasi resmi dengan Ente Technologies, Inc."
-                : "Biyen Photos is an independent fork of Ente Photos licensed under the GNU Affero General Public License v3 (AGPLv3).\n\nPowered by the open-source architecture of Ente Technologies, Inc. featuring E2EE cryptography independently audited by Cure53 and Kudelski Security.\n\nDeveloped by Levitation and not affiliated with or endorsed by Ente Technologies, Inc.",
+                ? "Biyen Photos adalah proyek independen berbasis fork dari Ente Photos yang dilisensikan di bawah GNU Affero General Public License v3 (AGPLv3).\n\nDitenagai oleh arsitektur open-source Ente Technologies, Inc. dengan sistem kriptografi E2EE yang telah diaudit secara independen oleh Cure53 dan Kudelski Security.\n\nAplikasi ini tidak berafiliasi, disponsori, atau didukung secara resmi oleh Ente Technologies, Inc."
+                : "Biyen Photos is an independent fork of Ente Photos licensed under the GNU Affero General Public License v3 (AGPLv3).\n\nPowered by the open-source architecture of Ente Technologies, Inc. featuring E2EE cryptography independently audited by Cure53 and Kudelski Security.\n\nNot affiliated with, sponsored, or endorsed by Ente Technologies, Inc.",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 11,
@@ -122,7 +141,7 @@ class AboutUsPage extends StatelessWidget {
               color: primaryTextColor,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () => launchUrlString(
@@ -150,7 +169,7 @@ class AboutUsPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Text(
             "Hak Cipta © 2026 Levitation & Ente Technologies, Inc.",
             textAlign: TextAlign.center,
