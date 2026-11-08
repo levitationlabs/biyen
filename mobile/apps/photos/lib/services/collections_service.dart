@@ -1219,6 +1219,11 @@ class CollectionsService {
         scheme: "https",
         port: 443,
       );
+    } else if (publicUrl.host == "albums.ente.com" ||
+        publicUrl.host == "albums.ente.io") {
+      publicUrl = publicUrl.replace(
+        host: kAlbumsWebDomain,
+      );
     }
 
     final String collectionKey = Base58Encode(
@@ -1250,6 +1255,11 @@ class CollectionsService {
         port: embedUri.hasPort
             ? embedUri.port
             : (embedUri.scheme == 'https' ? 443 : 80),
+      );
+    } else if (publicUrl.host == "albums.ente.com" ||
+        publicUrl.host == "albums.ente.io") {
+      publicUrl = publicUrl.replace(
+        host: kAlbumsWebDomain,
       );
     }
 

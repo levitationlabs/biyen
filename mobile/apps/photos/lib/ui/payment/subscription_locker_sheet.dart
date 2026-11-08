@@ -195,7 +195,7 @@ class SubscriptionLockerSheet extends StatelessWidget {
                         textStyle: TextStyles.mini.copyWith(height: 18 / 12),
                       ),
                       onPressed: () => launchUrlString(
-                        "https://ente.com/locker",
+                        "https://biyen.levitation.web.id",
                         mode: LaunchMode.externalApplication,
                       ),
                       child: Text(context.strings.subscriptionLearnMore),

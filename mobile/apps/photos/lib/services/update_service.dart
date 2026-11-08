@@ -151,7 +151,7 @@ class UpdateService {
 
   Future<LatestVersionInfo> _getLatestVersionInfo() async {
     final response = await NetworkClient.instance.getDio().get(
-      "https://ente.com/release-info/independent.json",
+      "https://biyen.levitation.web.id/release-info/independent.json",
     );
     return LatestVersionInfo.fromMap(response.data["latestVersion"]);
   }

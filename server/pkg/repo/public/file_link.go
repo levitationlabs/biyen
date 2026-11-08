@@ -28,11 +28,11 @@ type fileLinkUpdater interface {
 func NewFileLinkRepo(db *sql.DB) *FileLinkRepository {
 	albumHost := viper.GetString("apps.public-albums")
 	if albumHost == "" {
-		albumHost = "https://albums.ente.com"
+		albumHost = "https://albums.biyen.levitation.web.id"
 	}
 	lockerHost := viper.GetString("apps.public-locker")
 	if lockerHost == "" {
-		lockerHost = "https://share.ente.com"
+		lockerHost = "https://share.biyen.levitation.web.id"
 	}
 	return &FileLinkRepository{
 		DB:         db,

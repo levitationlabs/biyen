@@ -15,6 +15,7 @@ import "package:media_extension/media_extension_action_types.dart";
 import "package:move_to_background/move_to_background.dart";
 import "package:package_info_plus/package_info_plus.dart";
 import "package:photos/core/configuration.dart";
+import "package:photos/core/constants.dart";
 import "package:photos/core/event_bus.dart";
 import "package:photos/ente_theme_data.dart";
 import "package:photos/events/account_configured_event.dart";
@@ -848,10 +849,14 @@ class _HomeWidgetState extends State<HomeWidget> {
       return false;
     }
     if (Platform.isIOS) {
-      return uri.scheme == "https";
+      return uri.scheme == "https" ||
+          uri.scheme == "biyen" ||
+          uri.scheme == "ente";
     }
     if (Platform.isAndroid) {
-      return uri.scheme == "ente" || uri.scheme == "https";
+      return uri.scheme == "biyen" ||
+          uri.scheme == "ente" ||
+          uri.scheme == "https";
     }
     return false;
   }
@@ -862,7 +867,12 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   bool _isPublicAlbumHost(String host) {
-    return host == "albums.ente.io" || host == "albums.ente.com";
+    return host == kAlbumsWebDomain ||
+        host == kPhotosWebDomain ||
+        host == "albums.biyen.levitation.web.id" ||
+        host == "biyen.levitation.web.id" ||
+        host == "albums.ente.io" ||
+        host == "albums.ente.com";
   }
 
   @override

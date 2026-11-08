@@ -14,12 +14,12 @@ import 'package:photos/utils/dialog_util.dart';
 
 const kWebPaymentRedirectUrl = String.fromEnvironment(
   "web-payment-redirect",
-  defaultValue: "https://payments.ente.com/frameRedirect",
+  defaultValue: "https://payments.biyen.levitation.web.id/frameRedirect",
 );
 
 const kWebPaymentBaseEndpoint = String.fromEnvironment(
   "web-payment",
-  defaultValue: "https://payments.ente.com",
+  defaultValue: "https://payments.biyen.levitation.web.id",
 );
 
 class BillingService {

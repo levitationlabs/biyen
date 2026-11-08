@@ -11,6 +11,8 @@
 		<string>webcredentials:auth.ente.io</string>
 		<string>webcredentials:auth.ente.com</string>
 		<string>webcredentials:locker.ente.com</string>
+		<string>applinks:albums.biyen.levitation.web.id</string>
+		<string>applinks:biyen.levitation.web.id</string>
 		<string>applinks:albums.ente.io</string>
 		<string>applinks:albums.ente.com</string>
 	</array>

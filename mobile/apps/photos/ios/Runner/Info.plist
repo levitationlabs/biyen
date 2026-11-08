@@ -48,6 +48,7 @@
 				<string>io.ente.frame</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
+					<string>biyen</string>
 					<string>ente</string>
 				</array>
 			</dict>
