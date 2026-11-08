@@ -11,6 +11,7 @@ import 'package:photos/events/tab_changed_event.dart';
 import 'package:photos/models/home_tab.dart';
 import "package:photos/models/selected_albums.dart";
 import 'package:photos/models/selected_files.dart';
+import 'package:photos/theme/ente_theme.dart';
 import 'package:photos/ui/tabs/nav_bar.dart';
 
 const double homeBottomNavigationBarHeight = 70;
@@ -119,6 +120,7 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar> {
     final bool albumsAreSelected = widget.selectedAlbums.albums.isNotEmpty;
 
     return SafeArea(
+      top: false,
       child: RepaintBoundary(
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
@@ -128,22 +130,12 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar> {
               : homeBottomNavigationBarHeight,
           child: IgnorePointer(
             ignoring: filesAreSelected || albumsAreSelected,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _HomeNavBar(
-                      selectedIndex: currentTabIndex,
-                      showFeed: widget.showFeed,
-                      onTabChange: (index) {
-                        _onTabChange(index, mode: "OnPressed");
-                      },
-                    ),
-                  ],
-                ),
-              ],
+            child: _HomeNavBar(
+              selectedIndex: currentTabIndex,
+              showFeed: widget.showFeed,
+              onTabChange: (index) {
+                _onTabChange(index, mode: "OnPressed");
+              },
             ),
           ),
         ),
@@ -161,13 +153,13 @@ class _HomeNavBar extends StatelessWidget {
 
   static const _tabs = [
     _HomeNavTab(
-      semanticLabel: 'Home',
+      semanticLabel: 'Galeri',
       semanticIdentifier: 'ente.photos.tab.home',
       outlineAsset: 'assets/icons/nav_bar/home_outline.svg',
       filledAsset: 'assets/icons/nav_bar/home_filled.svg',
     ),
     _HomeNavTab(
-      semanticLabel: 'Albums',
+      semanticLabel: 'Album',
       semanticIdentifier: 'ente.photos.tab.albums',
       outlineAsset: 'assets/icons/nav_bar/albums_outline.svg',
       filledAsset: 'assets/icons/nav_bar/albums_filled.svg',
@@ -179,7 +171,7 @@ class _HomeNavBar extends StatelessWidget {
       filledAsset: 'assets/icons/nav_bar/feed_filled.svg',
     ),
     _HomeNavTab(
-      semanticLabel: 'Search',
+      semanticLabel: 'Cari',
       semanticIdentifier: 'ente.photos.tab.search',
       outlineAsset: 'assets/icons/nav_bar/search_outline.svg',
       filledAsset: 'assets/icons/nav_bar/search_filled.svg',
@@ -193,52 +185,68 @@ class _HomeNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.componentColors;
+    final colorScheme = getEnteColorScheme(context);
     final tabIndices = homeTabIndices(showFeed: showFeed);
-    return GNav(
-      curve: Curves.easeOutExpo,
-      backgroundColor: colors.fillLight,
-      mainAxisAlignment: MainAxisAlignment.center,
-      padding: const EdgeInsets.all(_homeNavButtonPadding),
-      duration: const Duration(milliseconds: 200),
-      gap: 0,
-      borderRadius: Radii.button,
-      boxShadow: const [
-        BoxShadow(
-          color: Color.fromRGBO(0, 0, 0, 0.25),
-          offset: Offset(0, 4),
-          blurRadius: 8.75,
+
+    return Container(
+      width: double.infinity,
+      height: homeBottomNavigationBarHeight,
+      decoration: BoxDecoration(
+        color: colorScheme.backgroundElevated,
+        border: Border(
+          top: BorderSide(
+            color: colorScheme.strokeFaint,
+            width: 1.0,
+          ),
         ),
-      ],
-      tabBorderRadius: Radii.md,
-      tabBackgroundColor: colors.fillDark,
-      haptic: false,
-      selectedIndex: tabIndices.indexOf(selectedIndex),
-      onTabChange: (index) => onTabChange(tabIndices[index]),
-      tabs: List.generate(tabIndices.length, (index) {
-        final tabIndex = tabIndices[index];
-        final tab = _tabs[tabIndex];
-        return GButton(
-          margin: EdgeInsets.only(
-            left: index == 0 ? Spacing.lg : _homeNavItemSpacing,
-            right: index == tabIndices.length - 1
-                ? Spacing.lg
-                : _homeNavItemSpacing,
-            top: Spacing.md,
-            bottom: Spacing.md,
-          ),
-          text: '',
-          semanticLabel: tab.semanticLabel,
-          semanticIdentifier: tab.semanticIdentifier,
-          leading: SizedBox.square(
-            dimension: IconSizes.small,
-            child: _HomeNavIcon(
-              tab: tab,
-              selected: selectedIndex == tabIndex,
-              color: colors.iconColor,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: List.generate(tabIndices.length, (index) {
+          final tabIndex = tabIndices[index];
+          final tab = _tabs[tabIndex];
+          final isSelected = selectedIndex == tabIndex;
+          final activeColor = colorScheme.primary500;
+          final inactiveColor = colors.iconColor.withValues(alpha: 0.55);
+
+          return Expanded(
+            child: Semantics(
+              label: tab.semanticLabel,
+              identifier: tab.semanticIdentifier,
+              button: true,
+              selected: isSelected,
+              child: InkWell(
+                onTap: () => onTabChange(tabIndex),
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox.square(
+                      dimension: IconSizes.small,
+                      child: _HomeNavIcon(
+                        tab: tab,
+                        selected: isSelected,
+                        color: isSelected ? activeColor : inactiveColor,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      tab.semanticLabel,
+                      style: TextStyle(
+                        fontSize: 10.5,
+                        fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                        color: isSelected ? activeColor : inactiveColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

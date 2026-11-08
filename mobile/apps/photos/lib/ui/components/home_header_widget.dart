@@ -30,6 +30,16 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget> {
                 Scaffold.of(context).openDrawer();
               },
             ),
+            const SizedBox(width: 6),
+            Text(
+              "biyen",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: 22,
+                letterSpacing: -0.8,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
           ],
         ),
         AnimatedSwitcher(

@@ -171,7 +171,7 @@
   "addToAlbum": "Tambah ke album",
   "addToCollection": "Tambahkan ke koleksi",
   "addToCollections": "Tambahkan ke koleksi",
-  "addToEnte": "Tambah ke Ente",
+  "addToEnte": "Tambah ke Biyen",
   "addToHiddenAlbum": "Tambah ke album tersembunyi",
   "addToPerson": "Tambahkan ke orang",
   "@addToPerson": {
@@ -490,7 +490,7 @@
   "backupSettings": "Pengaturan pencadangan",
   "backupStatus": "Status pencadangan",
   "backupStatusDescription": "Item yang sudah dicadangkan akan terlihat di sini",
-  "backupToEnte": "Cadangkan ke Ente",
+  "backupToEnte": "Cadangkan ke Biyen",
   "backupVideos": "Cadangkan video",
   "beach": "Pantai dan laut",
   "birthday": "Hari ulang tahun",
@@ -1782,7 +1782,7 @@
       }
     }
   },
-  "filesSafelyOnEnte": "{count, plural, one{Item ini sudah dicadangkan ke Ente. Hapus salinan dari perangkat untuk mengosongkan ruang tanpa kehilangannya.} other{Semua {formattedNumber} item sudah dicadangkan ke Ente. Hapus salinan dari perangkat untuk mengosongkan ruang tanpa kehilangan item tersebut.}}",
+  "filesSafelyOnEnte": "{count, plural, one{Item ini sudah dicadangkan ke Biyen. Hapus salinan dari perangkat untuk mengosongkan ruang tanpa kehilangannya.} other{Semua {formattedNumber} item sudah dicadangkan ke Biyen. Hapus salinan dari perangkat untuk mengosongkan ruang tanpa kehilangan item tersebut.}}",
   "@filesSafelyOnEnte": {
     "description": "Explains that device copies can be deleted because the files are stored on Ente",
     "placeholders": {
