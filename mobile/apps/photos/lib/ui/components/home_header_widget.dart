@@ -34,14 +34,23 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget> {
                 Scaffold.of(context).openDrawer();
               },
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 4),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(7),
+              child: Image.asset(
+                "assets/qr_logo.png",
+                width: 24,
+                height: 24,
+              ),
+            ),
+            const SizedBox(width: 7),
             Text(
               "biyen",
               style: TextStyle(
                 fontFamily: 'Outfit',
                 fontWeight: FontWeight.w900,
-                fontSize: 26,
-                letterSpacing: -1.0,
+                fontSize: 24,
+                letterSpacing: -0.8,
                 color: Theme.of(context).brightness == Brightness.light
                     ? const Color(0xFF1A1513)
                     : Colors.white,

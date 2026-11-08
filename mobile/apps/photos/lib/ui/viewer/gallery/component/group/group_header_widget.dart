@@ -51,12 +51,23 @@ class _GroupHeaderWidgetState extends State<GroupHeaderWidget> {
   static const _selectionIconSize = 18.0;
 
   late final ValueNotifier<bool> _areAllFromGroupSelectedNotifier;
+  late final ValueNotifier<bool> _isSelectionActiveNotifier;
+
+  bool _isSelectionActive() {
+    if (widget.allSelectedOverride != null && widget.allSelectedOverride!) {
+      return true;
+    }
+    return widget.selectedFiles?.files.isNotEmpty ?? false;
+  }
 
   @override
   void initState() {
     super.initState();
     _areAllFromGroupSelectedNotifier = ValueNotifier(
       _areAllFromGroupSelected(),
+    );
+    _isSelectionActiveNotifier = ValueNotifier(
+      _isSelectionActive(),
     );
 
     widget.selectedFiles?.addListener(_selectedFilesListener);
@@ -65,15 +76,22 @@ class _GroupHeaderWidgetState extends State<GroupHeaderWidget> {
   @override
   void didUpdateWidget(covariant GroupHeaderWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedFiles != widget.selectedFiles) {
+      oldWidget.selectedFiles?.removeListener(_selectedFilesListener);
+      widget.selectedFiles?.addListener(_selectedFilesListener);
+    }
     if (oldWidget.title != widget.title ||
-        oldWidget.allSelectedOverride != widget.allSelectedOverride) {
+        oldWidget.allSelectedOverride != widget.allSelectedOverride ||
+        oldWidget.selectedFiles != widget.selectedFiles) {
       _areAllFromGroupSelectedNotifier.value = _areAllFromGroupSelected();
+      _isSelectionActiveNotifier.value = _isSelectionActive();
     }
   }
 
   @override
   void dispose() {
     _areAllFromGroupSelectedNotifier.dispose();
+    _isSelectionActiveNotifier.dispose();
     widget.selectedFiles?.removeListener(_selectedFilesListener);
     super.dispose();
   }
@@ -122,31 +140,38 @@ class _GroupHeaderWidgetState extends State<GroupHeaderWidget> {
             _fadeInTrailingIcon(widget.action!),
             const SizedBox(width: 8),
           ],
-          !widget.showSelectAll
-              ? const SizedBox.shrink()
-              : widget.showTrailingIcons
-              ? GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: ValueListenableBuilder(
-                      valueListenable: _areAllFromGroupSelectedNotifier,
-                      builder: (context, dynamic value, _) {
-                        return _buildSelectionIcon(value as bool);
-                      },
+          ValueListenableBuilder<bool>(
+            valueListenable: _isSelectionActiveNotifier,
+            builder: (context, hasSelection, _) {
+              if (!widget.showSelectAll || !widget.showTrailingIcons || !hasSelection) {
+                return const SizedBox.shrink();
+              }
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: ValueListenableBuilder(
+                        valueListenable: _areAllFromGroupSelectedNotifier,
+                        builder: (context, dynamic value, _) {
+                          return _buildSelectionIcon(value as bool);
+                        },
+                      ),
                     ),
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      widget.selectedFiles?.toggleGroupSelection(
+                        widget.filesInGroup.toSet(),
+                      );
+                    },
                   ),
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    widget.selectedFiles?.toggleGroupSelection(
-                      widget.filesInGroup.toSet(),
-                    );
-                  },
-                )
-              : const SizedBox.shrink(),
-          widget.showGalleryLayoutSettingCTA
-              ? const SizedBox(width: 8)
-              : const SizedBox.shrink(),
+                  if (widget.showGalleryLayoutSettingCTA) const SizedBox(width: 8),
+                ],
+              );
+            },
+          ),
           widget.showGalleryLayoutSettingCTA
               ? widget.showTrailingIcons
                     ? GestureDetector(
@@ -187,6 +212,7 @@ class _GroupHeaderWidgetState extends State<GroupHeaderWidget> {
 
   void _selectedFilesListener() {
     _areAllFromGroupSelectedNotifier.value = _areAllFromGroupSelected();
+    _isSelectionActiveNotifier.value = _isSelectionActive();
   }
 
   Widget _buildSelectionIcon(bool isSelected) {
