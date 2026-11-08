@@ -1220,9 +1220,11 @@ class CollectionsService {
         port: 443,
       );
     } else if (publicUrl.host == "albums.ente.com" ||
-        publicUrl.host == "albums.ente.io") {
+        publicUrl.host == "albums.ente.io" ||
+        publicUrl.host == "albums-biyen.levitation.web.id") {
       publicUrl = publicUrl.replace(
-        host: kAlbumsWebDomain,
+        host: kPhotosWebDomain,
+        path: "/albums${publicUrl.path}",
       );
     }
 
@@ -1257,9 +1259,11 @@ class CollectionsService {
             : (embedUri.scheme == 'https' ? 443 : 80),
       );
     } else if (publicUrl.host == "albums.ente.com" ||
-        publicUrl.host == "albums.ente.io") {
+        publicUrl.host == "albums.ente.io" ||
+        publicUrl.host == "albums-biyen.levitation.web.id") {
       publicUrl = publicUrl.replace(
-        host: kAlbumsWebDomain,
+        host: kPhotosWebDomain,
+        path: "/albums${publicUrl.path}",
       );
     }
 

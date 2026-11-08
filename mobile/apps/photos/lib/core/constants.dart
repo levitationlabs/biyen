@@ -41,7 +41,7 @@ const kDefaultProductionEndpoint = 'https://api-biyen.levitation.web.id';
 const kLegacyProductionEndpoint = 'https://api-biyen.levitation.web.id';
 const kUploadProxyEndpoint = 'https://uploader-biyen.levitation.web.id';
 const kPhotosWebDomain = 'biyen.levitation.web.id';
-const kAlbumsWebDomain = 'albums-biyen.levitation.web.id';
+const kAlbumsWebDomain = 'biyen.levitation.web.id/albums';
 const kFamilyUrl = 'https://biyen.levitation.web.id';
 
 const int intMaxValue = 9223372036854775807;
