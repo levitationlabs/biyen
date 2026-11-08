@@ -106,7 +106,7 @@ func main() {
 		panic(err)
 	}
 
-	viper.SetDefault("apps.public-albums", "https://biyen.levitation.web.id/albums")
+	viper.SetDefault("apps.public-albums", "https://albums-biyen.levitation.web.id")
 	viper.SetDefault("apps.embed-albums", "https://embed.biyen.levitation.web.id")
 	viper.SetDefault("apps.photobook", "https://photobook.biyen.levitation.web.id")
 	viper.SetDefault("apps.custom-domain.cname", "my.biyen.levitation.web.id")
