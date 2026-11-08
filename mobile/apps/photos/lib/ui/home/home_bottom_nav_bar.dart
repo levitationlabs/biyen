@@ -1,22 +1,16 @@
 import 'dart:async';
 
-import 'package:ente_components/theme/icon_sizes.dart';
-import 'package:ente_components/theme/radii.dart';
-import 'package:ente_components/theme/spacing.dart';
 import 'package:ente_components/theme/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import "package:hugeicons/hugeicons.dart";
 import 'package:photos/core/event_bus.dart';
 import 'package:photos/events/tab_changed_event.dart';
 import 'package:photos/models/home_tab.dart';
 import "package:photos/models/selected_albums.dart";
 import 'package:photos/models/selected_files.dart';
 import 'package:photos/theme/ente_theme.dart';
-import 'package:photos/ui/tabs/nav_bar.dart';
 
 const double homeBottomNavigationBarHeight = 70;
-const double _homeNavButtonPadding = 10;
-const double _homeNavItemSpacing = 22;
 
 class HomeBottomNavigationBar extends StatefulWidget {
   const HomeBottomNavigationBar(
@@ -154,27 +148,23 @@ class _HomeNavBar extends StatelessWidget {
   static const _tabs = [
     _HomeNavTab(
       semanticLabel: 'Galeri',
-      semanticIdentifier: 'ente.photos.tab.home',
-      outlineAsset: 'assets/icons/nav_bar/home_outline.svg',
-      filledAsset: 'assets/icons/nav_bar/home_filled.svg',
+      semanticIdentifier: 'biyen.photos.tab.home',
+      icon: HugeIcons.strokeRoundedImage01,
     ),
     _HomeNavTab(
       semanticLabel: 'Album',
-      semanticIdentifier: 'ente.photos.tab.albums',
-      outlineAsset: 'assets/icons/nav_bar/albums_outline.svg',
-      filledAsset: 'assets/icons/nav_bar/albums_filled.svg',
+      semanticIdentifier: 'biyen.photos.tab.albums',
+      icon: HugeIcons.strokeRoundedAlbum02,
     ),
     _HomeNavTab(
       semanticLabel: 'Feed',
-      semanticIdentifier: 'ente.photos.tab.feed',
-      outlineAsset: 'assets/icons/nav_bar/feed_outline.svg',
-      filledAsset: 'assets/icons/nav_bar/feed_filled.svg',
+      semanticIdentifier: 'biyen.photos.tab.feed',
+      icon: HugeIcons.strokeRoundedUserGroup,
     ),
     _HomeNavTab(
       semanticLabel: 'Cari',
-      semanticIdentifier: 'ente.photos.tab.search',
-      outlineAsset: 'assets/icons/nav_bar/search_outline.svg',
-      filledAsset: 'assets/icons/nav_bar/search_filled.svg',
+      semanticIdentifier: 'biyen.photos.tab.search',
+      icon: HugeIcons.strokeRoundedSearch01,
     ),
   ];
 
@@ -223,18 +213,16 @@ class _HomeNavBar extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox.square(
-                      dimension: IconSizes.small,
-                      child: _HomeNavIcon(
-                        tab: tab,
-                        selected: isSelected,
-                        color: isSelected ? activeColor : inactiveColor,
-                      ),
+                    HugeIcon(
+                      icon: tab.icon,
+                      color: isSelected ? activeColor : inactiveColor,
+                      size: 22,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 5),
                     Text(
                       tab.semanticLabel,
                       style: TextStyle(
+                        fontFamily: 'Outfit',
                         fontSize: 10.5,
                         fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
                         color: isSelected ? activeColor : inactiveColor,
@@ -251,39 +239,14 @@ class _HomeNavBar extends StatelessWidget {
   }
 }
 
-class _HomeNavIcon extends StatelessWidget {
-  const _HomeNavIcon({
-    required this.tab,
-    required this.selected,
-    required this.color,
-  });
-
-  final _HomeNavTab tab;
-  final bool selected;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorFilter = ColorFilter.mode(color, BlendMode.srcIn);
-    return SvgPicture.asset(
-      selected ? tab.filledAsset : tab.outlineAsset,
-      width: IconSizes.small,
-      height: IconSizes.small,
-      colorFilter: colorFilter,
-    );
-  }
-}
-
 class _HomeNavTab {
   const _HomeNavTab({
     required this.semanticLabel,
     required this.semanticIdentifier,
-    required this.outlineAsset,
-    required this.filledAsset,
+    required this.icon,
   });
 
   final String semanticLabel;
   final String semanticIdentifier;
-  final String outlineAsset;
-  final String filledAsset;
+  final List<List<dynamic>> icon;
 }

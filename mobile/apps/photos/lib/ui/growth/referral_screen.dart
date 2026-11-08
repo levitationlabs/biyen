@@ -239,7 +239,7 @@ class ReferralWidget extends StatelessWidget {
               context,
               WebPage(
                 l10n.faqs,
-                "https://ente.com/help/photos/features/account/referral-program/",
+                "https://biyen.levitation.web.id/#tanya-jawab/photos/features/account/referral-program/",
               ),
             );
           },

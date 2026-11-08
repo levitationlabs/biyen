@@ -59,7 +59,7 @@ class AccountSettingsPage extends StatelessWidget {
           icon: HugeIcons.strokeRoundedDownload04,
           onTap: () async {
             await launchUrlString(
-              "https://ente.com/help/photos/migration/export/",
+              "https://biyen.levitation.web.id/help/export/",
             );
           },
         ),

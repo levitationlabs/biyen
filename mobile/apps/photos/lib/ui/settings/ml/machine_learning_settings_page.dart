@@ -619,7 +619,7 @@ class _MLProcessingIssuesBlurb extends StatelessWidget {
                       sendLogs(
                         context,
                         context.strings.contactUs,
-                        "support@ente.com",
+                        "halo@biyen.levitation.web.id",
                         postShare: () {},
                         subject: "Machine learning processing issue",
                         body: context.strings.mlItemsCouldNotBeProcessed(

@@ -251,7 +251,7 @@ class _LoginPasswordVerificationPageState
       await sendLogs(
         context,
         context.strings.contactSupport,
-        "support@ente.com",
+        "halo@biyen.levitation.web.id",
         postShare: () {},
       );
     }

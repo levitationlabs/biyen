@@ -82,7 +82,7 @@ class HeaderErrorWidget extends StatelessWidget {
             sendLogs(
               context,
               context.strings.raiseTicket,
-              "support@ente.com",
+              "halo@biyen.levitation.web.id",
               subject: context.strings.backupFailed,
             );
           },

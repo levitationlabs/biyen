@@ -20,25 +20,25 @@ class AboutSettingsSection extends StatelessWidget {
         title: strings.weAreOpenSource,
         icon: HugeIcons.strokeRoundedGithub,
         showOnlyLoadingState: true,
-        onTap: () => _openUrl('https://github.com/ente/ente'),
+        onTap: () => _openUrl('https://biyen.levitation.web.id'),
       ),
       SettingsItem(
         title: strings.blog,
         icon: HugeIcons.strokeRoundedPencilEdit01,
         showOnlyLoadingState: true,
-        onTap: () => _openUrl('https://ente.com/blog'),
+        onTap: () => _openUrl('https://biyen.levitation.web.id'),
       ),
       SettingsItem(
         title: strings.privacy,
         icon: HugeIcons.strokeRoundedShield01,
         showOnlyLoadingState: true,
-        onTap: () => _openUrl('https://ente.com/privacy'),
+        onTap: () => _openUrl('https://biyen.levitation.web.id/privacy'),
       ),
       SettingsItem(
         title: strings.termsOfServicesTitle,
         icon: HugeIcons.strokeRoundedFile01,
         showOnlyLoadingState: true,
-        onTap: () => _openUrl('https://ente.com/terms'),
+        onTap: () => _openUrl('https://biyen.levitation.web.id/terms'),
       ),
       if (onCheckForUpdates != null)
         SettingsItem(

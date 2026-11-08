@@ -297,7 +297,7 @@ class _PasswordEntryPageState extends State<PasswordEntryPage> {
                           builder: (BuildContext context) {
                             return WebPage(
                               context.strings.howItWorks,
-                              "https://ente.com/architecture",
+                              "https://biyen.levitation.web.id/#keunggulan",
                             );
                           },
                         ),

@@ -527,7 +527,7 @@ class _GrantPermissionsWidgetState extends State<GrantPermissionsWidget>
                   builder: (BuildContext context) {
                     return WebPage(
                       context.strings.termsOfServicesTitle,
-                      "https://ente.com/terms",
+                      "https://biyen.levitation.web.id/terms",
                     );
                   },
                 ),
@@ -544,7 +544,7 @@ class _GrantPermissionsWidgetState extends State<GrantPermissionsWidget>
                   builder: (BuildContext context) {
                     return WebPage(
                       context.strings.privacyPolicyTitle,
-                      "https://ente.com/privacy",
+                      "https://biyen.levitation.web.id/privacy",
                     );
                   },
                 ),

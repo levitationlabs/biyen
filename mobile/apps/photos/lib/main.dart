@@ -455,7 +455,7 @@ Future<void> _init(
       if (!initComplete && !isBackground) {
         _logger.severe("Stuck on splash screen for >= 15 seconds");
         triggerSendLogs(
-          "support@ente.com",
+          "halo@biyen.levitation.web.id",
           "Stuck on splash screen for >= 15 seconds on ${Platform.operatingSystem}",
           null,
         );

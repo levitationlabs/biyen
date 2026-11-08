@@ -203,7 +203,7 @@ Future<ButtonResult?> showGenericErrorDialog({
           await sendLogs(
             context,
             context.strings.contactSupport,
-            "support@ente.com",
+            "halo@biyen.levitation.web.id",
             postShare: () {},
           );
         },
@@ -264,7 +264,7 @@ Future<void> showGenericErrorBottomSheet({
           await sendLogs(
             context,
             context.strings.contactSupport,
-            "support@ente.com",
+            "halo@biyen.levitation.web.id",
             postShare: () {},
           );
         },

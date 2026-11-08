@@ -177,7 +177,7 @@ class _PasswordReentryPageState extends State<PasswordReentryPage> {
       await sendLogs(
         context,
         context.strings.contactSupport,
-        "support@ente.com",
+        "halo@biyen.levitation.web.id",
         postShare: () {},
       );
     }

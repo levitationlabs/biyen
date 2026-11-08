@@ -154,7 +154,7 @@ class _StoreSubscriptionPageState extends State<StoreSubscriptionPage> {
                     await sendLogs(
                       context,
                       l10n.contactSupport,
-                      "support@ente.com",
+                      "halo@biyen.levitation.web.id",
                       postShare: () {},
                     );
                   },

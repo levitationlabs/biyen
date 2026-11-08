@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:photos/service_locator.dart";
 import "package:photos/services/update_service.dart";
 
-const _changelogUrl = "https://ente.com/help/photos/changelog";
+const _changelogUrl = "https://biyen.levitation.web.id/changelog";
 
 Future<void> showAppUpdateSheet(
   BuildContext context, {

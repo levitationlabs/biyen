@@ -124,7 +124,7 @@ class _TwoFactorRecoveryPageState extends State<TwoFactorRecoveryPage> {
                     context,
                     title: context.strings.contactSupport,
                     message: context.strings.dropSupportEmail(
-                      supportEmail: "support@ente.com",
+                      supportEmail: "halo@biyen.levitation.web.id",
                     ),
                     assetPath: 'assets/warning-grey.png',
                   );
