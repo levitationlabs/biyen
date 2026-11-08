@@ -12,6 +12,7 @@ import (
 	"github.com/ente/museum/pkg/repo"
 	"github.com/ente/museum/pkg/repo/public"
 	"github.com/ente/museum/pkg/utils/auth"
+	"github.com/ente/museum/pkg/utils/network"
 	"github.com/ente/museum/pkg/utils/time"
 	"github.com/ente/stacktrace"
 	"github.com/gin-gonic/gin"
@@ -256,4 +257,15 @@ func (c *CollectionLinkController) GetPublicCollection(ctx *gin.Context, mustAll
 		}
 	}
 	return collection, nil
+}
+
+func (c *CollectionLinkController) ReportAbuse(ctx *gin.Context, req ente.AbuseReportRequest) error {
+	accessContext := auth.MustGetPublicAccessContext(ctx)
+	params := public.AbuseReportInsertParams{
+		ShareID:   accessContext.ID,
+		IP:        network.GetClientIP(ctx),
+		UserAgent: ctx.GetHeader("User-Agent"),
+		Request:   req,
+	}
+	return c.CollectionLinkRepo.InsertAbuseReport(ctx.Request.Context(), params)
 }

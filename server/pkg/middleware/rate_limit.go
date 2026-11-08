@@ -347,6 +347,9 @@ func (r *RateLimitMiddleware) getLimiter(reqPath string, reqMethod string) *limi
 	if reqPath == "/public-collection/anon-identity" {
 		return r.limit10ReqPerMin
 	}
+	if reqPath == "/public-collection/report-abuse" && reqMethod == http.MethodPost {
+		return r.limit10ReqPerHour
+	}
 	if (strings.HasPrefix(reqPath, "/public-collection/comments") ||
 		strings.HasPrefix(reqPath, "/public-collection/reactions")) &&
 		(reqMethod == http.MethodPost || reqMethod == http.MethodPut || reqMethod == http.MethodDelete) {

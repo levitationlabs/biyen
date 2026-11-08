@@ -1,5 +1,6 @@
 import { DevSettingsDialog } from "@/components/auth/DevSettingsDialog";
 import { PhotosAuthShell } from "@/components/PhotosAuthShell";
+import { WebMaintenanceView } from "@/components/WebMaintenanceView";
 import { LoginContents } from "ente-accounts/components/LoginContents";
 import { SignUpContents } from "ente-accounts/components/SignUpContents";
 import { savedPartialLocalUser } from "ente-accounts/services/accounts-db";
@@ -114,17 +115,7 @@ const Page: React.FC = () => {
                 <ActivityIndicator />
             ) : (
                 <PhotosAuthShell>
-                    {showLogin ? (
-                        <LoginContents
-                            {...{ host }}
-                            onSignUp={handleShowSignUp}
-                        />
-                    ) : (
-                        <SignUpContents
-                            {...{ router, host }}
-                            onLogin={handleShowLogin}
-                        />
-                    )}
+                    <WebMaintenanceView />
                 </PhotosAuthShell>
             )}
         </TappableContainer>

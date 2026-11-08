@@ -1,4 +1,9 @@
-import type { PublicAlbumsCredentials } from "ente-base/http";
+import {
+    authenticatedPublicAlbumsRequestHeaders,
+    ensureOk,
+    type PublicAlbumsCredentials,
+} from "ente-base/http";
+import { apiURL } from "ente-base/origins";
 import {
     decryptRemoteCollection,
     type Collection,
@@ -103,4 +108,36 @@ export const removePublicCollectionFileData = async (accessToken: string) => {
         removePublicCollectionLastSyncTime(accessToken),
         removePublicCollectionFiles(accessToken),
     ]);
+};
+
+export interface AbuseReportPayload {
+    url: string;
+    reason: string;
+    fullName: string;
+    email: string;
+    comment: string;
+}
+
+export const submitPublicAbuseReport = async (
+    credentials: PublicAlbumsCredentials,
+    payload: AbuseReportPayload,
+): Promise<void> => {
+    const res = await fetch(await apiURL("/public-collection/report-abuse"), {
+        method: "POST",
+        headers: {
+            ...authenticatedPublicAlbumsRequestHeaders(credentials),
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            url: payload.url,
+            reason: payload.reason,
+            details: {
+                fullName: payload.fullName,
+                email: payload.email,
+                signature: payload.fullName,
+                comment: payload.comment,
+            },
+        }),
+    });
+    ensureOk(res);
 };

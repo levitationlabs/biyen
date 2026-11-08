@@ -12,6 +12,7 @@ import {
     FeedIcon,
     ShareIcon,
 } from "@/public-album/components/ActionIcons";
+import { ReportAbuseModal } from "@/public-album/components/ReportAbuseModal";
 import type { FileListHeaderOrFooter } from "@/public-album/components/FileList";
 import { FileListWithViewer } from "@/public-album/components/FileListWithViewer";
 import type { TripLayoutProps } from "@/public-album/components/TripLayout";
@@ -163,6 +164,7 @@ export default function PublicAlbumPage() {
         [],
     );
     const [selected, setSelected] = useState<SelectedState>({ count: 0 });
+    const [showReportAbuseModal, setShowReportAbuseModal] = useState(false);
 
     // TODO: Can we convert these to state
     const credentials = useRef<PublicAlbumsCredentials | undefined>(undefined);
@@ -660,7 +662,7 @@ export default function PublicAlbumPage() {
     const fileListFooter = useMemo<FileListHeaderOrFooter>(
         () => ({
             component: (
-                <FileListFooter height={fileListFooterHeightForViewport} />
+                <FileListFooter onReport={() => setShowReportAbuseModal(true)} />
             ),
             height: fileListFooterHeightForViewport,
             extendToInlineEdges: true,
@@ -848,6 +850,13 @@ export default function PublicAlbumPage() {
                         onExited={handlePublicFeedSidebarExited}
                     />
                 )}
+            {credentials.current && (
+                <ReportAbuseModal
+                    open={showReportAbuseModal}
+                    onClose={() => setShowReportAbuseModal(false)}
+                    credentials={credentials.current}
+                />
+            )}
         </>
     );
 
@@ -1691,10 +1700,56 @@ const MobileMasonryCoverTitle = styled(Typography)({
     overflowWrap: "anywhere",
 });
 
-const fileListFooterHeight = 24;
+const fileListFooterHeight = 72;
 
-const mobileMasonryFileListFooterHeight = thumbnailGap;
+const mobileMasonryFileListFooterHeight = 84;
 
-const FileListFooter: React.FC<{ height: number }> = ({ height }) => (
-    <Box sx={{ height }} />
+const FileListFooter: React.FC<{ onReport: () => void }> = ({ onReport }) => (
+    <Box
+        component="footer"
+        sx={{
+            py: 2.5,
+            px: 2,
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: "center",
+            justifyContent: "center",
+            gap: { xs: 0.8, sm: 2 },
+            borderTop: "1px solid",
+            borderColor: "divider",
+            mt: 4,
+            mb: 1,
+            width: "100%",
+        }}
+    >
+        <Typography
+            sx={{
+                color: "text.secondary",
+                fontSize: "0.8125rem",
+                textAlign: "center",
+            }}
+        >
+            Tautan publik ini dilindungi enkripsi end-to-end Biyen Photos.
+        </Typography>
+        <Button
+            variant="text"
+            size="small"
+            onClick={onReport}
+            sx={{
+                textTransform: "none",
+                color: "text.secondary",
+                fontSize: "0.8125rem",
+                p: 0,
+                minWidth: 0,
+                textDecoration: "underline",
+                "&:hover": {
+                    color: "error.main",
+                    backgroundColor: "transparent",
+                    textDecoration: "underline",
+                },
+            }}
+        >
+            Laporkan Penyalahgunaan
+        </Button>
+    </Box>
 );

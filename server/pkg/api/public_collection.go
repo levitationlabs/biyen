@@ -7,6 +7,7 @@ import (
 
 	fileData "github.com/ente/museum/ente/filedata"
 	"github.com/ente/museum/pkg/controller/collections"
+	"github.com/ente/museum/pkg/controller/discord"
 	"github.com/ente/museum/pkg/controller/filedata"
 	"github.com/ente/museum/pkg/controller/public"
 
@@ -27,6 +28,7 @@ type PublicCollectionHandler struct {
 	CollectionCtrl         *collections.CollectionController
 	FileDataCtrl           *filedata.Controller
 	StorageBonusController *storagebonus.Controller
+	DiscordController      *discord.DiscordController
 }
 
 func (h *PublicCollectionHandler) GetThumbnail(c *gin.Context) {
@@ -248,4 +250,25 @@ func (h *PublicCollectionHandler) getFileURL(c *gin.Context, objectType ente.Obj
 		return "", stacktrace.Propagate(err, "")
 	}
 	return url, nil
+}
+
+func (h *PublicCollectionHandler) ReportAbuse(c *gin.Context) {
+	var req ente.AbuseReportRequest
+	if err := handler.BindJSON(c, &req); err != nil {
+		handler.Error(c, stacktrace.Propagate(err, "Bad request"))
+		return
+	}
+	if err := h.Controller.ReportAbuse(c, req); err != nil {
+		handler.Error(c, stacktrace.Propagate(err, "failed to submit abuse report"))
+		return
+	}
+	if h.DiscordController != nil {
+		go h.DiscordController.NotifyPotentialAbuse(fmt.Sprintf(
+			"New abuse report for %s: %s (by %s)",
+			req.URL,
+			req.Reason,
+			req.Details.Email,
+		))
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }

@@ -34,7 +34,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var passwordWhiteListedURLs = []string{"/public-collection/info", "/public-collection/verify-password"}
+var passwordWhiteListedURLs = []string{"/public-collection/info", "/public-collection/verify-password", "/public-collection/report-abuse"}
 
 type CollectionLinkMiddleware struct {
 	CollectionLinkRepo   *public.CollectionLinkRepo
