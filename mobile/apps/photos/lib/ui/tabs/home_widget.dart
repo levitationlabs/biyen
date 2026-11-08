@@ -869,6 +869,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   bool _isPublicAlbumHost(String host) {
     return host == kAlbumsWebDomain ||
         host == kPhotosWebDomain ||
+        host == "albums-biyen.levitation.web.id" ||
         host == "albums.biyen.levitation.web.id" ||
         host == "biyen.levitation.web.id" ||
         host == "albums.ente.io" ||

@@ -3,6 +3,7 @@ package public
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -22,7 +23,7 @@ type CollectionLinkRepo struct {
 
 func NewCollectionLinkRepository(db *sql.DB, albumHost string) *CollectionLinkRepo {
 	if albumHost == "" {
-		albumHost = "https://albums.biyen.levitation.web.id"
+		albumHost = "https://albums-biyen.levitation.web.id"
 	}
 	lockerHost := viper.GetString("apps.public-locker")
 	if lockerHost == "" {
@@ -234,6 +235,38 @@ func (pcr *CollectionLinkRepo) CleanupAccessHistory(ctx context.Context) error {
 	_, err := pcr.DB.ExecContext(ctx, `DELETE FROM public_collection_access_history WHERE share_id IN (SELECT id FROM public_collection_tokens WHERE is_disabled = TRUE AND updated_at < (now_utc_micro_seconds() - (24::BIGINT * 30 * 60 * 60 * 1000 * 1000)))`)
 	if err != nil {
 		return stacktrace.Propagate(err, "failed to clean up public collection access history")
+	}
+	return nil
+}
+
+type AbuseReportInsertParams struct {
+	ShareID   int64
+	IP        string
+	UserAgent string
+	Request   ente.AbuseReportRequest
+}
+
+func (pcr *CollectionLinkRepo) InsertAbuseReport(ctx context.Context, params AbuseReportInsertParams) error {
+	detailsJSON, err := json.Marshal(params.Request.Details)
+	if err != nil {
+		return stacktrace.Propagate(err, "failed to marshal details")
+	}
+	query := `INSERT INTO public_abuse_report (share_id, ip, user_agent, url, reason, details)
+		VALUES ($1, $2, $3, $4, $5, $6)
+		ON CONFLICT (share_id, ip, user_agent)
+		DO UPDATE SET reason = EXCLUDED.reason, details = EXCLUDED.details, created_at = now_utc_micro_seconds()`
+	_, err = pcr.DB.ExecContext(
+		ctx,
+		query,
+		params.ShareID,
+		params.IP,
+		params.UserAgent,
+		params.Request.URL,
+		params.Request.Reason,
+		detailsJSON,
+	)
+	if err != nil {
+		return stacktrace.Propagate(err, "failed to insert abuse report")
 	}
 	return nil
 }

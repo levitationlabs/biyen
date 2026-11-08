@@ -56,7 +56,7 @@ http:
 
 # Specify the base endpoints for various apps
 apps:
-    # Default is https://albums.biyen.levitation.web.id
+    # Default is https://albums-biyen.levitation.web.id
     #
     # If you're running a self hosted instance and wish to serve public links for photos,
     # set this to the URL where your albums web app is running.

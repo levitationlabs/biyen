@@ -106,7 +106,7 @@ func main() {
 		panic(err)
 	}
 
-	viper.SetDefault("apps.public-albums", "https://albums.biyen.levitation.web.id")
+	viper.SetDefault("apps.public-albums", "https://albums-biyen.levitation.web.id")
 	viper.SetDefault("apps.embed-albums", "https://embed.biyen.levitation.web.id")
 	viper.SetDefault("apps.photobook", "https://photobook.biyen.levitation.web.id")
 	viper.SetDefault("apps.custom-domain.cname", "my.biyen.levitation.web.id")
@@ -791,6 +791,7 @@ func main() {
 		CollectionCtrl:         collectionController,
 		FileDataCtrl:           fileDataCtrl,
 		StorageBonusController: storageBonusCtrl,
+		DiscordController:      discordController,
 	}
 	fileLinkApi.GET("/info", fileHandler.LinkInfo)
 	fileLinkApi.GET("/pass-info", fileHandler.PasswordInfo)
@@ -823,6 +824,7 @@ func main() {
 	publicCollectionAPI.GET("/participants/masked-emails", publicSocialHandler.Participants)
 	publicCollectionAPI.GET("/anon-profiles", publicSocialHandler.AnonProfiles)
 	publicCollectionAPI.POST("/anon-identity", publicSocialHandler.CreateAnonIdentity)
+	publicCollectionAPI.POST("/report-abuse", publicCollectionHandler.ReportAbuse)
 
 	memoryShareHandler := &api.MemoryShareHandler{
 		Controller: memoryShareController,
