@@ -4,9 +4,10 @@ import "package:shared_preferences/shared_preferences.dart";
 // Add more language to the list only when at least 90% of the strings are
 // translated in the corresponding language.
 const List<Locale> appSupportedLocales = <Locale>[
+  Locale('id'),
+  Locale('en'),
   Locale('ca'),
   Locale('cs'),
-  Locale('en'),
   Locale('es'),
   Locale('de'),
   Locale('fr'),
@@ -49,7 +50,7 @@ Locale localResolutionCallBack(
       return locale;
     }
   }
-  return autoDetectedLocale ?? const Locale('en');
+  return autoDetectedLocale ?? const Locale('id');
 }
 
 // Preserve the device region for dates, times, and numbers.
@@ -88,7 +89,7 @@ Future<Locale?> getLocale({bool noFallback = false}) async {
   if (noFallback) {
     return null;
   }
-  return const Locale('en');
+  return const Locale('id');
 }
 
 Future<void> setLocale(Locale locale) async {

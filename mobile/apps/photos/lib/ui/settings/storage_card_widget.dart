@@ -93,28 +93,24 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
   }
 
   Widget containerForUserDetails(UserDetails? userDetails) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        width: double.infinity,
-        constraints: const BoxConstraints(minHeight: 120),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: const Color(0xFF1E1A18),
-          border: Border.all(
-            color: const Color(0xFF38312B),
-            width: 0.8,
-          ),
-        ),
-        child: userDetails != null
-            ? _userDetails(userDetails)
-            : const SizedBox(
-                height: 120,
-                child: Stack(
-                  children: [EnteLoadingWidget(color: strokeBaseDark)],
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      child: userDetails != null
+          ? _userDetails(userDetails)
+          : const SizedBox(
+              height: 48,
+              child: Center(
+                child: SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation(Color(0xFFC8502E)),
+                  ),
                 ),
               ),
-      ),
+            ),
     );
   }
 
@@ -135,8 +131,6 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
         : userDetails.getTotalStorage();
     final freeStorageInBytes = totalStorageInBytes - usedStorageInBytes;
 
-    final isMobileScreenSmall =
-        MediaQuery.of(context).size.width <= mobileSmallThreshold;
     final shouldShowUsedStorageInTBs = usedStorageInBytes >= oneTBinBytes;
     final shouldShowTotalStorageInTBs = totalStorageInBytes >= oneTBinBytes;
     final shouldShowUsedStorageInMBs = usedStorageInBytes < hundredMBinBytes;
@@ -150,124 +144,121 @@ class _StorageCardWidgetState extends State<StorageCardWidget> {
     final usedStorageInTB = roundGBsToTBs(usedStorageInGB);
     final totalStorageInTB = roundGBsToTBs(totalStorageInGB);
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            isMobileScreenSmall
-                ? context.strings.usedSpace
-                : context.strings.storage,
-            style: TextStyles.tiny.copyWith(
-              fontFamily: TextStyles.outfitFontFamily,
-              color: textMutedDark,
-            ),
-          ),
-          const SizedBox(height: 2),
-          RichText(
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            text: TextSpan(
-              style: TextStyles.display2.copyWith(
+    late num currentUsage, totalStorage;
+    late String currentUsageUnit, totalStorageUnit;
+
+    if (shouldShowUsedStorageInTBs) {
+      currentUsage = usedStorageInTB;
+      currentUsageUnit = "TB";
+    } else if (shouldShowUsedStorageInMBs) {
+      currentUsage = convertBytesToMBs(usedStorageInBytes);
+      currentUsageUnit = "MB";
+    } else {
+      currentUsage = usedStorageInGB;
+      currentUsageUnit = "GB";
+    }
+
+    if (shouldShowTotalStorageInTBs) {
+      totalStorage = totalStorageInTB;
+      totalStorageUnit = "TB";
+    } else {
+      totalStorage = totalStorageInGB;
+      totalStorageUnit = "GB";
+    }
+
+    final fraction = totalStorageInBytes > 0
+        ? (usedStorageInBytes / totalStorageInBytes).clamp(0.0, 1.0)
+        : 0.0;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              context.strings.storage,
+              style: const TextStyle(
+                fontFamily: "Outfit",
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
-                color: textBaseDark,
-                letterSpacing: -1,
-              ),
-              children: _usedStorageDetails(
-                isMobileScreenSmall: isMobileScreenSmall,
-                shouldShowTotalStorageInTBs: shouldShowTotalStorageInTBs,
-                shouldShowUsedStorageInTBs: shouldShowUsedStorageInTBs,
-                shouldShowUsedStorageInMBs: shouldShowUsedStorageInMBs,
-                usedStorageInBytes: usedStorageInBytes,
-                usedStorageInGB: usedStorageInGB,
-                totalStorageInTB: totalStorageInTB,
-                usedStorageInTB: usedStorageInTB,
-                totalStorageInGB: totalStorageInGB,
+                color: Color(0xFF2C2523),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Stack(
-            children: <Widget>[
-              const StorageProgressWidget(
-                color: Color.fromRGBO(193, 193, 193, 0.11),
-                fractionOfStorage: 1,
+            Text(
+              "$currentUsage $currentUsageUnit / $totalStorage $totalStorageUnit",
+              style: const TextStyle(
+                fontFamily: "Outfit",
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF756860),
               ),
-              showFamilyBreakup
-                  ? StorageProgressWidget(
-                      color: const Color(0xFFD98226),
-                      fractionOfStorage:
-                          ((usedStorageInBytes) / totalStorageInBytes),
-                    )
-                  : const SizedBox.shrink(),
-              StorageProgressWidget(
-                color: const Color(0xFFC8502E),
-                fractionOfStorage: (userDetails.usage / totalStorageInBytes),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              showFamilyBreakup
-                  ? Row(
-                      children: [
-                        Container(
-                          width: 7,
-                          height: 7,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFFC8502E),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          context.strings.storageBreakupYou,
-                          style: TextStyles.tiny.copyWith(
-                            fontFamily: TextStyles.outfitFontFamily,
-                            fontWeight: FontWeight.w600,
-                            color: textBaseDark,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Container(
-                          width: 7,
-                          height: 7,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFFF4D93B),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          context.strings.storageBreakupFamily,
-                          style: TextStyles.tiny.copyWith(
-                            fontFamily: TextStyles.outfitFontFamily,
-                            fontWeight: FontWeight.w600,
-                            color: textBaseDark,
-                          ),
-                        ),
-                      ],
-                    )
-                  : const SizedBox.shrink(),
-              Text(
-                context.strings.memoryCount(
-                  count: userDetails.fileCount,
-                  formattedCount: NumberFormat().format(userDetails.fileCount),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(3),
+          child: SizedBox(
+            height: 4.5,
+            width: double.infinity,
+            child: Stack(
+              children: [
+                Container(
+                  color: const Color(0xFFE8E4DF),
                 ),
-                style: TextStyles.tiny.copyWith(
-                  fontFamily: TextStyles.outfitFontFamily,
-                  fontWeight: FontWeight.w600,
-                  color: const Color.fromRGBO(165, 165, 165, 0.79),
+                FractionallySizedBox(
+                  widthFactor: fraction > 0 ? (fraction < 0.02 ? 0.02 : fraction) : 0.0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFC8502E),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              context.strings.memoryCount(
+                count: userDetails.fileCount,
+                formattedCount: NumberFormat().format(userDetails.fileCount),
+              ),
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF8C7D73),
+              ),
+            ),
+            const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Kelola",
+                  style: TextStyle(
+                    fontFamily: "Outfit",
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFFC8502E),
+                  ),
+                ),
+                SizedBox(width: 2),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 9,
+                  color: Color(0xFFC8502E),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 

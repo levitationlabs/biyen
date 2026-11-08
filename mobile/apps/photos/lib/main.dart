@@ -163,7 +163,8 @@ Future<void> _runInForeground(
           ? ForegroundStartupMode.picker
           : ForegroundStartupMode.normal,
     );
-    final Locale? locale = await getLocale(noFallback: true);
+    final Locale? locale =
+        (await getLocale(noFallback: true)) ?? const Locale('id');
     runApp(
       AppLock(
         builder: (args) => EnteApp(

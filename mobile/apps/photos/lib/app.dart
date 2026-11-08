@@ -69,7 +69,7 @@ class _EnteAppState extends State<EnteApp> with WidgetsBindingObserver {
   void initState() {
     _logger.info('init App');
     super.initState();
-    locale = widget.locale;
+    locale = widget.locale ?? const Locale('id');
     _initialAndroidHome = _resolveInitialAndroidHome();
     if (Platform.isAndroid) {
       _intentActionSubscription = MediaExtension().intentActionStream.listen(

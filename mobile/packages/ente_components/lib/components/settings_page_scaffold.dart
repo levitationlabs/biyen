@@ -15,6 +15,7 @@ class SettingsPageScaffold extends StatelessWidget {
     this.onTitleLongPress,
     this.bottomNavigationBar,
     this.padding = const EdgeInsets.fromLTRB(16, 0, 16, 16),
+    this.backgroundColor,
   });
 
   final String title;
@@ -27,15 +28,17 @@ class SettingsPageScaffold extends StatelessWidget {
   final VoidCallback? onTitleLongPress;
   final Widget? bottomNavigationBar;
   final EdgeInsetsGeometry padding;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.componentColors;
 
     return Scaffold(
-      backgroundColor: colors.backgroundBase,
+      backgroundColor: backgroundColor ?? colors.backgroundBase,
       bottomNavigationBar: bottomNavigationBar,
       body: AppBarComponent(
+        backgroundColor: backgroundColor,
         title: title,
         subtitle: subtitle,
         actions: actions,

@@ -936,6 +936,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                   constraints: const BoxConstraints(maxWidth: 430),
                   child: Drawer(
                     width: double.infinity,
+                    backgroundColor: Colors.white,
+                    surfaceTintColor: Colors.transparent,
                     shape: const RoundedRectangleBorder(),
                     child: SettingsPage(
                       emailNotifier: UserService.instance.emailValueNotifier,

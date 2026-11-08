@@ -48,8 +48,11 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SettingsStateContainer(
-      child: _SettingsBody(emailNotifier: emailNotifier),
+    return Theme(
+      data: ComponentTheme.lightTheme(),
+      child: SettingsStateContainer(
+        child: _SettingsBody(emailNotifier: emailNotifier),
+      ),
     );
   }
 }
@@ -72,6 +75,7 @@ class _SettingsBody extends StatelessWidget {
         final email = hasLoggedIn ? emailNotifier.value ?? "" : "";
 
         return SettingsPageScaffold(
+          backgroundColor: Colors.white,
           title: context.strings.settings,
           backButton: IconButtonComponent(
             variant: IconButtonComponentVariant.primary,
@@ -82,7 +86,7 @@ class _SettingsBody extends StatelessWidget {
           actions: _buildHeaderActions(context),
           children: [
             if (hasLoggedIn && email.isNotEmpty)
-              _buildMinimalistProfileHeader(context, email, colors),
+              _buildMinimalistProfileHeader(context, email),
             if (showLoginEntry) ...[
               OfflineSettingsBanner(
                 onGetStarted: () {
@@ -102,179 +106,154 @@ class _SettingsBody extends StatelessWidget {
             ],
             if (hasLoggedIn && !isLocalGalleryMode) ...[
               const StorageCardWidget(),
-              const SizedBox(height: 8),
-              _buildSectionHeader("Penyimpanan & Cadangan", colors),
-              MenuGroupComponent(
-                showDividers: true,
-                items: [
-                  _buildMenuItem(
-                    title: context.strings.account,
-                    icon: HugeIcons.strokeRoundedUser,
-                    onTap: () async {
-                      await routeToPage(context, const AccountSettingsPage());
-                    },
-                  ),
-                  _buildMenuItem(
-                    title: context.strings.backup,
-                    icon: HugeIcons.strokeRoundedCloudUpload,
-                    onTap: () async {
-                      await routeToPage(context, const BackupSettingsPage());
-                    },
-                  ),
-                  _buildMenuItem(
-                    title: context.strings.freeUpSpace,
-                    icon: HugeIcons.strokeRoundedRocket01,
-                    showOnlyLoadingState: true,
-                    onTap: () async {
-                      await routeToPage(
-                        context,
-                        const FreeUpSpaceOptionsScreen(),
-                      );
-                    },
-                  ),
-                ],
+              _buildDivider(),
+              _buildSectionHeader("Penyimpanan & Cadangan"),
+              _buildMenuItem(
+                title: context.strings.account,
+                icon: HugeIcons.strokeRoundedUser,
+                onTap: () async {
+                  await routeToPage(context, const AccountSettingsPage());
+                },
               ),
-              const SizedBox(height: 8),
+              _buildMenuItem(
+                title: context.strings.backup,
+                icon: HugeIcons.strokeRoundedCloudUpload,
+                onTap: () async {
+                  await routeToPage(context, const BackupSettingsPage());
+                },
+              ),
+              _buildMenuItem(
+                title: context.strings.freeUpSpace,
+                icon: HugeIcons.strokeRoundedRocket01,
+                showOnlyLoadingState: true,
+                onTap: () async {
+                  await routeToPage(
+                    context,
+                    const FreeUpSpaceOptionsScreen(),
+                  );
+                },
+              ),
+              _buildDivider(),
             ],
-            _buildSectionHeader("Keamanan & Akses", colors),
-            MenuGroupComponent(
-              showDividers: true,
-              items: [
-                _buildMenuItem(
-                  title: context.strings.security,
-                  icon: HugeIcons.strokeRoundedSecurityCheck,
-                  onTap: () async {
-                    await routeToPage(context, const SecuritySettingsPage());
-                  },
-                ),
-                if (hasLoggedIn && !isLocalGalleryMode) ...[
-                  _buildLegacyMenuItem(context),
-                  _buildFamilyMenuItem(context),
-                  _buildReferralsMenuItem(context),
-                ],
-              ],
+            _buildSectionHeader("Keamanan & Akses"),
+            _buildMenuItem(
+              title: context.strings.security,
+              icon: HugeIcons.strokeRoundedSecurityCheck,
+              onTap: () async {
+                await routeToPage(context, const SecuritySettingsPage());
+              },
             ),
-            const SizedBox(height: 8),
-            _buildSectionHeader("Preferensi & Fitur", colors),
-            MenuGroupComponent(
-              showDividers: true,
-              items: [
-                _buildMenuItem(
-                  title: context.strings.appearance,
-                  icon: HugeIcons.strokeRoundedPaintBoard,
-                  onTap: () async {
-                    await routeToPage(context, const AppearanceSettingsPage());
-                  },
-                ),
-                _buildMenuItem(
-                  title: context.strings.machineLearning,
-                  icon: HugeIcons.strokeRoundedMagicWand01,
-                  onTap: () async {
-                    await routeToPage(
-                      context,
-                      const MachineLearningSettingsPage(),
-                    );
-                  },
-                ),
-                _buildMenuItem(
-                  title: context.strings.memories,
-                  icon: HugeIcons.strokeRoundedSparkles,
-                  onTap: () async {
-                    await routeToPage(context, const MemoriesSettingsScreen());
-                  },
-                ),
-                _buildMenuItem(
-                  title: context.strings.notifications,
-                  icon: HugeIcons.strokeRoundedNotification01,
-                  onTap: () async {
-                    await routeToPage(
-                      context,
-                      const NotificationSettingsScreen(),
-                    );
-                  },
-                ),
-                _buildMenuItem(
-                  title: context.strings.widgets,
-                  icon: HugeIcons.strokeRoundedAlignBoxBottomRight,
-                  onTap: () async {
-                    await routeToPage(context, const WidgetSettingsScreen());
-                  },
-                ),
-                if (hasLoggedIn && !isLocalGalleryMode) ...[
-                  _buildMenuItem(
-                    title: context.strings.videoStreaming,
-                    icon: HugeIcons.strokeRoundedVideoCameraAi,
-                    onTap: () async {
-                      await routeToPage(
-                        context,
-                        const VideoStreamingSettingsPage(),
-                      );
-                    },
-                  ),
-                  if (flagService.enableMultiCast)
-                    _buildMenuItem(
-                      title: context.strings.castSessions,
-                      icon: HugeIcons.strokeRoundedTvSmart,
-                      showOnlyLoadingState: true,
-                      onTap: () async {
-                        await openCastSettingsPage(context);
-                      },
-                    ),
-                ],
-                _buildMapsMenuItem(context),
-              ],
+            if (hasLoggedIn && !isLocalGalleryMode) ...[
+              _buildLegacyMenuItem(context),
+              _buildFamilyMenuItem(context),
+              _buildReferralsMenuItem(context),
+            ],
+            _buildDivider(),
+            _buildSectionHeader("Preferensi & Fitur"),
+            _buildMenuItem(
+              title: context.strings.appearance,
+              icon: HugeIcons.strokeRoundedPaintBoard,
+              onTap: () async {
+                await routeToPage(context, const AppearanceSettingsPage());
+              },
             ),
-            const SizedBox(height: 8),
-            _buildSectionHeader("Bantuan & Informasi", colors),
-            MenuGroupComponent(
-              showDividers: true,
-              items: [
+            _buildMenuItem(
+              title: context.strings.machineLearning,
+              icon: HugeIcons.strokeRoundedMagicWand01,
+              onTap: () async {
+                await routeToPage(
+                  context,
+                  const MachineLearningSettingsPage(),
+                );
+              },
+            ),
+            _buildMenuItem(
+              title: context.strings.memories,
+              icon: HugeIcons.strokeRoundedSparkles,
+              onTap: () async {
+                await routeToPage(context, const MemoriesSettingsScreen());
+              },
+            ),
+            _buildMenuItem(
+              title: context.strings.notifications,
+              icon: HugeIcons.strokeRoundedNotification01,
+              onTap: () async {
+                await routeToPage(
+                  context,
+                  const NotificationSettingsScreen(),
+                );
+              },
+            ),
+            _buildMenuItem(
+              title: context.strings.widgets,
+              icon: HugeIcons.strokeRoundedAlignBoxBottomRight,
+              onTap: () async {
+                await routeToPage(context, const WidgetSettingsScreen());
+              },
+            ),
+            if (hasLoggedIn && !isLocalGalleryMode) ...[
+              _buildMenuItem(
+                title: context.strings.videoStreaming,
+                icon: HugeIcons.strokeRoundedVideoCameraAi,
+                onTap: () async {
+                  await routeToPage(
+                    context,
+                    const VideoStreamingSettingsPage(),
+                  );
+                },
+              ),
+              if (flagService.enableMultiCast)
                 _buildMenuItem(
-                  title: context.strings.helpAndSupport,
-                  icon: HugeIcons.strokeRoundedHelpCircle,
+                  title: context.strings.castSessions,
+                  icon: HugeIcons.strokeRoundedTvSmart,
+                  showOnlyLoadingState: true,
                   onTap: () async {
-                    await routeToPage(context, const HelpSupportPage());
+                    await openCastSettingsPage(context);
                   },
                 ),
-                _buildMenuItem(
-                  title: context.strings.about,
-                  icon: HugeIcons.strokeRoundedInformationCircle,
-                  onTap: () async {
-                    await routeToPage(context, const AboutUsPage());
-                  },
-                ),
-              ],
+            ],
+            _buildMapsMenuItem(context),
+            _buildDivider(),
+            _buildSectionHeader("Bantuan & Informasi"),
+            _buildMenuItem(
+              title: context.strings.helpAndSupport,
+              icon: HugeIcons.strokeRoundedHelpCircle,
+              onTap: () async {
+                await routeToPage(context, const HelpSupportPage());
+              },
+            ),
+            _buildMenuItem(
+              title: context.strings.about,
+              icon: HugeIcons.strokeRoundedInformationCircle,
+              onTap: () async {
+                await routeToPage(context, const AboutUsPage());
+              },
             ),
             if (hasLoggedIn &&
                 !isLocalGalleryMode &&
                 (flagService.flags.internalUser || kDebugMode)) ...[
-              const SizedBox(height: 8),
-              _buildSectionHeader("Pengembang", colors),
-              MenuGroupComponent(
-                showDividers: true,
-                items: [
-                  _buildMenuItem(
-                    title: "Debug",
-                    icon: HugeIcons.strokeRoundedBug02,
-                    onTap: () async {
-                      await routeToPage(context, const DebugSettingsPage());
-                    },
-                  ),
-                  _buildMenuItem(
-                    title: "ML Debug",
-                    icon: HugeIcons.strokeRoundedAiBrain01,
-                    onTap: () async {
-                      await routeToPage(context, const MLDebugSettingsPage());
-                    },
-                  ),
-                ],
+              _buildDivider(),
+              _buildSectionHeader("Pengembang"),
+              _buildMenuItem(
+                title: "Debug",
+                icon: HugeIcons.strokeRoundedBug02,
+                onTap: () async {
+                  await routeToPage(context, const DebugSettingsPage());
+                },
+              ),
+              _buildMenuItem(
+                title: "ML Debug",
+                icon: HugeIcons.strokeRoundedAiBrain01,
+                onTap: () async {
+                  await routeToPage(context, const MLDebugSettingsPage());
+                },
               ),
             ],
             if (hasLoggedIn && !isLocalGalleryMode) ...[
               const SizedBox(height: 16),
               _buildLogoutCard(context),
             ],
-            _buildBiyenFooter(context, colors),
+            _buildBiyenFooter(context),
           ],
         );
       },
@@ -284,19 +263,18 @@ class _SettingsBody extends StatelessWidget {
   Widget _buildMinimalistProfileHeader(
     BuildContext context,
     String email,
-    ColorTokens colors,
   ) {
     final initial = email.isNotEmpty ? email[0].toUpperCase() : "B";
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => _showVerifyIdentityDialog(context),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
+        padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
         child: Row(
           children: [
             Container(
-              width: 46,
-              height: 46,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 color: const Color(0xFFC8502E),
                 shape: BoxShape.circle,
@@ -319,33 +297,17 @@ class _SettingsBody extends StatelessWidget {
             ),
             const SizedBox(width: 14),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    email,
-                    style: TextStyle(
-                      fontFamily: "Outfit",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: colors.textBase,
-                      letterSpacing: -0.3,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    "Penyimpanan Privat & Terenkripsi",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: colors.textLight,
-                      letterSpacing: 0.1,
-                    ),
-                  ),
-                ],
+              child: Text(
+                email,
+                style: const TextStyle(
+                  fontFamily: "Outfit",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF2C2523),
+                  letterSpacing: -0.3,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -354,45 +316,56 @@ class _SettingsBody extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title, ColorTokens colors) {
+  Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.only(left: 6, top: 14, bottom: 8),
+      padding: const EdgeInsets.only(left: 4, top: 14, bottom: 4),
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: "Outfit",
           fontSize: 11,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
-          color: colors.textLight,
+          color: Color(0xFF9E928A),
         ),
       ),
     );
   }
 
-  Widget _buildBiyenFooter(BuildContext context, ColorTokens colors) {
+  Widget _buildDivider() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      child: Divider(
+        height: 1,
+        thickness: 0.5,
+        color: Color(0xFFF0EBE5),
+      ),
+    );
+  }
+
+  Widget _buildBiyenFooter(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 28, bottom: 48),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          const Text(
             "Biyen Photos",
             style: TextStyle(
               fontFamily: "Outfit",
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: colors.textLight,
+              color: Color(0xFF8C7D73),
               letterSpacing: 0.3,
             ),
           ),
           const SizedBox(height: 3),
-          Text(
+          const Text(
             "oleh Levitation",
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: colors.textLighter,
+              color: Color(0xFFA89A90),
             ),
           ),
           const SizedBox(height: 8),
