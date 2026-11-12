@@ -410,7 +410,7 @@ func (c *UserController) NotifyAccountDeletion(userID int64, userEmail string, i
 
 	templateData := make(map[string]interface{})
 	templateData["AccountRecoveryLink"] = accountRecoveryLink
-	err = email.SendTemplatedEmail([]string{userEmail}, "ente", "team@ente.com",
+	err = email.SendTemplatedEmail([]string{userEmail}, "Biyen", "team@biyen.levitation.web.id",
 		AccountDeletedEmailSubject, template, templateData, nil)
 	if err != nil {
 		logrus.WithError(err).Errorf("Failed to send the account deletion email to %s", userEmail)

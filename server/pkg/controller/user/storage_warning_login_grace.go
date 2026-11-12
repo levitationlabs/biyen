@@ -11,9 +11,9 @@ import (
 const (
 	storageWarningLoginGraceBaseTemplate = "ente_base.html"
 	storageWarningLoginGraceTemplate     = "storage-warning/storage_warning_login_grace.html"
-	storageWarningLoginGraceSubject      = "Temporary access restored to your Ente account"
-	storageWarningLoginGraceFromName     = "Ente"
-	storageWarningLoginGraceFromEmail    = "support@ente.com"
+	storageWarningLoginGraceSubject      = "Temporary access restored to your Biyen account"
+	storageWarningLoginGraceFromName     = "Biyen"
+	storageWarningLoginGraceFromEmail    = "support@biyen.levitation.web.id"
 )
 
 var sendStorageWarningLoginGraceEmail = emailUtil.SendTemplatedEmailV2

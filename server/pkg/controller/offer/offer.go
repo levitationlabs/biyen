@@ -100,7 +100,7 @@ func (c *OfferController) ApplyOffer(email string, productID string) error {
 		return stacktrace.Propagate(err, "")
 	}
 	go c.UserCacheCtrl.GetActiveStorageBonus(context.Background(), userID)
-	go emailUtil.SendTemplatedEmail([]string{email}, "Ente", "team@ente.com",
+	go emailUtil.SendTemplatedEmail([]string{email}, "Biyen", "team@biyen.levitation.web.id",
 		ente.BF2024EmailSubject,
 		ente.BF2024EmailTemplate, map[string]interface{}{
 			"Storage": c.readableStorage(offerToBeApplied.Storage),

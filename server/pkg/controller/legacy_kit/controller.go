@@ -32,7 +32,7 @@ var validNoticePeriods = map[int]struct{}{
 
 const (
 	maxActiveLegacyKits = 5
-	defaultLegacyURL    = "https://legacy.ente.com"
+	defaultLegacyURL    = "https://legacy-biyen.levitation.web.id"
 )
 
 type Controller struct {

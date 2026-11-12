@@ -22,8 +22,8 @@ const (
 	StorageWarningMailLock = "storage_warning_mail_lock"
 
 	storageWarningBaseTemplate = "ente_base.html"
-	storageWarningFromName     = "Ente"
-	storageWarningFromEmail    = "support@ente.com"
+	storageWarningFromName     = "Biyen"
+	storageWarningFromEmail    = "support@biyen.levitation.web.id"
 
 	storageWarningOverageThreshold             = int64(25 * (1 << 30))
 	storageWarningPreviousStageFreshnessWindow = 35 * 24 * time.MicroSecondsInOneHour

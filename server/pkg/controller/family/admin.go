@@ -287,7 +287,7 @@ func (c *Controller) sendNotification(ctx context.Context, adminUserID int64, me
 		return stacktrace.Propagate(fmt.Errorf("unsupported status %s", newStatus), "")
 	}
 	inlineImages = append(inlineImages, inlineImage)
-	err = emailUtil.SendTemplatedEmail([]string{emailTo}, "ente", "team@ente.com",
+	err = emailUtil.SendTemplatedEmail([]string{emailTo}, "Biyen", "team@biyen.levitation.web.id",
 		title, templateName, templateData, inlineImages)
 	if err != nil {
 		return stacktrace.Propagate(err, "")

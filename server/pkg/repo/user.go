@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	DELETED_EMAIL_HASH_FORMAT = "deleted+%d@ente.io"
+	DELETED_EMAIL_HASH_FORMAT = "deleted+%d@biyen.levitation.web.id"
 )
 
 type UserRepository struct {

@@ -117,7 +117,7 @@ func (c *Controller) sendContactNotification(ctx context.Context, legacyUserID i
 
 	for _, data := range emailDatas {
 		content := data
-		err = emailUtil.SendTemplatedEmailV2([]string{content.emailTo}, "Ente", "team@ente.com",
+		err = emailUtil.SendTemplatedEmailV2([]string{content.emailTo}, "Biyen", "team@biyen.levitation.web.id",
 			content.title, BaseTemplate, content.templateName, content.templateData, content.inlineImages)
 		if err != nil {
 			log.WithError(err).WithFields(log.Fields{
@@ -234,7 +234,7 @@ func (c *Controller) sendRecoveryNotification(ctx context.Context, legacyUserID 
 
 	for _, data := range emailDatas {
 		content := data
-		err = emailUtil.SendTemplatedEmailV2([]string{content.emailTo}, "Ente", "team@ente.com",
+		err = emailUtil.SendTemplatedEmailV2([]string{content.emailTo}, "Biyen", "team@biyen.levitation.web.id",
 			content.title, BaseTemplate, content.templateName, content.templateData, content.inlineImages)
 		if err != nil {
 			log.WithError(err).WithFields(log.Fields{

@@ -26,8 +26,8 @@ func (c *Controller) sendKitCreatedNotification(userID int64) {
 	}
 	if err := email.SendTemplatedEmailV2(
 		[]string{user.Email},
-		"Ente",
-		"team@ente.com",
+		"Biyen",
+		"team@biyen.levitation.web.id",
 		"Your Legacy kit was created",
 		legacyKitBaseTemplate,
 		legacyKitCreatedTemplate,
@@ -53,8 +53,8 @@ func (c *Controller) sendRecoveryStartedNotification(ctx context.Context, userID
 	}
 	if err := email.SendTemplatedEmailV2(
 		[]string{user.Email},
-		"Ente",
-		"team@ente.com",
+		"Biyen",
+		"team@biyen.levitation.web.id",
 		"Legacy Kit recovery initiated",
 		legacyKitBaseTemplate,
 		legacyKitRecoveryStartedTemplate,
@@ -74,8 +74,8 @@ func (c *Controller) sendRecoveryCompletedNotification(ctx context.Context, user
 	}
 	if err := email.SendTemplatedEmailV2(
 		[]string{user.Email},
-		"Ente",
-		"team@ente.com",
+		"Biyen",
+		"team@biyen.levitation.web.id",
 		"Legacy Kit recovery completed",
 		legacyKitBaseTemplate,
 		legacyKitRecoveryCompletedTemplate,
