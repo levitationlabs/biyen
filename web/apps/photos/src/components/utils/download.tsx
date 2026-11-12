@@ -11,7 +11,7 @@ export const downloadAppDialogAttributes = (): MiniDialogAttributes => ({
     continue: { text: t("download"), action: downloadApp },
 });
 
-const downloadApp = () => openURL("https://ente.com/download/desktop");
+const downloadApp = () => openURL("https://biyen.levitation.web.id");
 
 export const updateReadyToInstallDialogAttributes = ({
     version,

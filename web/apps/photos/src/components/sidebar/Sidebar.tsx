@@ -30,6 +30,7 @@ import {
 } from "ente-base/components/utils/modal";
 import { photosTheme } from "ente-base/components/utils/theme";
 import { RowCard } from "ente-base/components/v2/RowCard";
+import { BIYEN_FEATURES } from "ente-base/biyen-config";
 import { useBaseContext } from "ente-base/context";
 import log from "ente-base/log";
 import { customAPIHost } from "ente-base/origins";
@@ -724,7 +725,12 @@ const SubscriptionStatus: React.FC<SubscriptionStatusProps> = ({
             e.stopPropagation();
 
             if (isSubscriptionActive(userDetails.subscription)) {
-                if (hasExceededStorageQuota(userDetails)) {
+                if (
+                    hasExceededStorageQuota(userDetails) ||
+                    (isSubscriptionFree(userDetails.subscription) &&
+                        userDetails.subscription.storage <= 0 &&
+                        userDetails.storageBonus <= 0)
+                ) {
                     onShowPlanSelector();
                 }
             } else {
@@ -750,9 +756,33 @@ const SubscriptionStatus: React.FC<SubscriptionStatusProps> = ({
 
     let message: React.ReactNode;
     if (!hasAddOnBonus) {
-        if (isSubscriptionActive(userDetails.subscription)) {
+        if (hasExceededStorageQuota(userDetails)) {
+            message = (
+                <Trans
+                    i18nKey={"subscription_info_storage_quota_exceeded"}
+                    components={{ a: <LinkButton onClick={handleClick} /> }}
+                />
+            );
+        } else if (isSubscriptionActive(userDetails.subscription)) {
             if (isSubscriptionFree(userDetails.subscription)) {
-                message = t("subscription_info_free");
+                if (
+                    userDetails.subscription.storage <= 0 &&
+                    userDetails.storageBonus <= 0
+                ) {
+                    message = (
+                        <Trans
+                            i18nKey={"choose_plan_cta"}
+                            defaults={
+                                "Belum berlangganan · <a class=\"text-terracotta\">Pilih paket</a>"
+                            }
+                            components={{
+                                a: <LinkButton onClick={handleClick} />,
+                            }}
+                        />
+                    );
+                } else {
+                    message = t("subscription_info_free");
+                }
             } else if (isSubscriptionCancelled(userDetails.subscription)) {
                 message = t("subscription_info_renewal_cancelled", {
                     date: userDetails.subscription.expiryTime,
@@ -818,11 +848,13 @@ const UtilitySection: React.FC<UtilitySectionProps> = ({
                 title={t("account")}
                 onClick={showAccount}
             />
-            <RowCard
-                variant="parent"
-                title={t("referrals")}
-                onClick={showReferrals}
-            />
+            {BIYEN_FEATURES.enableReferrals && (
+                <RowCard
+                    variant="parent"
+                    title={t("referrals")}
+                    onClick={showReferrals}
+                />
+            )}
             {isDesktop && (
                 <RowCard
                     variant="parent"

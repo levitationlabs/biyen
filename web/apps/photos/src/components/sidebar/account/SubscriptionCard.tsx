@@ -152,7 +152,10 @@ interface StorageSectionProps {
 
 const StorageSection: React.FC<StorageSectionProps> = ({ usage, storage }) => {
     const isExtraSmallWidth = useMediaQuery("(width < 360px)");
-    const label = isExtraSmallWidth ? (
+    const isUnsubscribed = storage <= 0;
+    const label = isUnsubscribed ? (
+        t("no_active_plan", "Belum Berlangganan")
+    ) : isExtraSmallWidth ? (
         `${bytesInGB(usage)} /  ${bytesInGB(storage)} ${t("storage_unit.gb")} ${t("used")}`
     ) : (
         <>
@@ -166,14 +169,39 @@ const StorageSection: React.FC<StorageSectionProps> = ({ usage, storage }) => {
 
     return (
         <Box>
-            <Typography variant="tiny" sx={{ opacity: 0.7, mb: "2px" }}>
-                {t("storage")}
-            </Typography>
+            <Stack
+                direction="row"
+                sx={{
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    mb: "2px",
+                }}
+            >
+                <Typography variant="tiny" sx={{ opacity: 0.7 }}>
+                    {t("storage")}
+                </Typography>
+                {isUnsubscribed && (
+                    <Box
+                        sx={{
+                            fontSize: "10px",
+                            fontWeight: 700,
+                            px: 1,
+                            py: 0.25,
+                            borderRadius: "10px",
+                            backgroundColor: "rgba(200, 80, 46, 0.2)",
+                            color: "#FF8A65",
+                            letterSpacing: "0.02em",
+                        }}
+                    >
+                        {t("no_plan", "No Plan")}
+                    </Box>
+                )}
+            </Stack>
             <Typography
                 variant="h3"
                 noWrap
                 sx={{
-                    fontSize: "24px",
+                    fontSize: isUnsubscribed ? "20px" : "24px",
                     lineHeight: "32px",
                     fontWeight: 700,
                     letterSpacing: "-1px",
@@ -197,25 +225,30 @@ const IndividualUsageSection: React.FC<IndividualUsageSectionProps> = ({
     usage,
     storage,
     fileCount,
-}) => (
-    // Use the unsuffixed key as the fallback for languages with more plural forms.
-    <Stack sx={{ gap: 1.5 }}>
-        <UsageBar>
-            <UsageBarSegment {...{ usage, storage }} fillColor="#08C225" />
-        </UsageBar>
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-            <Typography variant="tiny">
-                {`${formattedStorageByteSize(storage - usage)} ${t("free")}`}
-            </Typography>
-            <Typography
-                variant="tiny"
-                sx={{ fontWeight: 600, color: "rgba(165, 165, 165, 0.79)" }}
-            >
-                {t("photos_count", { count: fileCount })}
-            </Typography>
+}) => {
+    const isUnsubscribed = storage <= 0;
+    return (
+        // Use the unsuffixed key as the fallback for languages with more plural forms.
+        <Stack sx={{ gap: 1.5 }}>
+            <UsageBar>
+                <UsageBarSegment {...{ usage, storage }} fillColor="#C8502E" />
+            </UsageBar>
+            <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+                <Typography variant="tiny">
+                    {isUnsubscribed
+                        ? t("choose_plan_cta", "Pilih paket untuk mengunggah")
+                        : `${formattedStorageByteSize(Math.max(0, storage - usage))} ${t("free")}`}
+                </Typography>
+                <Typography
+                    variant="tiny"
+                    sx={{ fontWeight: 600, color: "rgba(165, 165, 165, 0.79)" }}
+                >
+                    {t("photos_count", { count: fileCount })}
+                </Typography>
+            </Stack>
         </Stack>
-    </Stack>
-);
+    );
+};
 
 const UsageBar = styled("div")`
     position: relative;
@@ -236,7 +269,7 @@ const UsageBarSegment: React.FC<UsageBarSegmentProps> = ({
             position: "absolute",
             left: 0,
             top: 0,
-            width: "max(var(--et-width), 2px)",
+            width: storage > 0 ? "max(var(--et-width), 2px)" : "0px",
             height: "4px",
             borderRadius: "2px",
             backgroundColor: "var(--et-background-color)",
@@ -286,12 +319,12 @@ const FamilyUsageSection: React.FC<FamilyUsageSectionProps> = ({
             <UsageBarSegment
                 {...{ storage }}
                 usage={userUsage}
-                fillColor="#08C225"
+                fillColor="#C8502E"
             />
         </UsageBar>
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Stack direction="row" sx={{ gap: 1.5 }}>
-                <Legend label={t("you")} color="#08C225" />
+                <Legend label={t("you")} color="#C8502E" />
                 <Legend label={t("family")} color="#F4D93B" />
             </Stack>
             <Typography

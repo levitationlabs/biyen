@@ -49,8 +49,8 @@ export const v2CloseButtonSx = (theme: Theme) => ({
     }),
 });
 
-const greenAccent = "#08c225";
-const greenAccentHover = "#07ad21";
+const terracottaAccent = "#C8502E";
+const terracottaAccentHover = "#A53C1F";
 const errorColor = "#fa1336";
 
 export const v2LabelSx = {
@@ -112,11 +112,11 @@ export const v2CancelButtonSx = (theme: Theme) => ({
 export const v2SubmitButtonSx = {
     ...v2BaseActionSx,
     color: "#fff",
-    backgroundColor: greenAccent,
-    "&:hover": { backgroundColor: greenAccentHover },
+    backgroundColor: terracottaAccent,
+    "&:hover": { backgroundColor: terracottaAccentHover },
     "&.Mui-disabled": {
         color: "#fff",
-        backgroundColor: greenAccent,
+        backgroundColor: terracottaAccent,
         opacity: 0.7,
     },
 };

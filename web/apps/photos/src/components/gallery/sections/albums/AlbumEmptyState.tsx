@@ -21,32 +21,22 @@ export function AlbumEmptyState({ onAddPhotos }: { onAddPhotos?: () => void }) {
                 sx={{
                     position: "relative",
                     width: "100%",
-                    maxWidth: 265.209,
-                    aspectRatio: "265.209 / 215.196",
+                    maxWidth: 220,
+                    aspectRatio: "1",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                 }}
             >
                 <Box
                     component="img"
-                    src="/images/empty-album/background.svg"
+                    src="/images/biyen/gani_transparent_default.svg"
                     alt=""
                     sx={{
-                        position: "absolute",
-                        left: "-2.0305%",
-                        top: "5.0024%",
-                        width: "104.061%",
+                        width: "100%",
                         height: "auto",
-                    }}
-                />
-                <Box
-                    component="img"
-                    src="/images/empty-album/duck.svg"
-                    alt=""
-                    sx={{
-                        position: "absolute",
-                        left: "8.1219%",
-                        top: "10.79%",
-                        width: "81.3604%",
-                        height: "auto",
+                        maxHeight: 200,
+                        objectFit: "contain",
                     }}
                 />
             </Box>

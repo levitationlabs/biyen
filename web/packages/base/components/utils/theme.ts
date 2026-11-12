@@ -61,17 +61,18 @@ const getColors = (appName: AppName) => ({
 });
 
 const _colors = {
-    accentPhotos: { dark: "#00b33c", main: "#1db954", light: "#01de4d" },
+    // Biyen terracotta, kept in sync with mobile/apps/photos/lib/theme/colors.dart.
+    accentPhotos: { dark: "#A53C1F", main: "#C8502E", light: "#DE643F" },
     accentAuth: { dark: "#8e0fcb", main: "#9610d6", light: "#8e2de2" },
     accentShare: { dark: "#0056CC", main: "#1071FF", light: "#1071FF" },
     accentEnsu: { dark: "#f5d93a", main: "#f5d93a", light: "#f5d93a" },
     fixed: {
         white: "#fff",
         black: "#000",
-        success: "#1db954",
+        success: "#C8502E",
         golden: "#ffc107",
         danger: { dark: "#f53434", main: "#ea3f3f", light: "#ff6565" },
-        switchOn: "#2eca45",
+        switchOn: "#C8502E",
     },
     lightShare: {
         background: {
@@ -217,31 +218,32 @@ const _colors = {
             menu: "0px 0px 6px rgba(0 0 0 / 0.50), 0px 3px 6px rgba(0 0 0 / 0.25)",
         },
     },
+    // Biyen "warm archival cream" light scheme (mirrors mobile tokens).
     light: {
         background: {
-            default: "#fff",
-            paper: "#fff",
-            paper2: "#fbfbfb",
-            searchInput: "#f3f3f3",
+            default: "#FBF8F2",
+            paper: "#FFFFFF",
+            paper2: "#F5ECE0",
+            searchInput: "#F5ECE0",
         },
         backdrop: {
-            base: "rgba(255 255 255 / 0.92)",
-            muted: "rgba(255 255 255 / 0.75)",
-            faint: "rgba(255 255 255 / 0.30)",
+            base: "rgba(251 248 242 / 0.92)",
+            muted: "rgba(251 248 242 / 0.75)",
+            faint: "rgba(251 248 242 / 0.30)",
         },
         text: {
-            base: "#000",
-            muted: "rgba(0 0 0 / 0.60)",
-            faint: "rgba(0 0 0 / 0.50)",
+            base: "#1A1513",
+            muted: "rgba(26 21 19 / 0.62)",
+            faint: "rgba(26 21 19 / 0.48)",
         },
         fill: {
-            base: "#000",
-            muted: "rgba(0 0 0 / 0.12)",
-            faint: "rgba(0 0 0 / 0.04)",
-            faintHover: "rgba(0 0 0 / 0.08)",
-            fainter: "rgba(0 0 0 / 0.02)",
+            base: "#1A1513",
+            muted: "rgba(26 21 19 / 0.12)",
+            faint: "rgba(26 21 19 / 0.04)",
+            faintHover: "rgba(26 21 19 / 0.08)",
+            fainter: "rgba(26 21 19 / 0.02)",
         },
-        secondary: { main: "#f5f5f5", hover: "#e9e9e9" },
+        secondary: { main: "#F5ECE0", hover: "#EBDFCF" },
         stroke: {
             base: "#000",
             muted: "rgba(0 0 0 / 0.24)",
@@ -253,17 +255,18 @@ const _colors = {
             menu: "0px 0px 6px rgba(0 0 0 / 0.16), 0px 3px 6px rgba(0 0 0 / 0.12)",
         },
     },
+    // Biyen warm dark scheme (mirrors mobile tokens).
     dark: {
         background: {
-            default: "#000",
-            paper: "#1b1b1b",
-            paper2: "#252525",
-            searchInput: "#1b1b1b",
+            default: "#1A1513",
+            paper: "#261F1C",
+            paper2: "#332A26",
+            searchInput: "#261F1C",
         },
         backdrop: {
-            base: "rgba(0 0 0 / 0.90)",
-            muted: "rgba(0 0 0 / 0.65)",
-            faint: "rgba(0 0 0 / 0.20)",
+            base: "rgba(26 21 19 / 0.90)",
+            muted: "rgba(26 21 19 / 0.65)",
+            faint: "rgba(26 21 19 / 0.20)",
         },
         text: {
             base: "#fff",

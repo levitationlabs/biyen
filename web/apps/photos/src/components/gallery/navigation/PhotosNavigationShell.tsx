@@ -48,6 +48,7 @@ import {
 import type { GallerySectionPresentation } from "./GallerySectionLayout";
 import { NavigationSlide } from "./NavigationSlide";
 import { usePhotosNavigation } from "./PhotosNavigationContext";
+import { BiyenBottomNav } from "./BiyenBottomNav";
 
 interface PhotosNavigationShellProps {
     onUpload: () => void;
@@ -135,13 +136,12 @@ export const PhotosNavigationShell: React.FC<
                 flex: 1,
                 minWidth: 0,
                 minHeight: 0,
-                bgcolor: "#F4F4F4",
+                bgcolor: "background.default",
                 ...theme.applyStyles("light", {
                     "& > :first-child .MuiButton-colorSecondary": {
                         "--mui-palette-secondary-main": "#FFFFFF",
                     },
                 }),
-                ...theme.applyStyles("dark", { bgcolor: "#161616" }),
             })}
         >
             <NavbarBase
@@ -168,11 +168,12 @@ export const PhotosNavigationShell: React.FC<
                     minWidth: 0,
                     minHeight: 0,
                     overflow: "clip",
-                    p: { xs: "0 8px 8px 0", sm: "0 11px 11px 0" },
+                    p: { xs: "0 8px 0 8px", md: "0 11px 0 0" },
+                    pb: { xs: "64px", md: "11px" },
                 }}
             >
                 <NavigationSlide
-                    open
+                    open={!mobile}
                     width={{ xs: 56, sm: 72 }}
                     reduceMotion={reduceMotion}
                     rail
@@ -238,6 +239,14 @@ export const PhotosNavigationShell: React.FC<
                 setLoading={setSettingsLoading}
             />
             {settingsLoading && <TranslucentLoadingOverlay />}
+            {mobile && (
+                <BiyenBottomNav
+                    navigation={navigation}
+                    isHome={isHome}
+                    onOpenSearch={() => actions.openSection("search")}
+                    onOpenSettings={() => showSettings()}
+                />
+            )}
         </Stack>
     );
 };
@@ -305,14 +314,11 @@ const NormalHeaderContents: React.FC<
             </Tooltip>
             <EnteLogoBox
                 sx={{
-                    position: "absolute",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    pointerEvents: "none",
-                    "& svg": { height: { xs: "18px", sm: "20px" } },
+                    ml: { xs: 1.5, sm: 2.5 },
+                    "& svg": { height: { xs: "22px", sm: "26px" } },
                 }}
             >
-                <EnteLogo height={15} />
+                <EnteLogo height={24} />
             </EnteLogoBox>
             <Box sx={{ flex: 1 }} />
             <UploadButton onClick={onUpload} />

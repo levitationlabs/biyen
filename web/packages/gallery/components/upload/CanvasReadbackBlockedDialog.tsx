@@ -35,7 +35,7 @@ export const CanvasReadbackBlockedDialog: React.FC<
                     <Subtitle>
                         {t("canvas_blocked_upload_failed_description")}{" "}
                         <HelpLink
-                            href="https://ente.com/help/photos/faq/troubleshooting#thumbnails"
+                            href="https://biyen.levitation.web.id"
                             target="_blank"
                             rel="noopener"
                         >
@@ -150,12 +150,12 @@ const HelpLink = styled(Link)(({ theme }) => ({
     fontWeight: "inherit",
     fontSize: 14,
     lineHeight: "20px",
-    color: "#08C225",
-    textDecorationColor: "#08C225",
-    "&:hover": { color: "#07A820", textDecorationColor: "#07A820" },
+    color: "#C8502E",
+    textDecorationColor: "#C8502E",
+    "&:hover": { color: "#A53C1F", textDecorationColor: "#A53C1F" },
     ...theme.applyStyles("dark", {
-        color: "#22D840",
-        textDecorationColor: "#22D840",
-        "&:hover": { color: "#4BE066", textDecorationColor: "#4BE066" },
+        color: "#DE643F",
+        textDecorationColor: "#DE643F",
+        "&:hover": { color: "#E88162", textDecorationColor: "#E88162" },
     }),
 }));

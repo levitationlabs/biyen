@@ -544,7 +544,8 @@ const Plans: React.FC<PlansProps> = ({
             ))}
         {(!subscription || isSubscriptionFree(subscription)) &&
             !hasAddOnBonus &&
-            plansData?.freePlan && (
+            plansData?.freePlan &&
+            plansData.freePlan.storage > 0 && (
                 <FreePlanRow
                     onClose={onClose}
                     storage={plansData.freePlan.storage}

@@ -235,7 +235,7 @@ export default function PublicAlbumPage() {
                     if (isCustomAPIOrigin) {
                         await router.push("/");
                     } else {
-                        window.location.href = "https://photos.ente.com";
+                        window.location.href = "https://biyen.levitation.web.id";
                     }
                 },
             },
@@ -252,7 +252,7 @@ export default function PublicAlbumPage() {
         }
 
         const currentURL = new URL(window.location.href);
-        const albumsURL = new URL("https://albums.ente.com");
+        const albumsURL = new URL("https://albums-biyen.levitation.web.id");
 
         if (currentURL.host === albumsURL.host) {
             return false;
@@ -289,7 +289,7 @@ export default function PublicAlbumPage() {
                 const ck = await extractCollectionKeyFromShareURL(currentURL);
                 if (!accessToken && !ck) {
                     if (!isCustomAPIOrigin) {
-                        window.location.href = "https://ente.com";
+                        window.location.href = "https://biyen.levitation.web.id";
                         redirectingToWebsite = true;
                     }
                 }
@@ -774,8 +774,8 @@ export default function PublicAlbumPage() {
                             />
                         ) : (
                             <SpacedRow sx={{ flex: 1 }}>
-                                <EnteLogoLink href="https://ente.com">
-                                    <EnteLogo height={17} />
+                                <EnteLogoLink href="https://biyen.levitation.web.id">
+                                    <EnteLogo height={18} />
                                 </EnteLogoLink>
                                 <Stack direction="row" spacing={2}>
                                     <SecondaryActionButton
@@ -1011,11 +1011,11 @@ const EnteLogoLink = styled("a")(({ theme }) => ({
 }));
 
 const GreenButton = styled(Button)(() => ({
-    backgroundColor: "#08C225",
+    backgroundColor: "#C8502E",
     borderRadius: "16px",
     paddingBlock: "11px",
     paddingInline: "20px",
-    "&:hover": { backgroundColor: "#07A820" },
+    "&:hover": { backgroundColor: "#A53C1F" },
 }));
 
 const navbarActionButtonSx = { borderRadius: "16px", paddingBlock: "11px" };
@@ -1731,6 +1731,28 @@ const FileListFooter: React.FC<{ onReport: () => void }> = ({ onReport }) => (
         >
             Tautan publik ini dilindungi enkripsi end-to-end Biyen Photos.
         </Typography>
+        <Button
+            variant="text"
+            size="small"
+            href="https://github.com/levitationlabs/biyen"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+                textTransform: "none",
+                color: "text.secondary",
+                fontSize: "0.8125rem",
+                p: 0,
+                minWidth: 0,
+                textDecoration: "underline",
+                "&:hover": {
+                    color: "primary.main",
+                    backgroundColor: "transparent",
+                    textDecoration: "underline",
+                },
+            }}
+        >
+            Sumber Terbuka (AGPLv3)
+        </Button>
         <Button
             variant="text"
             size="small"

@@ -690,7 +690,7 @@ const FileInfoSidebar = styled(
             },
         },
         "& .MuiIconButton-root.Mui-focusVisible": {
-            outline: "1px solid #08C225",
+            outline: "1px solid #C8502E",
             outlineOffset: 2,
         },
         display: "flex",

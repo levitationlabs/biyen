@@ -143,7 +143,7 @@ func GetDefaultPlans(plans ente.BillingPlansPerAccount) ente.BillingPlansPerCoun
 }
 
 func GetDefaultPlanCountry() string {
-	return "US"
+	return "ID"
 }
 
 func getStripeClient(apiKey string) *client.API {

@@ -347,13 +347,13 @@ interface FamilyDashboardProps {
 const familyMemberColors = [
     "#df61bb",
     "#f24822",
-    "#08c225",
+    "#C8502E",
     "#9610d6",
     "#087aff",
     "#f0a01e",
 ];
 const familyStorageColors = [
-    "#08c225",
+    "#C8502E",
     "#f08a1e",
     "#9610d6",
     "#087aff",

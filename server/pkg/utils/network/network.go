@@ -14,7 +14,11 @@ func IsCFWorkerIP(ip string) bool {
 }
 
 func GetClientCountry(c *gin.Context) string {
-	return c.GetHeader("CF-IPCountry")
+	country := c.GetHeader("CF-IPCountry")
+	if country == "" {
+		return "ID"
+	}
+	return country
 }
 
 var parser = uaparser.NewFromSaved()

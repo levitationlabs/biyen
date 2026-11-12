@@ -1,4 +1,5 @@
 import { isDesktop } from "ente-base/app";
+import { BIYEN_FEATURES } from "ente-base/biyen-config";
 import { isHLSGenerationSupported } from "ente-gallery/services/video";
 import { isMLSupported } from "ente-new/photos/services/ml";
 import type {
@@ -88,6 +89,7 @@ const sidebarActions = (): SidebarAction[] => {
                 "free storage",
                 "earn storage",
             ],
+            available: () => BIYEN_FEATURES.enableReferrals,
         },
         {
             id: "utility.watchFolders",
@@ -213,6 +215,7 @@ const sidebarActions = (): SidebarAction[] => {
             label: t("custom_domains"),
             path: [preferencesCategory, t("custom_domains")],
             keywords: ["domain", "link"],
+            available: () => BIYEN_FEATURES.enableCustomDomains,
         },
         {
             id: "preferences.map",

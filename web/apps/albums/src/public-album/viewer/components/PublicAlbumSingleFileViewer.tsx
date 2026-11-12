@@ -615,7 +615,7 @@ export const PublicAlbumSingleFileViewer: React.FC<
                             >
                                 <Box
                                     component="a"
-                                    href="https://ente.com"
+                                    href="https://biyen.levitation.web.id"
                                     target="_blank"
                                     rel="noopener"
                                     sx={{
@@ -755,10 +755,10 @@ export const PublicAlbumSingleFileViewer: React.FC<
                                         textTransform: "none",
                                         fontWeight: "medium",
                                         color: "#fff",
-                                        backgroundColor: "#08C225",
+                                        backgroundColor: "#C8502E",
                                         "&:hover": {
                                             color: "#fff",
-                                            backgroundColor: "#07A820",
+                                            backgroundColor: "#A53C1F",
                                         },
                                     }}
                                 >

@@ -1984,7 +1984,7 @@ export const ManagePublicShareOptions: React.FC<
     const embedURL = resolvedURL
         ? resolvedURL.replace(
               new URL(resolvedURL).origin,
-              embedBaseURL || "https://embed.ente.com",
+              embedBaseURL || "https://embed-biyen.levitation.web.id",
           )
         : undefined;
     const iframeHTML = embedURL

@@ -46,8 +46,8 @@ interface AppLockFormHeaderProps {
 
 type UnlockInputError = string | null | undefined;
 
-const ENTE_GREEN = "#08C225";
-const ENTE_GREEN_HOVER = "#07A820";
+const BIYEN_TERRACOTTA = "#C8502E";
+const BIYEN_TERRACOTTA_HOVER = "#A53C1F";
 const appLockModalContentSx = { width: 408 - 32, maxWidth: "100%" } as const;
 
 const useCooldownState = (
@@ -107,14 +107,14 @@ const primaryActionButtonSx = (theme: Parameters<typeof titleTextSx>[0]) => ({
     alignItems: "center",
     gap: 1,
     borderRadius: "20px",
-    backgroundColor: ENTE_GREEN,
+    backgroundColor: BIYEN_TERRACOTTA,
     fontSize: 16,
     fontWeight: 500,
     lineHeight: "20px",
     textTransform: "none" as const,
     color: "#fff",
     boxShadow: "none",
-    "&:hover": { backgroundColor: ENTE_GREEN_HOVER, boxShadow: "none" },
+    "&:hover": { backgroundColor: BIYEN_TERRACOTTA_HOVER, boxShadow: "none" },
     "&.Mui-disabled": {
         backgroundColor: "rgba(0, 0, 0, 0.04)",
         color: "#999",
@@ -144,7 +144,7 @@ const inputFieldSx = (
         backgroundColor: "#FAFAFA",
         borderRadius: `${String(options?.borderRadius ?? 12)}px !important`,
         "&::before": { borderBottom: "1px solid #E0E0E0" },
-        "&::after": { borderBottom: `2px solid ${ENTE_GREEN}` },
+        "&::after": { borderBottom: `2px solid ${BIYEN_TERRACOTTA}` },
         "&.Mui-error::before": { borderBottomColor: theme.palette.error.main },
         "&.Mui-error::after": { borderBottomColor: theme.palette.error.main },
         "&.Mui-error:hover:not(.Mui-disabled)::before": {
@@ -700,8 +700,8 @@ const DeviceLockUnlockContent = ({
                         }}
                         sx={(theme) => ({
                             ...primaryActionButtonSx(theme),
-                            backgroundColor: ENTE_GREEN,
-                            "&:hover": { backgroundColor: ENTE_GREEN_HOVER },
+                            backgroundColor: BIYEN_TERRACOTTA,
+                            "&:hover": { backgroundColor: BIYEN_TERRACOTTA_HOVER },
                             fontWeight: 600,
                             mt: 2,
                         })}

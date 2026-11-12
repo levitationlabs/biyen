@@ -159,7 +159,7 @@ function BrandPanel({
                 size={size}
                 $heights={presentationConfig.illustrationHeights}
             >
-                <img src="/images/auth-ducky.svg" alt="" />
+                <img src="/images/biyen/gani_transparent_default.svg" alt="" />
             </IllustrationClip>
         </BrandPanelRoot>
     );
@@ -388,7 +388,7 @@ const PanelCopy = styled("div", {
 })<{ size: BrandPanelProps["size"] }>(({ size }) => ({
     marginTop: size === "desktop" ? "32px" : 0,
     marginLeft: size === "mobile" ? "8px" : 0,
-    // On the tablet band the ducky is anchored to the right edge, so keep
+    // On the tablet band the illustration is anchored to the right edge, so keep
     // the copy from running underneath it at narrow widths.
     ...(size === "tablet" && { maxWidth: "calc(100% - 245px)" }),
     position: "relative",

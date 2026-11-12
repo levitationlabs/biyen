@@ -397,7 +397,7 @@ const OptionsForm: React.FC<OptionsFormProps> = ({
                 {t("fix_creation_time")}
             </FocusVisibleButton>
             <Link
-                href="https://ente.com/help/photos/faq/metadata-and-editing#fix-time-options"
+                href="https://biyen.levitation.web.id"
                 target="_blank"
                 rel="noopener"
                 sx={{

@@ -131,7 +131,7 @@ const Page: React.FC = () => {
                         title={t("account_recovery_success")}
                         description={t("account_recovery_success_description")}
                     />
-                    <FocusVisibleButton color="accent" href="https://ente.com">
+                    <FocusVisibleButton color="accent" href="https://biyen.levitation.web.id">
                         {t("open_ente")}
                     </FocusVisibleButton>
                 </RecoveryContents>

@@ -82,7 +82,7 @@ export function UploadCompletion({
                         src={
                             hasFailedUploads
                                 ? "/images/warning-red.png"
-                                : "/images/upload-complete-duck.svg"
+                                : "/images/biyen/gani_transparent_default.svg"
                         }
                         sx={[
                             completionIllustrationSx,
@@ -288,7 +288,7 @@ const primaryButtonSx = {
     ...baseButtonSx,
     color: "#fff",
     backgroundColor: uploadStatColors.completed,
-    "&:hover": { backgroundColor: "#07ad21", boxShadow: "none" },
+    "&:hover": { backgroundColor: "#A53C1F", boxShadow: "none" },
 };
 
 const failedReviewButtonSx = {

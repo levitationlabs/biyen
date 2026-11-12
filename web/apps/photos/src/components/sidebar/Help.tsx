@@ -1,4 +1,5 @@
 import { Stack } from "@mui/material";
+import { BIYEN_BRAND } from "ente-base/biyen-config";
 import {
     TitledNestedSidebarDrawer,
     type NestedSidebarDrawerVisibilityProps,
@@ -12,7 +13,8 @@ import type { SidebarActionID } from "ente-new/photos/services/search/types";
 import { initiateEmail, openURL } from "ente-new/photos/utils/web";
 import { t } from "i18next";
 import React, { useCallback, useEffect, useState } from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
+import { BiyenAboutDialog } from "./BiyenAboutDialog";
 
 export type HelpAction = Extract<
     SidebarActionID,
@@ -37,6 +39,9 @@ export const Help: React.FC<HelpProps> = ({
 }) => {
     const { showMiniDialog } = useBaseContext();
     const [appVersion, setAppVersion] = useState("");
+    const [aboutOpen, setAboutOpen] = useState(false);
+    const { i18n } = useTranslation();
+    const isId = i18n.language.startsWith("id");
 
     useEffect(() => {
         void globalThis.electron?.appVersion().then(setAppVersion);
@@ -47,20 +52,28 @@ export const Help: React.FC<HelpProps> = ({
         onRootClose();
     };
 
-    const handleHelp = useCallback(
-        () => openURL("https://ente.com/help/photos/"),
+    const handleSourceCode = useCallback(
+        () => openURL(BIYEN_BRAND.repoUrl),
         [],
     );
 
-    const handleBlog = useCallback(() => openURL("https://ente.com/blog/"), []);
+    const handleHelp = useCallback(
+        () => openURL(BIYEN_BRAND.photosUrl),
+        [],
+    );
+
+    const handleBlog = useCallback(
+        () => openURL(BIYEN_BRAND.photosUrl),
+        [],
+    );
 
     const handleRequestFeature = useCallback(
-        () => openURL("https://github.com/ente/ente/discussions"),
+        () => openURL(BIYEN_BRAND.repoUrl),
         [],
     );
 
     const handleSupport = useCallback(
-        () => initiateEmail("support@ente.com"),
+        () => initiateEmail(BIYEN_BRAND.supportEmail),
         [],
     );
 
@@ -124,38 +137,34 @@ export const Help: React.FC<HelpProps> = ({
         >
             <Stack sx={{ px: 2, py: 1, gap: 1 }}>
                 <RowCard
-                    title="Help centre"
-                    subtitle="ente.com/help/photos"
-                    onClick={handleHelp}
+                    title={isId ? "Tentang Biyen Photos" : "About Biyen Photos"}
+                    subtitle="AGPLv3 & Kepatuhan Sumber Terbuka"
+                    onClick={() => setAboutOpen(true)}
                 />
                 <RowCard
-                    title={t("blog")}
-                    subtitle="ente.com/blog"
-                    onClick={handleBlog}
-                />
-                <RowCard
-                    title="Request a feature"
-                    subtitle="github.com/ente/ente"
-                    onClick={handleRequestFeature}
+                    title={isId ? "Kode Sumber (AGPL §13)" : "Source Code (AGPL §13)"}
+                    subtitle="github.com/levitationlabs/biyen"
+                    onClick={handleSourceCode}
                 />
                 <RowCard
                     title={t("support")}
-                    subtitle="support@ente.com"
+                    subtitle={BIYEN_BRAND.supportEmail}
                     onClick={handleSupport}
                 />
                 <RowCard
                     title={t("view_logs")}
-                    subtitle="Share with support when something goes wrong"
+                    subtitle={isId ? "Bagikan dengan tim bantuan saat terjadi masalah" : "Share with support when something goes wrong"}
                     onClick={confirmViewLogs}
                 />
                 {appVersion && (
                     <RowCard
-                        title="About"
-                        subtitle={`Photos ${appVersion}`}
+                        title="Versi Aplikasi"
+                        subtitle={`Biyen Photos ${appVersion}`}
                         endIcon={null}
                     />
                 )}
             </Stack>
+            <BiyenAboutDialog open={aboutOpen} onClose={() => setAboutOpen(false)} />
         </TitledNestedSidebarDrawer>
     );
 };

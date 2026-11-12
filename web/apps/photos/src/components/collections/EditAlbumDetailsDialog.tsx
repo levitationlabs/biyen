@@ -329,8 +329,8 @@ const CoverTile = styled("div")`
     }
 `;
 
-const green = "#08c225";
-const greenHover = "#07ad21";
+const terracotta = "#C8502E";
+const terracottaHover = "#A53C1F";
 const errorColor = "#fa1336";
 
 const paperSx = (theme: Theme) => ({
@@ -410,7 +410,7 @@ const coverBadgeSx: SxProps<Theme> = (theme) => ({
     justifyContent: "center",
     borderRadius: "50%",
     color: "#fff",
-    backgroundColor: green,
+    backgroundColor: terracotta,
     border: "1.5px solid #f4f4f4",
     ...theme.applyStyles("dark", { borderColor: "#1b1b1b" }),
 });
@@ -468,9 +468,9 @@ const saveButtonSx = (theme: Theme) => ({
     fontWeight: 500,
     textTransform: "none",
     color: "#fff",
-    backgroundColor: green,
+    backgroundColor: terracotta,
     boxShadow: "none",
-    "&:hover": { backgroundColor: greenHover, boxShadow: "none" },
+    "&:hover": { backgroundColor: terracottaHover, boxShadow: "none" },
     "&.Mui-disabled": {
         color: "#d6d6d6",
         backgroundColor: "#eaeaea",
@@ -482,5 +482,9 @@ const saveButtonSx = (theme: Theme) => ({
 });
 
 const saveButtonBusySx = {
-    "&.Mui-disabled": { color: "#fff", backgroundColor: green, opacity: 0.7 },
+    "&.Mui-disabled": {
+        color: "#fff",
+        backgroundColor: terracotta,
+        opacity: 0.7,
+    },
 };

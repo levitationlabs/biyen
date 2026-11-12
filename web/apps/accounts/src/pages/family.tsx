@@ -133,7 +133,7 @@ const Page: React.FC = () => {
                     </FamilyInviteDescription>
                     <FocusVisibleButton
                         fullWidth
-                        href="https://photos.ente.com"
+                        href="https://biyen.levitation.web.id"
                         sx={{
                             ...v2SubmitButtonSx,
                             flex: "none",

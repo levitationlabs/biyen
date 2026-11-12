@@ -11,7 +11,7 @@ export const albumFilters: {
     label: () => string;
     title: () => string;
 }[] = [
-    { value: "ente", label: () => "Ente", title: () => "Ente" },
+    { value: "ente", label: () => "Biyen", title: () => "Biyen" },
     {
         value: "shared",
         label: () => t("shared_albums_label"),

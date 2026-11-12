@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" width="100%" height="100%">
+  <defs>
+    <!-- Elephant Skin Gradient (Warm Archival Clay/Grey) -->
+    <linearGradient id="elephantSkin" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#F5EFE6"/>
+      <stop offset="50%" stop-color="#EBE2D5"/>
+      <stop offset="100%" stop-color="#D6C7B5"/>
+    </linearGradient>
+
+    <!-- Ear Inner Warmth -->
+    <radialGradient id="earInner" cx="45%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#F7C9BC"/>
+      <stop offset="70%" stop-color="#EEA896"/>
+      <stop offset="100%" stop-color="#DE8C78"/>
+    </radialGradient>
+
+    <!-- Bandana Terracotta Gradient -->
+    <linearGradient id="bandanaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA6842"/>
+      <stop offset="60%" stop-color="#D95C38"/>
+      <stop offset="100%" stop-color="#B84220"/>
+    </linearGradient>
+
+    <!-- Amber Glow -->
+    <linearGradient id="amberGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD175"/>
+      <stop offset="100%" stop-color="#E59430"/>
+    </linearGradient>
+
+    <!-- Soft Ambient Drop Shadow -->
+    <filter id="charShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A2818" flood-opacity="0.12"/>
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#3A1708" flood-opacity="0.06"/>
+    </filter>
+
+    <filter id="photoShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#3A1F12" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <!-- Mascot Character Container (Transparent Background) -->
+  <g filter="url(#charShadow)">
+
+    <!-- BACK EARS -->
+    <!-- Left Ear -->
+    <g transform="translate(145, 250) rotate(-12)">
+      <ellipse cx="0" cy="0" rx="90" ry="105" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+      <ellipse cx="10" cy="0" rx="64" ry="78" fill="url(#earInner)" opacity="0.85"/>
+    </g>
+
+    <!-- Right Ear -->
+    <g transform="translate(455, 250) rotate(12)">
+      <ellipse cx="0" cy="0" rx="90" ry="105" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+      <ellipse cx="-10" cy="0" rx="64" ry="78" fill="url(#earInner)" opacity="0.85"/>
+    </g>
+
+    <!-- MAIN BODY -->
+    <g id="body">
+      <ellipse cx="300" cy="430" rx="155" ry="145" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+      <ellipse cx="300" cy="445" rx="110" ry="95" fill="#FAF5ED" opacity="0.6"/>
+
+      <!-- Feet -->
+      <g id="feet">
+        <!-- Left Foot -->
+        <g transform="translate(180, 540)">
+          <ellipse cx="0" cy="0" rx="48" ry="32" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+          <ellipse cx="0" cy="4" rx="34" ry="22" fill="#FAF5ED"/>
+          <circle cx="-18" cy="2" r="7" fill="#E8D9C5"/>
+          <circle cx="0" cy="-4" r="8" fill="#E8D9C5"/>
+          <circle cx="18" cy="2" r="7" fill="#E8D9C5"/>
+        </g>
+        
+        <!-- Right Foot -->
+        <g transform="translate(420, 540)">
+          <ellipse cx="0" cy="0" rx="48" ry="32" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+          <ellipse cx="0" cy="4" rx="34" ry="22" fill="#FAF5ED"/>
+          <circle cx="-18" cy="2" r="7" fill="#E8D9C5"/>
+          <circle cx="0" cy="-4" r="8" fill="#E8D9C5"/>
+          <circle cx="18" cy="2" r="7" fill="#E8D9C5"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- WARM BANDANA -->
+    <g id="bandana" transform="translate(300, 375)">
+      <path d="M -115 -18 Q 0 10 115 -18 Q 0 75 -115 -18 Z" fill="url(#bandanaGrad)" stroke="#B84220" stroke-width="2"/>
+      <ellipse cx="0" cy="28" rx="14" ry="10" fill="#EA6842"/>
+      <path d="M -8 32 L -18 64 L 0 54 L 18 64 L 8 32 Z" fill="#D95C38"/>
+      <circle cx="-60" cy="0" r="5" fill="url(#amberGlow)"/>
+      <circle cx="-25" cy="14" r="6" fill="url(#amberGlow)"/>
+      <circle cx="25" cy="14" r="6" fill="url(#amberGlow)"/>
+      <circle cx="60" cy="0" r="5" fill="url(#amberGlow)"/>
+    </g>
+
+    <!-- HEAD & FACE -->
+    <g id="head">
+      <circle cx="300" cy="240" r="135" fill="url(#elephantSkin)" stroke="#CFBEAA" stroke-width="3"/>
+      <path d="M 292 108 Q 295 85 305 90 Q 300 108 308 108" fill="none" stroke="#D6C7B5" stroke-width="4.5" stroke-linecap="round"/>
+
+      <!-- Eyes -->
+      <g transform="translate(245, 215)">
+        <ellipse cx="0" cy="0" rx="16" ry="22" fill="#2C201A"/>
+        <circle cx="5" cy="-6" r="6.5" fill="#FFFFFF"/>
+        <circle cx="-3" cy="8" r="3.5" fill="#FFFFFF"/>
+        <path d="M -14 -18 Q 0 -26 14 -18" fill="none" stroke="#2C201A" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <g transform="translate(355, 215)">
+        <ellipse cx="0" cy="0" rx="16" ry="22" fill="#2C201A"/>
+        <circle cx="5" cy="-6" r="6.5" fill="#FFFFFF"/>
+        <circle cx="-3" cy="8" r="3.5" fill="#FFFFFF"/>
+        <path d="M -14 -18 Q 0 -26 14 -18" fill="none" stroke="#2C201A" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+
+      <!-- Cheeks -->
+      <ellipse cx="210" cy="255" rx="20" ry="12" fill="#F48F78" opacity="0.75"/>
+      <ellipse cx="390" cy="255" rx="20" ry="12" fill="#F48F78" opacity="0.75"/>
+      <path d="M 285 285 Q 300 298 315 285" fill="none" stroke="#7C4632" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- TRUNK & POLAROID -->
+    <g id="trunkAndPhoto">
+      <g transform="translate(350, 270) rotate(14)" filter="url(#photoShadow)">
+        <rect x="0" y="0" width="125" height="150" rx="12" fill="#FFFFFF" stroke="#EFE4D6" stroke-width="2"/>
+        <rect x="10" y="10" width="105" height="102" rx="7" fill="#F8EADB"/>
+        <circle cx="62" cy="50" r="22" fill="#FFAF59" opacity="0.8"/>
+        <path d="M 10 78 Q 45 60 75 75 T 115 68 L 115 112 L 10 112 Z" fill="#D95C38" opacity="0.85"/>
+        <path d="M 62 48 C 62 48, 50 38, 50 28 C 50 20, 57 16, 62 21 C 67 16, 74 20, 74 28 C 74 38, 62 48, 62 48 Z" fill="#FFFFFF" opacity="0.9"/>
+        <text x="62" y="134" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="12" letter-spacing="2" fill="#8C5C48">BIYEN</text>
+      </g>
+
+      <path d="M 282 260 
+               Q 270 320 305 365 
+               Q 345 405 410 375 
+               Q 440 355 425 320 
+               Q 410 290 375 310 
+               Q 355 325 365 350" 
+            fill="none" 
+            stroke="url(#elephantSkin)" 
+            stroke-width="36" 
+            stroke-linecap="round"/>
+      <path d="M 284 295 Q 300 302 316 295" fill="none" stroke="#CFBEAA" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M 292 320 Q 308 328 324 320" fill="none" stroke="#CFBEAA" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M 312 345 Q 328 353 344 345" fill="none" stroke="#CFBEAA" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Floating Sparkles -->
+    <g transform="translate(150, 140)">
+      <path d="M 0,-12 Q 0,0 12,0 Q 0,0 0,12 Q 0,0 -12,0 Q 0,0 0,-12 Z" fill="url(#amberGlow)"/>
+    </g>
+    <g transform="translate(480, 180)">
+      <path d="M 0,-16 Q 0,0 16,0 Q 0,0 0,16 Q 0,0 -16,0 Q 0,0 0,-16 Z" fill="url(#amberGlow)"/>
+      <circle cx="0" cy="0" r="3" fill="#FFFFFF"/>
+    </g>
+  </g>
+</svg>

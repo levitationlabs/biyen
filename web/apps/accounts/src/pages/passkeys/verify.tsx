@@ -221,7 +221,7 @@ const Page = () => {
         lockerRegistrationDisabled: (
             <LockerAccessError
                 title="Oops"
-                body="Locker is available only to Ente photos paid users. Upgrade to a paid plan from Photos to use Locker"
+                body="Locker is available only to Biyen Photos subscribed users."
             />
         ),
         lockerRolloutLimitReached: (

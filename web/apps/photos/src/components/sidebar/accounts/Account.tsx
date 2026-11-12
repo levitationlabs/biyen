@@ -109,7 +109,12 @@ export const Account: React.FC<AccountProps> = ({
                 ? t(period == "year" ? "yearly" : "monthly")
                 : undefined;
 
-        planSubtext = [formattedStorageByteSize(storage), billingLabel]
+        planSubtext = [
+            storage > 0
+                ? formattedStorageByteSize(storage)
+                : t("no_plan", "Belum Berlangganan"),
+            billingLabel,
+        ]
             .filter(Boolean)
             .join(" · ");
     }

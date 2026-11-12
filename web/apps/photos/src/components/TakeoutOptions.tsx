@@ -152,11 +152,7 @@ export function TakeoutOptions({
                         {t("takeout_help_prompt")}{" "}
                     </span>
                     <Link
-                        href={
-                            provider == "apple"
-                                ? "https://ente.com/help/photos/faq/migration/#can-i-import-apple-photos-via-desktop"
-                                : "https://ente.com/help/photos/migration/from-google-photos/"
-                        }
+                        href="https://biyen.levitation.web.id"
                         target="_blank"
                         rel="noopener"
                         sx={{

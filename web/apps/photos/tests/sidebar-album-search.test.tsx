@@ -211,20 +211,20 @@ describe("sidebar album search across groups", () => {
         expect(html).toContain('aria-label="shared_albums_title"');
         expect(html).toContain('aria-expanded="true"');
         expect(html).toContain("Holiday album");
-        expect(html).not.toContain("no-matches.svg");
+        expect(html).not.toContain("gani_transparent_search.svg");
     });
 
     test("reveals matching Ente albums while Shared is selected", () => {
         const html = renderSearch("family", "shared");
-        expect(html).toContain('aria-label="Ente"');
+        expect(html).toMatch(/aria-label="(Ente|Biyen)"/);
         expect(html).toContain("Family");
         expect(html).not.toContain('aria-label="shared_albums_title"');
-        expect(html).not.toContain("no-matches.svg");
+        expect(html).not.toContain("gani_transparent_search.svg");
     });
 
     test("shows the empty state when neither albums nor shortcuts match", () => {
         const html = renderSearch("missing");
-        expect(html).toContain("no-matches.svg");
+        expect(html).toContain("gani_transparent_search.svg");
         for (const label of ["Uncategorized", "Hidden", "Archive", "Trash"])
             expect(html).not.toContain(`aria-label="${label}"`);
     });
@@ -236,7 +236,7 @@ describe("sidebar album search across groups", () => {
         ["archive", "Archive"],
     ])("shows only the matching shortcut for %j", (query, match) => {
         const html = renderSearch(query);
-        expect(html).not.toContain("no-matches.svg");
+        expect(html).not.toContain("gani_transparent_search.svg");
         for (const label of ["Uncategorized", "Hidden", "Archive", "Trash"])
             if (label == match) expect(html).toContain(`aria-label="${label}"`);
             else expect(html).not.toContain(`aria-label="${label}"`);
@@ -246,11 +246,11 @@ describe("sidebar album search across groups", () => {
         "restores all group headings for query %j",
         (query) => {
             const html = renderSearch(query);
-            expect(html).toContain('aria-label="Ente"');
+            expect(html).toMatch(/aria-label="(Ente|Biyen)"/);
             expect(html).toContain('aria-label="shared_albums_title"');
             expect(html).toContain("Family");
             expect(html).toContain("Holiday album");
-            expect(html).not.toContain("no-matches.svg");
+            expect(html).not.toContain("gani_transparent_search.svg");
         },
     );
 });
@@ -261,12 +261,12 @@ describe("Links sidebar search", () => {
         expect(html).toContain("Trip link");
         expect(html).toContain('aria-label="search_links"');
         expect(html).not.toContain('aria-label="filter_albums"');
-        expect(html).not.toContain("no-matches.svg");
+        expect(html).not.toContain("gani_transparent_search.svg");
     });
 
     test("uses the illustrated empty state when no links match", () => {
         const html = renderSearch("missing", "ente", "links");
-        expect(html).toContain("no-matches.svg");
+        expect(html).toContain("gani_transparent_search.svg");
         expect(html).not.toContain("Trip link");
         expect(html).not.toContain('aria-label="filter_albums"');
     });

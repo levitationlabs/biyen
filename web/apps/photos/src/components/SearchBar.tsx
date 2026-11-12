@@ -510,9 +510,9 @@ function SearchEmptyState() {
         >
             <Box
                 component="img"
-                src="/images/auth-ducky.svg"
+                src="/images/biyen/gani_transparent_search.svg"
                 alt=""
-                sx={{ width: 130, height: 100, objectFit: "contain" }}
+                sx={{ width: 140, height: 110, objectFit: "contain" }}
             />
             <Typography variant="h3" sx={{ color: "text.base" }}>
                 {t("search_no_matches")}

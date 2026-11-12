@@ -179,7 +179,7 @@ function UploadProgressSummary() {
             <Box
                 component="img"
                 alt=""
-                src="/images/upload-progress-sleeping-duck.svg"
+                src="/images/biyen/gani_transparent_default.svg"
                 sx={mascotSx}
             />
         </Box>

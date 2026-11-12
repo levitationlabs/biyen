@@ -16,7 +16,7 @@ const buildWebRedirectURL = (
     jwtToken?: string,
 ): string => {
     const hashSuffix = jwtToken ? `&jwt=${encodeURIComponent(jwtToken)}` : "";
-    return `https://photos.ente.com/?joinAlbum=${accessToken}&collectionId=${collectionId}#${currentHash}${hashSuffix}`;
+    return `https://biyen.levitation.web.id/?joinAlbum=${accessToken}&collectionId=${collectionId}#${currentHash}${hashSuffix}`;
 };
 
 const handleWebFallback = (

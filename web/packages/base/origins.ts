@@ -1,8 +1,9 @@
 import { getKVS } from "ente-base/kv";
+import { BIYEN_BRAND } from "./biyen-config";
 import { buildEnvCustomAPIEndpoint } from "./env";
 
 export const apiOrigin = async () =>
-    (await customAPIOrigin()) ?? "https://api.ente.com";
+    (await customAPIOrigin()) ?? BIYEN_BRAND.apiDefaultEndpoint;
 
 // path must begin with "/".
 export const apiURL = async (
@@ -21,7 +22,9 @@ export const apiURL = async (
 };
 
 export const customAPIOrigin = async () =>
-    (await getKVS("apiOrigin")) ?? buildEnvCustomAPIEndpoint ?? undefined;
+    (await getKVS("apiOrigin")) ??
+    buildEnvCustomAPIEndpoint ??
+    BIYEN_BRAND.apiDefaultEndpoint;
 
 // This ignores the KV custom server and only reflects the build-time override.
 export const isCustomAPIOrigin = !!buildEnvCustomAPIEndpoint;
@@ -33,4 +36,4 @@ export const customAPIHost = async () => {
 
 // Custom deployments bypass Ente's uploader worker.
 export const uploaderOrigin = async () =>
-    (await customAPIOrigin()) ?? "https://uploader.ente.com";
+    (await customAPIOrigin()) ?? BIYEN_BRAND.uploaderDefaultEndpoint;

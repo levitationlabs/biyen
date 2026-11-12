@@ -32,18 +32,18 @@ export const isDesktop = buildEnvIsDesktop;
 export const desktopAppVersion = buildEnvDesktopAppVersion;
 
 export const staticAppTitle = {
-    accounts: "Ente Accounts",
-    albums: "Ente Photos",
-    auth: "Ente Auth",
-    cast: "Ente Photos",
-    embed: "Ente Photos",
-    share: "Ente Locker",
-    photos: "Ente Photos",
-    photobook: "Ente Photobook",
+    accounts: "Biyen Accounts",
+    albums: "Biyen Photos",
+    auth: "Biyen Auth",
+    cast: "Biyen Photos",
+    embed: "Biyen Photos",
+    share: "Biyen Locker",
+    photos: "Biyen Photos",
+    photobook: "Biyen Photobook",
     ensu: "Ensu",
-    locker: "Ente Locker",
-    legacy: "Ente Legacy Kit",
-    space: "Ente Space",
+    locker: "Biyen Locker",
+    legacy: "Biyen Legacy Kit",
+    space: "Biyen Space",
 }[appName];
 
 // Sent as the X-Client-Package header.

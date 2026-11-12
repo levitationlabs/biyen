@@ -26,7 +26,7 @@ export type FinishedStatKind = (typeof finishedStatKinds)[number];
 export type UploadStatKind = "inProgress" | FinishedStatKind;
 
 export const uploadStatColors: Record<FinishedStatKind, string> = {
-    completed: "#08c225",
+    completed: "#C8502E",
     skipped: "#2c83ff",
     failed: "var(--mui-palette-critical-main)",
 };

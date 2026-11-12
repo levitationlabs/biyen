@@ -170,7 +170,7 @@ const CoverPhotoCard = memo(
                         sx={{
                             position: "absolute",
                             inset: 0,
-                            border: "3px solid #08c225",
+                            border: "3px solid #C8502E",
                             borderRadius: "inherit",
                             pointerEvents: "none",
                         }}
@@ -184,7 +184,7 @@ const CoverPhotoCard = memo(
                                 height: 26,
                                 boxSizing: "border-box",
                                 borderRadius: "50%",
-                                bgcolor: "#08c225",
+                                bgcolor: "#C8502E",
                                 border: "2px solid #fff",
                                 display: "grid",
                                 placeItems: "center",

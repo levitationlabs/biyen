@@ -221,7 +221,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
         backgroundColor: "#FAFAFA",
         borderRadius: 12,
         "&::before": { borderBottom: "1px solid #E0E0E0" },
-        "&::after": { borderBottom: "2px solid #08C225" },
+        "&::after": { borderBottom: "2px solid #C8502E" },
         "&:hover:not(.Mui-disabled)::before": {
             borderBottom: "1px solid #BDBDBD",
         },
@@ -265,22 +265,22 @@ const SubmitButton = styled(Button)<{ hasName: boolean }>(
         gap: 8,
         flex: 1,
         borderRadius: 20,
-        backgroundColor: hasName ? "#08C225" : "rgba(0, 0, 0, 0.04)",
+        backgroundColor: hasName ? "#C8502E" : "rgba(0, 0, 0, 0.04)",
         fontSize: 16,
         fontWeight: 500,
         textTransform: "none",
         color: hasName ? "#fff" : "#999",
         boxShadow: "none",
         "&:hover": {
-            backgroundColor: hasName ? "#07A820" : "rgba(0, 0, 0, 0.08)",
+            backgroundColor: hasName ? "#A53C1F" : "rgba(0, 0, 0, 0.08)",
             boxShadow: "none",
         },
         ...theme.applyStyles("dark", {
-            backgroundColor: hasName ? "#08C225" : "rgba(255, 255, 255, 0.08)",
+            backgroundColor: hasName ? "#C8502E" : "rgba(255, 255, 255, 0.08)",
             color: hasName ? "#fff" : "rgba(255, 255, 255, 0.5)",
             "&:hover": {
                 backgroundColor: hasName
-                    ? "#07A820"
+                    ? "#A53C1F"
                     : "rgba(255, 255, 255, 0.12)",
             },
         }),

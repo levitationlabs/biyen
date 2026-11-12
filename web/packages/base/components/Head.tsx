@@ -20,18 +20,18 @@ const AlbumsFontPreloads: React.FC = () => (
     </>
 );
 
-const albumsPreviewTitle = "Photos, shared with you";
-const albumsPreviewDescription = "Tap to view on Ente";
-const albumsPreviewImage = "https://albums.ente.com/images/preview.png";
-const albumsPreviewVideo = "https://albums.ente.com/videos/preview.mp4";
+const albumsPreviewTitle = "Foto, dibagikan untuk Anda";
+const albumsPreviewDescription = "Buka untuk melihat di Biyen Photos";
+const albumsPreviewImage = "https://albums-biyen.levitation.web.id/images/preview.png";
+const albumsPreviewVideo = "https://albums-biyen.levitation.web.id/videos/preview.mp4";
 const photosPreviewDescription =
-    "Store and share your photos with absolute privacy.";
-const photosPreviewImage = "https://photos.ente.com/images/preview.png";
+    "Simpan dan bagikan kenangan Anda dengan privasi mutlak dan enkripsi penuh.";
+const photosPreviewImage = "https://biyen.levitation.web.id/images/preview.png";
 
 export const CustomHead: React.FC<React.PropsWithChildren<CustomHeadProps>> = ({
     title,
     children,
-    description = "Ente - end-to-end encrypted cloud with open-source apps",
+    description = "Biyen Photos - Cloud foto pribadi terenkripsi end-to-end",
     viewportContent = "width=device-width, initial-scale=1",
 }) => (
     <Head>
@@ -71,7 +71,7 @@ export const CustomHeadPhotos: React.FC<CustomHeadProps> = ({ title }) =>
 const CustomHeadAlbumsStatic: React.FC = () => (
     <Head>
         <AlbumsFontPreloads />
-        <title>Ente Photos</title>
+        <title>Biyen Photos</title>
         <link rel="icon" href="/images/favicon.png" type="image/png" />
         <meta name="description" content={albumsPreviewDescription} />
         <meta property="og:type" content="website" />
@@ -108,7 +108,7 @@ export const CustomHeadAlbums: React.FC<CustomHeadProps> = ({ title }) =>
 
 const CustomHeadShareStatic: React.FC = () => (
     <Head>
-        <title>Ente Locker</title>
+        <title>Biyen</title>
         <link rel="icon" href="/images/favicon.png" type="image/png" />
         <meta
             name="description"

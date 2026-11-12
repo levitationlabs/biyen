@@ -82,7 +82,7 @@ export function GalleryEmptyState({
             >
                 <NonDraggableImage
                     alt=""
-                    src="/images/empty-state/ente_empty_state_figma.svg"
+                    src="/images/biyen/gani_transparent_default.svg"
                 />
 
                 <Stack
@@ -358,8 +358,8 @@ const GalleryEmptyStateButton = styled(FocusVisibleButton)(({ theme }) => ({
     lineHeight: "20px",
     fontWeight: 500,
     "&.MuiButton-containedAccent:not(.Mui-disabled)": {
-        backgroundColor: "#08C225",
-        "&:hover": { backgroundColor: "#08C225" },
+        backgroundColor: theme.vars.palette.accent.main,
+        "&:hover": { backgroundColor: "#A53C1F" },
     },
     "& .MuiButton-startIcon": { marginRight: 14, "& > svg": { fontSize: 20 } },
 }));

@@ -273,7 +273,7 @@ function StatCard({
     );
 }
 
-const green = "#08c225";
+const terracotta = "#C8502E";
 
 const paperSx = (theme: Theme) => ({
     width: "min(607px, calc(100svw - 32px))",
@@ -363,7 +363,7 @@ const successIconSx = {
     justifyContent: "center",
     borderRadius: "50%",
     color: "#fff",
-    backgroundColor: green,
+    backgroundColor: terracotta,
 };
 
 const loadingIconSx = {
@@ -457,13 +457,13 @@ const confirmButtonSx = (theme: Theme) => ({
     gap: "10px",
     borderRadius: "20px",
     color: "#fff",
-    backgroundColor: green,
+    backgroundColor: terracotta,
     boxShadow: "none",
     fontSize: 14,
     fontWeight: 500,
     lineHeight: "20px",
     textTransform: "none",
-    "&:hover": { backgroundColor: "#07ad21", boxShadow: "none" },
+    "&:hover": { backgroundColor: "#A53C1F", boxShadow: "none" },
     "&.Mui-disabled": {
         color: "rgba(0 0 0 / 0.6)",
         backgroundColor: "rgba(0 0 0 / 0.12)",

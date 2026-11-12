@@ -18,6 +18,7 @@ import { useModalVisibility } from "ente-base/components/utils/modal";
 import { MenuComponent } from "ente-base/components/v2/MenuComponent";
 import { MenuGroupComponent } from "ente-base/components/v2/MenuGroupComponent";
 import { RowCard } from "ente-base/components/v2/RowCard";
+import { BIYEN_FEATURES } from "ente-base/biyen-config";
 import { isHTTPErrorWithStatus } from "ente-base/http";
 import {
     getLocaleInUse,
@@ -190,11 +191,13 @@ export const Preferences: React.FC<PreferencesProps> = ({
                         onClick={showMLSettings}
                     />
                 )}
-                <RowCard
-                    title={t("custom_domains")}
-                    subtitle={customDomain || t("none")}
-                    onClick={showDomainSettings}
-                />
+                {BIYEN_FEATURES.enableCustomDomains && (
+                    <RowCard
+                        title={t("custom_domains")}
+                        subtitle={customDomain || t("none")}
+                        onClick={showDomainSettings}
+                    />
+                )}
                 <Stack>
                     <RowCard
                         title={t("map")}
@@ -561,7 +564,7 @@ const DomainSettingsContents: React.FC = () => {
                         components={{
                             a: (
                                 <Link
-                                    href="https://ente.com/help/photos/features/sharing-and-collaboration/custom-domains/"
+                                    href="https://biyen.levitation.web.id"
                                     target="_blank"
                                     rel="noopener"
                                     color="accent"

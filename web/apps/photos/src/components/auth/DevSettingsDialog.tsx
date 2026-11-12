@@ -64,7 +64,7 @@ export function DevSettingsDialog({
                     }
                     trailing={
                         <InfoLink
-                            href="https://ente.com/help/self-hosting/installation/post-install/#step-6-configure-apps-to-use-your-server"
+                            href="https://biyen.levitation.web.id"
                             target="_blank"
                             rel="noopener"
                             aria-label={t("more_information")}

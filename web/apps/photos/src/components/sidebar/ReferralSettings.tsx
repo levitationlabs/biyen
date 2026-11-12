@@ -420,7 +420,7 @@ const MainContents: React.FC<MainContentsProps> = ({
                     }
                     onClick={() =>
                         openURL(
-                            "https://ente.com/help/photos/features/account/referral-program/",
+                            "https://biyen.levitation.web.id",
                         )
                     }
                 />

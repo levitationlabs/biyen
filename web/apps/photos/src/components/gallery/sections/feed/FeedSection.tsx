@@ -194,13 +194,14 @@ export const FeedSection = ({
                             >
                                 <Box
                                     component="img"
-                                    src="/images/feed/empty.png"
+                                    src="/images/biyen/gani_transparent_feed.svg"
                                     alt=""
                                     draggable={false}
                                     sx={{
-                                        width: 240,
+                                        width: 200,
                                         height: "auto",
                                         maxWidth: "100%",
+                                        objectFit: "contain",
                                     }}
                                 />
                                 <Stack

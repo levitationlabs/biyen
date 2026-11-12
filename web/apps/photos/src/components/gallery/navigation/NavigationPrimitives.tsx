@@ -225,7 +225,7 @@ export const NavigationEmptyState = () => (
     >
         <Box
             component="img"
-            src="/images/empty-state/no-matches.svg"
+            src="/images/biyen/gani_transparent_search.svg"
             alt=""
             draggable={false}
             sx={{ width: 112, height: "auto", flexShrink: 0 }}

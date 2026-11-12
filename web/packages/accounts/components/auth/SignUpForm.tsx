@@ -4,6 +4,7 @@ import type { SignUpPresentationProps } from "ente-accounts/components/SignUpCon
 import { t } from "i18next";
 import type React from "react";
 import { Trans } from "react-i18next";
+import { BIYEN_FEATURES } from "ente-base/biyen-config";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
 import { Form } from "./Form";
@@ -91,25 +92,27 @@ export function SignUpForm({
                         helperText={confirmPasswordError}
                         disabled={isSubmitting}
                     />
-                    <TextField
-                        name="referral"
-                        label={
-                            <ReferralLabel>
-                                {t("referral_source_hint")}
-                                <Tooltip title={t("referral_source_info")}>
-                                    <InfoOutlinedIcon
-                                        fontSize="inherit"
-                                        tabIndex={0}
-                                        aria-label={t("referral_source_info")}
-                                    />
-                                </Tooltip>
-                            </ReferralLabel>
-                        }
-                        placeholder={t("auth_optional")}
-                        value={referral}
-                        onChange={onReferralChange}
-                        disabled={isSubmitting}
-                    />
+                    {BIYEN_FEATURES.enableReferrals && (
+                        <TextField
+                            name="referral"
+                            label={
+                                <ReferralLabel>
+                                    {t("referral_source_hint")}
+                                    <Tooltip title={t("referral_source_info")}>
+                                        <InfoOutlinedIcon
+                                            fontSize="inherit"
+                                            tabIndex={0}
+                                            aria-label={t("referral_source_info")}
+                                        />
+                                    </Tooltip>
+                                </ReferralLabel>
+                            }
+                            placeholder={t("auth_optional")}
+                            value={referral}
+                            onChange={onReferralChange}
+                            disabled={isSubmitting}
+                        />
+                    )}
                 </FormFields>
                 <Checkbox
                     name="acceptedTerms"
@@ -123,13 +126,13 @@ export function SignUpForm({
                                 components={{
                                     a: (
                                         <TermsLink
-                                            href="https://ente.com/terms"
+                                            href="https://biyen.levitation.web.id/terms"
                                             target="_blank"
                                         />
                                     ),
                                     b: (
                                         <TermsLink
-                                            href="https://ente.com/privacy"
+                                            href="https://biyen.levitation.web.id/privacy"
                                             target="_blank"
                                         />
                                     ),
