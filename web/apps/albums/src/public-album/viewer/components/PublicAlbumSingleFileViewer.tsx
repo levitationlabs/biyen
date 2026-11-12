@@ -762,7 +762,7 @@ export const PublicAlbumSingleFileViewer: React.FC<
                                         },
                                     }}
                                 >
-                                    {t("join_ente")}
+                                    Mulai dengan Biyen
                                 </Button>
                                 <IconButton
                                     onClick={(event) =>

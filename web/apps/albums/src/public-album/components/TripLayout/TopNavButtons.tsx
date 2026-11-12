@@ -68,7 +68,7 @@ export const TopNavButtons: React.FC<TopNavButtonsProps> = ({
                 <SignUpButton
                     onClick={() => (window.location.href = getEnteURL())}
                 >
-                    {t("join_ente")}
+                    Mulai dengan Biyen
                 </SignUpButton>
             </ButtonContainer>
 

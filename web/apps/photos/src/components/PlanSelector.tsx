@@ -226,9 +226,9 @@ export const PlanSelectorContents: React.FC<PlanSelectorContentsProps> = ({
                         <Trans
                             i18nKey={"mail_to_manage_subscription"}
                             components={{
-                                a: <Link href="mailto:support@ente.com" />,
+                                a: <Link href="mailto:support@biyen.levitation.web.id" />,
                             }}
-                            values={{ emailID: "support@ente.com" }}
+                            values={{ emailID: "support@biyen.levitation.web.id" }}
                         />
                     ),
                     continue: {},

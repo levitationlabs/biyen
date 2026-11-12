@@ -211,6 +211,7 @@ const shouldAllowChangingAPIOrigin = () => {
     return !(
         hostname.endsWith(".ente.com") ||
         hostname.endsWith(".ente.io") ||
-        hostname.endsWith(".ente.sh")
+        hostname.endsWith(".ente.sh") ||
+        hostname.endsWith(".levitation.web.id")
     );
 };

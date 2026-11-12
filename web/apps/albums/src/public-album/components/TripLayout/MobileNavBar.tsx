@@ -92,7 +92,7 @@ export const MobileNavBar: React.FC<MobileNavBarProps> = ({
                     <MobileSignUpButton
                         onClick={() => (window.location.href = getEnteURL())}
                     >
-                        {t("join_ente")}
+                        Mulai dengan Biyen
                     </MobileSignUpButton>
                 </ButtonGroup>
             </MobileNavContainer>

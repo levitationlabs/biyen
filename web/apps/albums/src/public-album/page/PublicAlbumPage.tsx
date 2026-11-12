@@ -1027,7 +1027,7 @@ const PrimaryActionButton: React.FC = () => {
 
     return (
         <GreenButton color="accent" onClick={handleGetEnte}>
-            {t("join_ente")}
+            Mulai dengan Biyen
         </GreenButton>
     );
 };
