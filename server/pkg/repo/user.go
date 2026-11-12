@@ -85,6 +85,19 @@ func (repo *UserRepository) IsLikelySelfHosted() bool {
 	return !userOneExists
 }
 
+// IsUserSuspended checks whether the user is currently suspended.
+func (repo *UserRepository) IsUserSuspended(userID int64) (bool, error) {
+	if repo.DB == nil {
+		return false, nil
+	}
+	var isSuspended bool
+	err := repo.DB.QueryRow(`SELECT is_suspended FROM users WHERE user_id = $1`, userID).Scan(&isSuspended)
+	if err != nil {
+		return false, stacktrace.Propagate(err, "")
+	}
+	return isSuspended, nil
+}
+
 func (repo *UserRepository) Delete(userID int64) error {
 	return deleteUser(context.Background(), repo.DB, userID)
 }

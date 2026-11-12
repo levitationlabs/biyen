@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <title>Pemberitahuan Penangguhan Akun</title>
+    <style>
+      body {
+        background-color: #f7f6f4;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        color: #2D3748;
+      }
+      .wrap {
+        background-color: #ffffff;
+        padding: 40px 32px;
+        max-width: 560px;
+        margin: 40px auto 20px auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+      .brand-header {
+        text-align: center;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #EDF2F7;
+        margin-bottom: 24px;
+      }
+      .brand-title {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #C8502E;
+        text-decoration: none;
+      }
+      .brand-subtitle {
+        font-size: 13px;
+        color: #718096;
+        margin-top: 4px;
+      }
+      .notice-badge {
+        display: inline-block;
+        background-color: #FFF5F5;
+        color: #C53030;
+        border: 1px solid #FEB2B2;
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+      .reason-box {
+        background-color: #F7FAFC;
+        border-left: 4px solid #C8502E;
+        padding: 14px 18px;
+        margin: 20px 0;
+        border-radius: 0 6px 6px 0;
+      }
+      .reason-box p {
+        margin: 0;
+        color: #4A5568;
+        font-style: italic;
+      }
+      .warning-box {
+        background-color: #FFFDF5;
+        border: 1px solid #FEEBC8;
+        border-left: 4px solid #DD6B20;
+        padding: 16px 18px;
+        margin: 24px 0;
+        border-radius: 4px;
+      }
+      .warning-box strong {
+        color: #C05621;
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .warning-box p {
+        margin: 0;
+        color: #7B341E;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .btn-container {
+        text-align: center;
+        margin: 32px 0 16px 0;
+      }
+      .button {
+        background-color: #C8502E;
+        border-radius: 6px;
+        text-decoration: none !important;
+        color: #ffffff !important;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 12px 28px;
+        display: inline-block;
+      }
+      .button:hover {
+        background-color: #A83D20;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #A0AEC0;
+        margin: 24px auto 40px auto;
+        max-width: 560px;
+      }
+      .footer a {
+        color: #718096;
+        text-decoration: underline;
+      }
+      @media screen and (max-width: 600px) {
+        .wrap {
+          margin: 16px 12px;
+          padding: 24px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="brand-header">
+        <a href="https://biyen.levitation.web.id" class="brand-title">BIYEN</a>
+        <div class="brand-subtitle">Simpan dan rawat kenangan berharga dengan privasi mutlak</div>
+      </div>
+
+      <div class="notice-badge">Pemberitahuan Penangguhan Akun</div>
+
+      <p>Halo,</p>
+
+      <p>
+        Kami menginformasikan bahwa akun Biyen Photo Anda saat ini telah <strong>ditangguhkan sementara</strong> oleh tim kepatuhan dan keamanan kami.
+      </p>
+
+      <p>Penangguhan ini dilakukan dengan alasan:</p>
+      <div class="reason-box">
+        <p>"{{.Reason}}"</p>
+      </div>
+
+      <div class="warning-box">
+        <strong>Peringatan Penting</strong>
+        <p>
+          Data dan foto Anda aman untuk sementara, namun <strong>AKAN DIHAPUS PERMANEN</strong> pada akhir masa aktif langganan jika tidak ada tindak lanjut/klarifikasi ke email bantuan.
+        </p>
+      </div>
+
+      <p>
+        Jika Anda meyakini ini adalah kekeliruan atau ingin memberikan klarifikasi dan memulihkan akses akun Anda, silakan hubungi tim bantuan kami segera.
+      </p>
+
+      <div class="btn-container">
+        <a href="mailto:support@biyen.id?subject=Klarifikasi%20Penangguhan%20Akun%20Biyen" class="button">Hubungi Tim Bantuan (support@biyen.id)</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p style="margin: 4px 0;">Biyen Photo &middot; Biyen by Levitation</p>
+      <p style="margin: 4px 0;"><a href="https://biyen.levitation.web.id">biyen.levitation.web.id</a> &middot; <a href="mailto:support@biyen.id">support@biyen.id</a></p>
+    </div>
+  </body>
+</html>

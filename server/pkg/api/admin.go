@@ -684,7 +684,9 @@ func (h *AdminHandler) notifyAdminAction(adminID int64, format string, args ...i
 		adminIdentifier = adminCtx.Email
 	}
 	action := fmt.Sprintf(format, args...)
-	go h.DiscordController.NotifyAdminAction(fmt.Sprintf("Admin (%s) %s", adminIdentifier, action))
+	if h.DiscordController != nil {
+		go h.DiscordController.NotifyAdminAction(fmt.Sprintf("Admin (%s) %s", adminIdentifier, action))
+	}
 	if err == nil {
 		go h.alertIfAdminMissing2FA(adminCtx)
 	}

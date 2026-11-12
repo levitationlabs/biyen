@@ -1,8 +1,13 @@
 package middleware
 
 import (
+	"database/sql"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -11,8 +16,11 @@ import (
 	"github.com/ente/museum/internal/testutil"
 	usercontroller "github.com/ente/museum/pkg/controller/user"
 	"github.com/ente/museum/pkg/repo"
+	"github.com/ente/museum/pkg/utils/auth"
 	"github.com/gin-gonic/gin"
+	_ "github.com/lib/pq"
 	"github.com/patrickmn/go-cache"
+	"github.com/stretchr/testify/require"
 )
 
 type authRouteTestTokens struct {
@@ -294,3 +302,83 @@ func performAuthRouteRequest(router *gin.Engine, path string, token string, clie
 	router.ServeHTTP(recorder, req)
 	return recorder
 }
+
+func TestSuspendedUserTokenAuth(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var db *sql.DB
+	if os.Getenv("ENV") == "test" && os.Getenv("PGDATABASE") != "" {
+		db = testutil.RequireTestDB(t)
+	} else {
+		var err error
+		db, err = sql.Open("postgres", "host=localhost port=5432 user=pguser password=pgpass dbname=ente_db sslmode=disable")
+		if err != nil {
+			t.Skipf("cannot open local test db: %v", err)
+		}
+		if err := db.Ping(); err != nil {
+			t.Skipf("cannot connect to local test db: %v", err)
+		}
+	}
+
+	nowMicro := time.Now().UnixMicro()
+	var userID int64
+	err := db.QueryRow(`INSERT INTO users(email_hash, creation_time, is_suspended) VALUES($1, $2, FALSE) RETURNING user_id`,
+		fmt.Sprintf("middleware_test_%d", nowMicro), nowMicro).Scan(&userID)
+	require.NoError(t, err)
+
+	userToken := fmt.Sprintf("test_token_%d", nowMicro)
+	tokenHash := auth.HashToken(userToken)
+	_, err = db.Exec(`INSERT INTO tokens(user_id, token_hash, creation_time, app) VALUES($1, $2, $3, $4)`,
+		userID, tokenHash[:], nowMicro, ente.Photos)
+	require.NoError(t, err)
+
+	t.Cleanup(func() {
+		_, _ = db.Exec(`DELETE FROM tokens WHERE user_id = $1`, userID)
+		_, _ = db.Exec(`DELETE FROM users WHERE user_id = $1`, userID)
+	})
+
+	userAuthRepo := &repo.UserAuthRepository{DB: db}
+	authCache := cache.New(time.Minute, time.Minute)
+	userController := &usercontroller.UserController{
+		UserAuthRepo: userAuthRepo,
+		Cache:        authCache,
+	}
+	authMiddleware := &AuthMiddleware{
+		UserAuthRepo:   userAuthRepo,
+		Cache:          authCache,
+		UserController: userController,
+	}
+
+	router := gin.New()
+	router.Use(authMiddleware.TokenAuthMiddleware(nil))
+	router.GET("/test-protected", func(c *gin.Context) {
+		c.Status(http.StatusOK)
+	})
+
+	// 1. User is not suspended -> 200 OK
+	reqActive := httptest.NewRequest(http.MethodGet, "/test-protected", nil)
+	reqActive.Header.Set("X-Auth-Token", userToken)
+	reqActive.Header.Set("X-Client-Package", "io.ente.photos")
+	respActive := httptest.NewRecorder()
+	router.ServeHTTP(respActive, reqActive)
+	require.Equal(t, http.StatusOK, respActive.Code)
+
+	// 2. Suspend user in DB and clear cache
+	_, err = db.Exec(`UPDATE users SET is_suspended = TRUE, suspend_reason = 'Suspicious activity' WHERE user_id = $1`, userID)
+	require.NoError(t, err)
+	authCache.Delete(ente.SuspendedUserCachePrefix + strconv.FormatInt(userID, 10))
+
+	// 3. Request should return 403 Forbidden with exact payload
+	reqSuspended := httptest.NewRequest(http.MethodGet, "/test-protected", nil)
+	reqSuspended.Header.Set("X-Auth-Token", userToken)
+	reqSuspended.Header.Set("X-Client-Package", "io.ente.photos")
+	respSuspended := httptest.NewRecorder()
+	router.ServeHTTP(respSuspended, reqSuspended)
+	require.Equal(t, http.StatusForbidden, respSuspended.Code)
+
+	var errResp map[string]string
+	err = json.Unmarshal(respSuspended.Body.Bytes(), &errResp)
+	require.NoError(t, err)
+	require.Equal(t, "account_suspended", errResp["error"])
+	require.Equal(t, "Akun Anda ditangguhkan sementara. Hubungi bantuan untuk memulihkan akses sebelum masa aktif langganan berakhir.", errResp["message"])
+}
+

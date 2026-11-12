@@ -351,6 +351,27 @@ func (repo *UserAuthRepository) RemoveTokensForApps(userID int64, apps []ente.Ap
 	)
 }
 
+// DeleteUserTokens marks all active tokens for a user as deleted and removes push tokens.
+func (repo *UserAuthRepository) DeleteUserTokens(userID int64) ([]RevokedToken, error) {
+	return repo.markTokensDeleted(
+		`UPDATE tokens SET is_deleted = true WHERE user_id = $1 AND is_deleted = false RETURNING app, token_hash`,
+		userID,
+	)
+}
+
+// IsUserSuspended checks if the user has been suspended.
+func (repo *UserAuthRepository) IsUserSuspended(userID int64) (bool, error) {
+	if repo.DB == nil {
+		return false, nil
+	}
+	var isSuspended bool
+	err := repo.DB.QueryRow(`SELECT is_suspended FROM users WHERE user_id = $1`, userID).Scan(&isSuspended)
+	if err != nil {
+		return false, stacktrace.Propagate(err, "")
+	}
+	return isSuspended, nil
+}
+
 func (repo *UserAuthRepository) markTokensDeleted(query string, args ...interface{}) ([]RevokedToken, error) {
 	tx, err := repo.DB.Begin()
 	if err != nil {

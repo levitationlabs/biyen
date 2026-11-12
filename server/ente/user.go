@@ -16,6 +16,7 @@ const (
 )
 
 const MaxPublicKeyBatchSize = 10
+const SuspendedUserCachePrefix = "user_suspended:"
 
 type User struct {
 	ID                 int64
@@ -26,6 +27,8 @@ type User struct {
 	FamilyAdminID      *int64 `json:"familyAdminID"`
 	IsTwoFactorEnabled *bool  `json:"isTwoFactorEnabled"`
 	IsEmailMFAEnabled  *bool  `json:"isEmailMFAEnabled"`
+	IsSuspended        bool   `json:"isSuspended"`
+	SuspendReason      string `json:"suspendReason"`
 }
 
 type SendOTTRequest struct {

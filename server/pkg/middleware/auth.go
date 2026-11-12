@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/ente/museum/ente"
 	"github.com/ente/museum/ente/jwt"
@@ -89,10 +90,52 @@ func (m *AuthMiddleware) TokenAuthMiddleware(jwtClaimScope *jwt.ClaimScope) gin.
 				return
 			}
 		}
+
+		isSuspended, err := m.isUserSuspended(userID)
+		if err != nil {
+			logrus.Errorf("Failed to check user suspension: %s", err)
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to validate user"})
+			return
+		}
+		if isSuspended {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"error":   "account_suspended",
+				"message": "Akun Anda ditangguhkan sementara. Hubungi bantuan untuk memulihkan akses sebelum masa aktif langganan berakhir.",
+			})
+			return
+		}
+
 		c.Request.Header.Set("X-Auth-User-ID", strconv.FormatInt(userID, 10))
 		c.Set(auth.AppContextKey, app)
 		c.Next()
 	}
+}
+
+func (m *AuthMiddleware) isUserSuspended(userID int64) (bool, error) {
+	cacheKey := ente.SuspendedUserCachePrefix + strconv.FormatInt(userID, 10)
+	if m.Cache != nil {
+		if val, ok := m.Cache.Get(cacheKey); ok {
+			if isSuspended, ok := val.(bool); ok {
+				return isSuspended, nil
+			}
+		}
+	}
+
+	var isSuspended bool
+	var err error
+	if m.UserController != nil {
+		isSuspended, err = m.UserController.IsUserSuspended(userID)
+	} else if m.UserAuthRepo != nil {
+		isSuspended, err = m.UserAuthRepo.IsUserSuspended(userID)
+	}
+	if err != nil {
+		return false, err
+	}
+
+	if m.Cache != nil {
+		m.Cache.Set(cacheKey, isSuspended, 30*time.Second)
+	}
+	return isSuspended, nil
 }
 
 func (m *AuthMiddleware) TokenOrJWTAuthMiddleware(jwtClaimScope jwt.ClaimScope) gin.HandlerFunc {

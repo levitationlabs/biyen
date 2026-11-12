@@ -1011,6 +1011,10 @@ func main() {
 	adminAPI.POST("/collection/repair-deleted-share", adminHandler.RepairDeletedCollectionShare)
 	adminAPI.POST("/user/init-file-counts", adminHandler.InitializeFileCounts)
 	adminAPI.POST("/user/bonus", adminHandler.UpdateBonus)
+	adminAPI.POST("/user/suspend", adminHandler.SuspendUser)
+	adminAPI.POST("/user/unsuspend", adminHandler.UnsuspendUser)
+	adminAPI.GET("/abuse-reports", adminHandler.GetAbuseReports)
+	adminAPI.POST("/collection/disable-share", adminHandler.DisableSharedCollection)
 
 	userEntityController := &userEntityCtrl.Controller{Repo: userEntityRepo}
 	userEntityHandler := &api.UserEntityHandler{Controller: userEntityController}

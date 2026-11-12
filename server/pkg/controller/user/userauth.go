@@ -537,6 +537,25 @@ func (c *UserController) RemoveTokensForApps(userID int64, apps []ente.App) erro
 	return c.finishTokenRevocation(c.UserAuthRepo.RemoveTokensForApps(userID, apps))
 }
 
+// DeleteUserTokens revokes all active tokens for a user and cleans up their push tokens.
+func (c *UserController) DeleteUserTokens(userID int64) error {
+	if c.UserAuthRepo == nil {
+		return nil
+	}
+	return c.finishTokenRevocation(c.UserAuthRepo.DeleteUserTokens(userID))
+}
+
+// IsUserSuspended checks if the user is suspended.
+func (c *UserController) IsUserSuspended(userID int64) (bool, error) {
+	if c.UserAuthRepo != nil {
+		return c.UserAuthRepo.IsUserSuspended(userID)
+	}
+	if c.UserRepo != nil {
+		return c.UserRepo.IsUserSuspended(userID)
+	}
+	return false, nil
+}
+
 func (c *UserController) RemoveAllOtherTokens(userID int64, token string) error {
 	tokenHash := auth.HashToken(token)
 	return c.finishTokenRevocation(c.UserAuthRepo.RemoveAllOtherTokensByHash(userID, tokenHash[:]))
