@@ -4,12 +4,13 @@ Source code for Biyen web applications and supporting frontend packages.
 
 Live versions:
 
-- Biyen Photos: [biyen.levitation.web.id](https://biyen.levitation.web.id)
+- Biyen Photos Web: [app-biyen.levitation.web.id](https://app-biyen.levitation.web.id)
+- Biyen Landing: [biyen.levitation.web.id](https://biyen.levitation.web.id)
 - Biyen Albums: [albums-biyen.levitation.web.id](https://albums-biyen.levitation.web.id)
 - Biyen Accounts: [accounts-biyen.levitation.web.id](https://accounts-biyen.levitation.web.id)
 - Biyen Pembayaran: [payments-biyen.levitation.web.id](https://payments-biyen.levitation.web.id)
 
-Untuk arsitektur dan lisensi, lihat [NOTICE.md](../NOTICE.md) dan [BIYEN_ARCHITECTURE.md](../BIYEN_ARCHITECTURE.md).
+Untuk lisensi dan atribusi open-source, lihat [NOTICE.md](../NOTICE.md).
 
 ## Building from source
 

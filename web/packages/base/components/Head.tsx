@@ -26,7 +26,7 @@ const albumsPreviewImage = "https://albums-biyen.levitation.web.id/images/previe
 const albumsPreviewVideo = "https://albums-biyen.levitation.web.id/videos/preview.mp4";
 const photosPreviewDescription =
     "Simpan dan bagikan kenangan Anda dengan privasi mutlak dan enkripsi penuh.";
-const photosPreviewImage = "https://biyen.levitation.web.id/images/preview.png";
+const photosPreviewImage = "https://app-biyen.levitation.web.id/images/preview.png";
 
 export const CustomHead: React.FC<React.PropsWithChildren<CustomHeadProps>> = ({
     title,
@@ -116,11 +116,11 @@ const CustomHeadShareStatic: React.FC = () => (
         />
         <meta
             property="og:image"
-            content="https://biyen.levitation.web.id/images/preview.png"
+            content="https://app-biyen.levitation.web.id/images/preview.png"
         />
         <meta
             name="twitter:image"
-            content="https://biyen.levitation.web.id/images/preview.png"
+            content="https://app-biyen.levitation.web.id/images/preview.png"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="referrer" content="strict-origin-when-cross-origin" />

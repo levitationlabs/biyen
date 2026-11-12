@@ -1,6 +1,10 @@
 [
     {
         "relation": ["delegate_permission/common.get_login_creds"],
+        "target": { "namespace": "web", "site": "https://app-biyen.levitation.web.id" }
+    },
+    {
+        "relation": ["delegate_permission/common.get_login_creds"],
         "target": { "namespace": "web", "site": "https://biyen.levitation.web.id" }
     },
     {

@@ -10,6 +10,7 @@
     ],
     "scripts": {
         "build": "npm run build:photos",
+        "build:admin": "npm exec --workspace admin -- next build --webpack",
         "build:accounts": "npm run build:prelogin-wasm && npm exec --workspace accounts -- next build --webpack",
         "build:albums": "npm run build:prelogin-wasm && npm exec --workspace albums -- next build --webpack",
         "build:auth": "npm run build:prelogin-wasm && npm run build:auth-wasm && npm exec --workspace auth -- next build --webpack",
@@ -38,6 +39,7 @@
         "build:twoof3": "npm exec --workspace twoof3 -- next build --webpack",
         "build:wasm": "npm run build:prelogin-wasm && npm run build:auth-wasm && npm run build:cast-wasm && npm run build:ensu-wasm && npm run build:legacy-wasm && npm run build:locker-wasm && npm run build:paste-wasm && npm run build:photos-wasm && npm run build:space-wasm && npm run build:photobook-wasm",
         "dev": "npm run dev:photos",
+        "dev:admin": "npm exec --workspace admin -- next dev --webpack -p 3012",
         "dev:accounts": "npm run build:prelogin-wasm && npm exec --workspace accounts -- next dev --webpack -p 3001",
         "dev:albums": "npm run build:prelogin-wasm && npm exec --workspace albums -- next dev --webpack -p 3002",
         "dev:auth": "npm run build:prelogin-wasm && npm run build:auth-wasm && npm exec --workspace auth -- next dev --webpack -p 3003",

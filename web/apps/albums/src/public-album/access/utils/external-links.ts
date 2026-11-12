@@ -1,1 +1,1 @@
-export const getEnteURL = (): string => "https://biyen.levitation.web.id";
+export const getEnteURL = (): string => "https://app-biyen.levitation.web.id";

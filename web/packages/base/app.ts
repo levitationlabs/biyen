@@ -17,6 +17,7 @@ export const appNames = [
     "locker",
     "legacy",
     "space",
+    "admin",
 ] as const;
 
 export type AppName = (typeof appNames)[number];
@@ -44,6 +45,7 @@ export const staticAppTitle = {
     locker: "Biyen Locker",
     legacy: "Biyen Legacy Kit",
     space: "Biyen Space",
+    admin: "Biyen Admin",
 }[appName];
 
 // Sent as the X-Client-Package header.
@@ -66,6 +68,7 @@ export const clientPackageName = (() => {
         locker: "io.ente.locker.web",
         legacy: "io.ente.legacy.web",
         space: "io.ente.space.web",
+        admin: "id.web.levitation.biyen.admin",
     }[appName];
 })();
 

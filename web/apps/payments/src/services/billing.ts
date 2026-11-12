@@ -46,7 +46,7 @@ export const parseAndHandleRequest = async () => {
 
         if (!action && !paymentToken && !productID && !redirectURL) {
             console.log(
-                "None of the required query parameters were supplied, redirecting to biyen.levitation.web.id",
+                "None of the required query parameters were supplied, redirecting to app-biyen.levitation.web.id",
             );
             redirectHome();
             return;
@@ -467,5 +467,5 @@ const redirectToApp = (
 };
 
 const redirectHome = () => {
-    window.location.href = "https://biyen.levitation.web.id";
+    window.location.href = "https://app-biyen.levitation.web.id";
 };

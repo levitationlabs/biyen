@@ -235,7 +235,7 @@ export default function PublicAlbumPage() {
                     if (isCustomAPIOrigin) {
                         await router.push("/");
                     } else {
-                        window.location.href = "https://biyen.levitation.web.id";
+                        window.location.href = "https://app-biyen.levitation.web.id";
                     }
                 },
             },
@@ -289,7 +289,7 @@ export default function PublicAlbumPage() {
                 const ck = await extractCollectionKeyFromShareURL(currentURL);
                 if (!accessToken && !ck) {
                     if (!isCustomAPIOrigin) {
-                        window.location.href = "https://biyen.levitation.web.id";
+                        window.location.href = "https://app-biyen.levitation.web.id";
                         redirectingToWebsite = true;
                     }
                 }
