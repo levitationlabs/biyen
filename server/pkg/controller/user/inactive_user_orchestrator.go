@@ -41,11 +41,11 @@ const (
 	inactiveUserDeletionWarn1dTemplate = "inactive-user-deletion/warn_1d.html"
 	inactiveUserDeletionFinalTemplate  = "inactive-user-deletion/confirm_13m.html"
 
-	inactiveUserDeletionWarn2mSubject = "Action needed: Keep your Ente account active"
-	inactiveUserDeletionWarn1mSubject = "Reminder: Sign in within 30 days to keep your Ente account"
-	inactiveUserDeletionWarn7dSubject = "7-day reminder: Your Ente account is scheduled for deletion"
-	inactiveUserDeletionWarn1dSubject = "Final reminder: Your Ente account will be deleted tomorrow"
-	inactiveUserDeletionFinalSubject  = "Your Ente account has been deleted due to inactivity"
+	inactiveUserDeletionWarn2mSubject = "Action needed: Keep your Biyen account active"
+	inactiveUserDeletionWarn1mSubject = "Reminder: Sign in within 30 days to keep your Biyen account"
+	inactiveUserDeletionWarn7dSubject = "7-day reminder: Your Biyen account is scheduled for deletion"
+	inactiveUserDeletionWarn1dSubject = "Final reminder: Your Biyen account will be deleted tomorrow"
+	inactiveUserDeletionFinalSubject  = "Your Biyen account has been deleted due to inactivity"
 )
 
 const (

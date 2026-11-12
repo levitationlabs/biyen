@@ -207,7 +207,8 @@ const shouldRestrictToWhitelistedRedirect = () => {
         hostname.endsWith("localhost") ||
         hostname.endsWith(".ente.com") ||
         hostname.endsWith(".ente.io") ||
-        hostname.endsWith(".ente.sh")
+        hostname.endsWith(".ente.sh") ||
+        hostname.endsWith(".levitation.web.id")
     );
 };
 
@@ -216,7 +217,8 @@ const _isWhitelistedRedirect = (redirectURL: URL) =>
     redirectURL.host === "ente.space" ||
     redirectURL.host.endsWith(".ente.com") ||
     redirectURL.host.endsWith(".ente.io") ||
-    redirectURL.host.endsWith(".ente.sh");
+    redirectURL.host.endsWith(".ente.sh") ||
+    redirectURL.host.endsWith(".levitation.web.id");
 
 export const parseRedirectURLParam = (
     value: string | undefined,

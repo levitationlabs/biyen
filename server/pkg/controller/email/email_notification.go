@@ -26,7 +26,7 @@ const (
 	FirstUploadEmailSubject      = "Congratulations! 🎉"
 
 	CustomerHelloMailLock   = "customer_hello_mail_lock"
-	CustomerHelloSubject    = "Hello from Ente"
+	CustomerHelloSubject    = "Hello from Biyen"
 	CustomerHelloTemplate   = "customer_hello.html"
 	CustomerHelloTemplateID = "customer_hello"
 
@@ -39,22 +39,22 @@ const (
 	FilesCollectedSubject    = "You've got photos!"
 
 	SubscriptionUpgradedTemplate = "subscription_upgraded.html"
-	SubscriptionUpgradedSubject  = "Thank you for choosing Ente!"
+	SubscriptionUpgradedSubject  = "Thank you for choosing Biyen!"
 
-	SubscriptionCancelledSubject        = "Good bye (?) from Ente"
+	SubscriptionCancelledSubject        = "Good bye (?) from Biyen"
 	SubscriptionCancelledTemplate       = "subscription_cancelled.html"
 	FilesCollectedMuteDurationInMinutes = 10
 
 	StorageLimitExceededSubject = "[Alert] You have exceeded your storage limit"
 	ReferralSuccessfulTemplate  = "successful_referral.html"
-	ReferralSuccessfulSubject   = "You've earned 10 GB on Ente! 🎁"
+	ReferralSuccessfulSubject   = "You've earned bonus storage on Biyen! 🎁"
 
-	LoginSuccessSubject  = "New login to your Ente account"
+	LoginSuccessSubject  = "New login to your Biyen account"
 	LoginSuccessTemplate = "on_login.html"
 
 	FamilyNudgeMailLock   = "family_nudge_mail_lock"
 	FamilyNudgeTemplate   = "family_nudge.html"
-	FamilyNudgeSubject    = "Share your Ente Subscription with your Family!"
+	FamilyNudgeSubject    = "Share your Biyen Subscription with your Family!"
 	FamilyNudgeTemplateID = "family_nudge"
 )
 
@@ -80,7 +80,7 @@ func (c *EmailNotificationController) OnFirstFileUpload(userID int64, userAgent 
 	if os == uasurfer.OSAndroid || os == uasurfer.OSiOS {
 		template = MobileAppFirstUploadTemplate
 	}
-	err = email.SendTemplatedEmail([]string{user.Email}, "team@ente.com", "team@ente.com", FirstUploadEmailSubject, template, nil, nil)
+	err = email.SendTemplatedEmail([]string{user.Email}, "team@biyen.levitation.web.id", "team@biyen.levitation.web.id", FirstUploadEmailSubject, template, nil, nil)
 	if err != nil {
 		log.Error("Error sending first upload email ", err)
 	}
@@ -95,7 +95,7 @@ func (c *EmailNotificationController) OnSuccessfulReferral(userID int64) {
 	if err != nil {
 		return
 	}
-	err = email.SendTemplatedEmail([]string{user.Email}, "team@ente.com", "team@ente.com", ReferralSuccessfulSubject, ReferralSuccessfulTemplate, nil, nil)
+	err = email.SendTemplatedEmail([]string{user.Email}, "team@biyen.levitation.web.id", "team@biyen.levitation.web.id", ReferralSuccessfulSubject, ReferralSuccessfulTemplate, nil, nil)
 	if err != nil {
 		log.Error("Error sending first upload email ", err)
 	}
@@ -115,7 +115,7 @@ func (c *EmailNotificationController) OnLinkJoined(ownerID int64, otherUserID in
 		"Role":           role,
 	}
 	err = email.SendTemplatedEmailV2(
-		[]string{user.Email}, "Ente", "team@ente.com",
+		[]string{user.Email}, "Biyen", "team@biyen.levitation.web.id",
 		fmt.Sprintf("%s has joined your album", otherUser.Email), "base.html", "on_link_joined.html", data, nil)
 	if err != nil {
 		log.Error("Error sending link joined email ", err)
@@ -147,7 +147,7 @@ func (c *EmailNotificationController) OnFilesCollected(userID int64) {
 	}
 	defer c.LockController.ReleaseLock(lockName)
 	logger.Info("Notifying about files collected")
-	err = email.SendTemplatedEmail([]string{user.Email}, "team@ente.com", "team@ente.com", FilesCollectedSubject, FilesCollectedTemplate, nil, nil)
+	err = email.SendTemplatedEmail([]string{user.Email}, "team@biyen.levitation.web.id", "team@biyen.levitation.web.id", FilesCollectedSubject, FilesCollectedTemplate, nil, nil)
 	if err != nil {
 		log.Error("Error sending files collected email ", err)
 	}
@@ -161,7 +161,7 @@ func (c *EmailNotificationController) OnAccountUpgrade(userID int64) {
 		return
 	}
 	log.Info(fmt.Sprintf("Emailing on account upgrade %d", user.ID))
-	err = email.SendTemplatedEmail([]string{user.Email}, "team@ente.com", "team@ente.com", SubscriptionUpgradedSubject, SubscriptionUpgradedTemplate, nil, nil)
+	err = email.SendTemplatedEmail([]string{user.Email}, "team@biyen.levitation.web.id", "team@biyen.levitation.web.id", SubscriptionUpgradedSubject, SubscriptionUpgradedTemplate, nil, nil)
 	if err != nil {
 		log.Error("Error sending files collected email ", err)
 	}
@@ -174,7 +174,7 @@ func (c *EmailNotificationController) OnSubscriptionCancelled(userID int64) {
 		return
 	}
 	log.Info(fmt.Sprintf("Emailing on subscription cancellation %d", user.ID))
-	err = email.SendTemplatedEmail([]string{user.Email}, "vishnu@ente.com", "vishnu@ente.com", SubscriptionCancelledSubject, SubscriptionCancelledTemplate, nil, nil)
+	err = email.SendTemplatedEmail([]string{user.Email}, "support@biyen.levitation.web.id", "support@biyen.levitation.web.id", SubscriptionCancelledSubject, SubscriptionCancelledTemplate, nil, nil)
 	if err != nil {
 		log.Error("Error sending email", err)
 	}
@@ -208,7 +208,7 @@ func (c *EmailNotificationController) SayHelloToCustomers() {
 			continue
 		}
 		logger.Info("Sending hello email to customer")
-		err = email.SendTemplatedEmail([]string{u.Email}, "vishnu@ente.com", "vishnu@ente.com", CustomerHelloSubject, CustomerHelloTemplate, nil, nil)
+		err = email.SendTemplatedEmail([]string{u.Email}, "support@biyen.levitation.web.id", "support@biyen.levitation.web.id", CustomerHelloSubject, CustomerHelloTemplate, nil, nil)
 		if err != nil {
 			logger.Info("Error notifying", err)
 			continue
@@ -248,7 +248,7 @@ func (c *EmailNotificationController) SendStorageLimitExceededMails() {
 			continue
 		}
 		logger.Info("Alerting about storage limit exceeded")
-		err = email.SendTemplatedEmail([]string{u.Email}, "team@ente.com", "team@ente.com", StorageLimitExceededSubject, StorageLimitExceededTemplate, nil, nil)
+		err = email.SendTemplatedEmail([]string{u.Email}, "team@biyen.levitation.web.id", "team@biyen.levitation.web.id", StorageLimitExceededSubject, StorageLimitExceededTemplate, nil, nil)
 		if err != nil {
 			logger.Info("Error notifying", err)
 			continue
@@ -296,7 +296,7 @@ func (c *EmailNotificationController) NudgePaidSubscriberForFamily() {
 		}
 
 		logger.Info("Sending family nudge mail to paid subscriber")
-		err = email.SendTemplatedEmail([]string{u.Email}, "team@ente.com", "team@ente.com", FamilyNudgeSubject, FamilyNudgeTemplate, nil, nil)
+		err = email.SendTemplatedEmail([]string{u.Email}, "team@biyen.levitation.web.id", "team@biyen.levitation.web.id", FamilyNudgeSubject, FamilyNudgeTemplate, nil, nil)
 		if err != nil {
 			logger.Info("Error notifying", err)
 			continue

@@ -32,11 +32,11 @@ const (
 
 	OnHoldTemplate = "on_hold.html"
 
-	AccountOnHoldEmailSubject = "Ente account on hold"
+	AccountOnHoldEmailSubject = "Biyen account on hold"
 
 	SubscriptionEndedEmailTemplate = "subscription_ended.html"
 
-	SubscriptionEndedEmailSubject = "Your subscription to Ente Photos has ended"
+	SubscriptionEndedEmailSubject = "Your subscription to Biyen Photos has ended"
 )
 
 type PaymentProvider string

@@ -2,7 +2,7 @@ import { loadStripe } from "@stripe/stripe-js";
 
 export const parseAndHandleRequest = async () => {
     if (window.location.pathname == "/desktop-redirect") {
-        const desktopRedirectURL = new URL("ente://app/gallery");
+        const desktopRedirectURL = new URL("biyen://app/gallery");
         desktopRedirectURL.search = new URL(window.location.href).search;
         window.location.href = desktopRedirectURL.href;
         return;
@@ -46,7 +46,7 @@ export const parseAndHandleRequest = async () => {
 
         if (!action && !paymentToken && !productID && !redirectURL) {
             console.log(
-                "None of the required query parameters were supplied, redirecting to the ente.com",
+                "None of the required query parameters were supplied, redirecting to biyen.levitation.web.id",
             );
             redirectHome();
             return;
@@ -72,10 +72,13 @@ export const parseAndHandleRequest = async () => {
     }
 };
 
-const apiOrigin = import.meta.env.VITE_ENTE_ENDPOINT ?? "https://api.ente.com";
+const apiOrigin =
+    import.meta.env.VITE_ENTE_ENDPOINT ??
+    import.meta.env.VITE_BIYEN_ENDPOINT ??
+    "https://api-biyen.levitation.web.id";
 const paymentIntentPollIntervalMs = 2_000;
 const paymentIntentPollTimeoutMs = 300_000;
-const pendingPaymentContextStorageKey = "ente.payments.pending-context";
+const pendingPaymentContextStorageKey = "biyen.payments.pending-context";
 
 type StripeJS = NonNullable<Awaited<ReturnType<typeof loadStripe>>>;
 
@@ -464,5 +467,5 @@ const redirectToApp = (
 };
 
 const redirectHome = () => {
-    window.location.href = "https://ente.com";
+    window.location.href = "https://biyen.levitation.web.id";
 };

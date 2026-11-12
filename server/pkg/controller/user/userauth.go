@@ -347,7 +347,7 @@ func (c *UserController) UpdateEmail(ctx *gin.Context, userID int64, email strin
 		return stacktrace.Propagate(err, "")
 	}
 	c.touchContactsAfterEmailUpdate(ctx, userID)
-	_ = emailUtil.SendTemplatedEmail([]string{user.Email}, "ente", "team@ente.com",
+	_ = emailUtil.SendTemplatedEmail([]string{user.Email}, "Biyen", "team@biyen.levitation.web.id",
 		ente.EmailChangedSubject, ente.EmailChangedTemplate, map[string]interface{}{
 			"NewEmail": email,
 		}, nil)
@@ -525,7 +525,7 @@ func (c *UserController) notifyLogin(ctx *gin.Context, userID int64, app ente.Ap
 			templateData["Device"] = device
 			templateData["IP"] = ip
 		}
-		emailSendErr := emailUtil.SendTemplatedEmail([]string{user.Email}, "Ente", "team@ente.com", emailCtrl.LoginSuccessSubject, emailCtrl.LoginSuccessTemplate, templateData, nil)
+		emailSendErr := emailUtil.SendTemplatedEmail([]string{user.Email}, "Biyen", "team@biyen.levitation.web.id", emailCtrl.LoginSuccessSubject, emailCtrl.LoginSuccessTemplate, templateData, nil)
 		if emailSendErr != nil {
 			log.WithError(emailSendErr).Error("Failed to send email")
 		}
@@ -598,7 +598,7 @@ func emailOTT(app ente.App, to string, ott string, purpose string, mobile bool) 
 		}
 	}
 	subject := fmt.Sprintf("Verification code: %s", ott)
-	err := emailUtil.SendTemplatedEmail([]string{to}, "Ente", "verify@ente.com",
+	err := emailUtil.SendTemplatedEmail([]string{to}, "Biyen", "verify@biyen.levitation.web.id",
 		subject, templateName, map[string]interface{}{
 			"VerificationCode": ott,
 		}, nil)
