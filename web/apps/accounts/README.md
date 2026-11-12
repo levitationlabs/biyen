@@ -1,6 +1,6 @@
-# Ente Accounts
+# Biyen Accounts
 
-Code that runs on `accounts.ente.com`, providing a common origin where Ente clients associate passkeys tied to the user's account. It also handles other cross-app account flows like accepting family invitations.
+Code that runs on `accounts-biyen.levitation.web.id`, providing a common origin where Biyen clients associate passkeys tied to the user's account. It also handles other cross-app account flows like accepting family invitations.
 
 > [!NOTE]
 >

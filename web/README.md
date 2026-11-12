@@ -1,15 +1,15 @@
-# Ente's web apps
+# Biyen Web Apps
 
-Source code for Ente's web apps and supporting websites.
+Source code for Biyen web applications and supporting frontend packages.
 
-Live versions include:
+Live versions:
 
-- Ente Photos: [photos.ente.com](https://photos.ente.com)
-- Ente Albums: [albums.ente.com](https://albums.ente.com)
-- Ente Auth: [auth.ente.com](https://auth.ente.com)
-- Ente Locker: [locker.ente.com](https://locker.ente.com)
+- Biyen Photos: [biyen.levitation.web.id](https://biyen.levitation.web.id)
+- Biyen Albums: [albums-biyen.levitation.web.id](https://albums-biyen.levitation.web.id)
+- Biyen Accounts: [accounts-biyen.levitation.web.id](https://accounts-biyen.levitation.web.id)
+- Biyen Pembayaran: [payments-biyen.levitation.web.id](https://payments-biyen.levitation.web.id)
 
-To know more about Ente, see [our main README](../README.md) or visit [ente.com](https://ente.com).
+Untuk arsitektur dan lisensi, lihat [NOTICE.md](../NOTICE.md) dan [BIYEN_ARCHITECTURE.md](../BIYEN_ARCHITECTURE.md).
 
 ## Building from source
 
