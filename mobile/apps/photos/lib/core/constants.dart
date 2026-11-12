@@ -9,8 +9,8 @@ const String sentryDSN =
     "https://2235e5c99219488ea93da34b9ac1cb68@sentry.ente.io/4";
 const String sentryDebugDSN =
     "https://ca5e686dd7f149d9bf94e620564cceba@sentry.ente.io/3";
-const String sentryTunnel = "https://sentry-reporter.ente.com";
-const String githubDiscussionsUrl = "https://github.com/ente/ente/discussions";
+const String sentryTunnel = "";
+const String githubDiscussionsUrl = "https://biyen.levitation.web.id/#tanya-jawab";
 const int microSecondsInDay = 86400000000;
 const int android11SDKINT = 30;
 const int android12SDKINT = 31;

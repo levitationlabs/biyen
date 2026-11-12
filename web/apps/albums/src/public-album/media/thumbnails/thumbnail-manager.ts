@@ -134,20 +134,8 @@ const publicAlbums_downloadThumbnail = async (
     file: EnteFile,
     credentials: PublicAlbumsCredentials,
 ) => {
-    const customOrigin = await customAPIOrigin();
-
     const getThumbnail = () => {
-        if (customOrigin) {
-            return fetchPublicCollectionFile(file.id, "thumbnail", credentials);
-        } else {
-            return fetch(
-                `https://public-albums.ente.com/preview/?fileID=${file.id}`,
-                {
-                    headers:
-                        authenticatedPublicAlbumsRequestHeaders(credentials),
-                },
-            );
-        }
+        return fetchPublicCollectionFile(file.id, "thumbnail", credentials);
     };
 
     const res = await retryEnsuringHTTPOk(getThumbnail);

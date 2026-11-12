@@ -57,7 +57,7 @@ class _PasskeyPageState extends State<PasskeyPage> {
     await launchUrlString(
       "${widget.accountsUrl}/passkeys/verify?"
       "passkeySessionID=${widget.sessionID}"
-      "&redirect=ente://passkey"
+      "&redirect=biyen://passkey"
       "&clientPackage=io.ente.photos",
       mode: LaunchMode.externalApplication,
     );
@@ -109,7 +109,9 @@ class _PasskeyPageState extends State<PasskeyPage> {
     }
     final link = uri.toString();
     try {
-      if (mounted && link.toLowerCase().startsWith("ente://passkey")) {
+      if (mounted &&
+          (link.toLowerCase().startsWith("biyen://passkey") ||
+              link.toLowerCase().startsWith("ente://passkey"))) {
         if (Configuration.instance.isLoggedIn()) {
           _logger.info('ignored deeplink: already configured');
           showToast(context, context.strings.accountIsAlreadyConfigured);

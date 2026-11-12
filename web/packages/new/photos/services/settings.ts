@@ -29,9 +29,9 @@ const createDefaultSettings = (): Settings => ({
     previewUploadV2Enabled: false,
     mapEnabled: false,
     cfUploadProxyDisabled: false,
-    castURL: "https://cast.ente.com",
-    embedURL: "https://embed.ente.com",
-    customDomainCNAME: "my.ente.com",
+    castURL: "https://cast-biyen.levitation.web.id",
+    embedURL: "https://embed-biyen.levitation.web.id",
+    customDomainCNAME: "my.biyen.levitation.web.id",
 });
 
 class SettingsState {

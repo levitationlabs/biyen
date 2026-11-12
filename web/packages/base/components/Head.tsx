@@ -112,15 +112,15 @@ const CustomHeadShareStatic: React.FC = () => (
         <link rel="icon" href="/images/favicon.png" type="image/png" />
         <meta
             name="description"
-            content="Securely store and share your documents"
+            content="Simpan dan bagikan dokumen Anda dengan privasi mutlak"
         />
         <meta
             property="og:image"
-            content="https://share.ente.com/images/preview.png"
+            content="https://biyen.levitation.web.id/images/preview.png"
         />
         <meta
             name="twitter:image"
-            content="https://share.ente.com/images/preview.png"
+            content="https://biyen.levitation.web.id/images/preview.png"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="referrer" content="strict-origin-when-cross-origin" />

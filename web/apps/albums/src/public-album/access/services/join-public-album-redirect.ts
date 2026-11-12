@@ -91,9 +91,7 @@ export const joinPublicAlbumViaRedirect = ({
     };
 
     if (navigator.userAgent.includes("Android")) {
-        // Older Android clients only recognize albums.ente.io in ente://
-        // public-album join links. Newer ones also support albums.ente.com.
-        const deepLinkURL = `ente://albums.ente.io/?action=join&t=${encodeURIComponent(accessToken)}#${currentHash}`;
+        const deepLinkURL = `biyen://albums-biyen.levitation.web.id/?action=join&t=${encodeURIComponent(accessToken)}#${currentHash}`;
 
         tryDeepLinkWithFallback(deepLinkURL, fallbackToWeb);
     } else {
