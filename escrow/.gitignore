@@ -1,0 +1,9 @@
+# Compiled binaries
+/escrow
+/escrow-admin
+
+# Spec / planning docs and generated custody key artifacts (keep local only)
+SPEC.md
+*.pub
+*.key
+*.shares.txt

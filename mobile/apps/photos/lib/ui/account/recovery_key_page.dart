@@ -9,6 +9,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:photos/core/configuration.dart';
 import 'package:photos/src/rust/third_party/ente_frb_lib/recovery.dart'
     as recovery;
+import 'package:photos/ui/account/biyen_protection_mode_page.dart';
 import "package:photos/ui/account/onboarding_page_scaffold.dart";
 import 'package:photos/ui/notification/toast.dart';
 import 'package:photos/utils/share_util.dart';
@@ -63,6 +64,8 @@ class _RecoveryKeyPageState extends State<RecoveryKeyPage> {
             _buildDescription(recoveryKey, spacing: Spacing.sm),
             const SizedBox(height: Spacing.lg),
             _buildKeyCard(recoveryKey),
+            const SizedBox(height: Spacing.lg),
+            BiyenProtectionModeCard(recoveryKeyHex: widget.recoveryKey),
           ],
         ),
         actions: [ButtonComponent(label: widget.doneText, onTap: _saveKeys)],
@@ -99,6 +102,8 @@ class _RecoveryKeyPageState extends State<RecoveryKeyPage> {
               _buildDescription(recoveryKey, spacing: Spacing.xl),
               const SizedBox(height: Spacing.xl),
               _buildKeyCard(recoveryKey),
+              const SizedBox(height: Spacing.lg),
+              BiyenProtectionModeCard(recoveryKeyHex: widget.recoveryKey),
             ],
           ),
         ),

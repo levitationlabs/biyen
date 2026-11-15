@@ -17,6 +17,7 @@ import {
     UserDrawerHeader,
     UserDrawerStorage,
     UserDrawerSecurity,
+    UserDrawerEscrow,
     UserDrawerSessions,
     UserDrawerActions,
 } from "./drawer";
@@ -171,6 +172,9 @@ export const UserDetailDrawer: React.FC<UserDetailDrawerProps> = ({
                             authCodes={details.authCodes}
                             onOpenSecurityModal={() => onOpenSecurity(details.user ?? user)}
                         />
+
+                        {/* Status Brankas Escrow (Post-Quantum Blind Vault) */}
+                        <UserDrawerEscrow userId={(details.user ?? user).id} />
 
                         {/* Sesi Login Aktif */}
                         <UserDrawerSessions

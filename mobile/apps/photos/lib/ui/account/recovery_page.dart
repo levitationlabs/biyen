@@ -3,6 +3,7 @@ import "package:ente_components/ente_components.dart";
 import "package:ente_strings/ente_strings.dart";
 import 'package:flutter/material.dart';
 import 'package:photos/services/account/user_service.dart';
+import 'package:photos/ui/account/biyen_support_recovery_page.dart';
 import "package:photos/ui/account/onboarding_page_scaffold.dart";
 import 'package:photos/ui/account/password_entry_page.dart';
 import "package:photos/ui/components/alert_bottom_sheet.dart";
@@ -90,7 +91,15 @@ class _RecoveryPageState extends State<RecoveryPage> {
         illustration: Image.asset("assets/warning-red.png"),
         actions: [
           ButtonComponent(
+            key: const ValueKey("openSupportRecoveryButton"),
+            label: "Pulihkan via Support Biyen (Managed Escrow)",
+            shouldSurfaceExecutionStates: false,
+            dismissModalOnSuccess: true,
+            onTap: _openSupportRecoveryPage,
+          ),
+          ButtonComponent(
             label: context.strings.ok,
+            variant: ButtonComponentVariant.secondary,
             shouldSurfaceExecutionStates: false,
             dismissModalOnSuccess: true,
             onTap: () {},
@@ -98,6 +107,20 @@ class _RecoveryPageState extends State<RecoveryPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _openSupportRecoveryPage() async {
+    if (!mounted) return;
+    final recoveredKey = await Navigator.of(context).push<String>(
+      MaterialPageRoute(builder: (_) => const BiyenSupportRecoveryPage()),
+    );
+    if (!mounted || recoveredKey == null || recoveredKey.trim().isEmpty) {
+      return;
+    }
+    setState(() {
+      _recoveryKeyController.text = recoveredKey.trim();
+    });
+    await _onRecoverPressed();
   }
 
   Future<void> _onRecoverPressed() async {

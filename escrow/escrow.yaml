@@ -1,0 +1,9 @@
+http:
+  addr: "127.0.0.1:8081"
+db:
+  dsn: "postgres://pguser:pgpass@localhost:5432/ente_db?sslmode=disable&search_path=escrow"
+museum:
+  internal_url: "http://127.0.0.1:8080"
+custody:
+  public_key_file: "./custody-v1.pub"
+  kek_version: "v1"

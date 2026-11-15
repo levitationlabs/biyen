@@ -15,3 +15,6 @@ export type { UserDrawerSessionsProps } from "./UserDrawerSessions";
 
 export { UserDrawerActions } from "./UserDrawerActions";
 export type { UserDrawerActionsProps } from "./UserDrawerActions";
+
+export { UserDrawerEscrow } from "./UserDrawerEscrow";
+export type { UserDrawerEscrowProps } from "./UserDrawerEscrow";

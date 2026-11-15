@@ -17,6 +17,7 @@ import log from "ente-base/log";
 import { saveStringAsFile } from "ente-base/utils/web";
 import { t } from "i18next";
 import { useCallback, useEffect, useState, type ComponentType } from "react";
+import { BiyenProtectionModeBanner } from "./biyen/BiyenProtectionModeBanner";
 import { CodeBlock } from "./CodeBlock";
 
 type RecoveryKeyProps = ModalVisibilityProps & {
@@ -125,6 +126,7 @@ export function RecoveryKeyContents({
                         {t("key_not_stored_note")}
                     </Typography>
                 </Stack>
+                <BiyenProtectionModeBanner recoveryKey={recoveryKey} />
             </DialogContent>
             <DialogActions>
                 <FocusVisibleButton

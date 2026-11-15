@@ -45,7 +45,6 @@ describe("authStore", () => {
         const dummyToken = "test-token-123";
         const now = Date.now();
         authStore.setToken(dummyToken, now);
-
         expect(authStore.getToken()).toBe(dummyToken);
         expect(authStore.getTokenCreatedAt()).toBe(now);
     });
@@ -53,7 +52,6 @@ describe("authStore", () => {
     it("should calculate remaining freshness seconds correctly", () => {
         const now = Date.now();
         authStore.setToken("fresh-token", now);
-
         const remaining = authStore.getRemainingFreshnessSeconds();
         expect(remaining).toBeGreaterThanOrEqual(SUDO_MAX_FRESHNESS_SECONDS - 1);
         expect(remaining).toBeLessThanOrEqual(SUDO_MAX_FRESHNESS_SECONDS);
@@ -63,7 +61,6 @@ describe("authStore", () => {
     it("should report expired when token is older than 10 minutes", () => {
         const elevenMinutesAgo = Date.now() - 11 * 60 * 1000;
         authStore.setToken("old-token", elevenMinutesAgo);
-
         expect(authStore.getRemainingFreshnessSeconds()).toBe(0);
         expect(authStore.isSudoExpired()).toBe(true);
     });
@@ -71,19 +68,14 @@ describe("authStore", () => {
     it("should notify listeners on auth change and sudo expiry", () => {
         const authChangeSpy = vi.fn();
         const sudoExpiredSpy = vi.fn();
-
         const unsubAuth = authStore.onAuthChange(authChangeSpy);
         const unsubExpired = authStore.onSudoExpired(sudoExpiredSpy);
-
         authStore.setToken("notify-test");
         expect(authChangeSpy).toHaveBeenCalledTimes(1);
-
         authStore.notifySudoExpired();
         expect(sudoExpiredSpy).toHaveBeenCalledTimes(1);
-
         unsubAuth();
         unsubExpired();
-
         authStore.clearToken();
         expect(authChangeSpy).toHaveBeenCalledTimes(1);
     });
@@ -218,5 +210,88 @@ describe("adminClient", () => {
         setAdminEndpoint("https://my-ente.example.com");
         expect(getAdminEndpoint()).toBe("https://my-ente.example.com");
         localStorage.removeItem("admin_api_endpoint");
+    });
+
+    it("should fetch and normalize user escrow deposits summary when escrow service responds", async () => {
+        globalThis.fetch = vi.fn().mockImplementation(async () => {
+            return new Response(
+                JSON.stringify({
+                    user_id: 77,
+                    mode: "managed",
+                    kek_version: "v1",
+                    cipher_suite: "biyen-escrow-v1:hpke-xwing-hkdfsha256-chacha20poly1305",
+                    deposits: [
+                        {
+                            id: 10,
+                            user_id: 77,
+                            kek_version: "v1",
+                            cipher_suite: "biyen-escrow-v1:hpke-xwing-hkdfsha256-chacha20poly1305",
+                            recovery_key_commitment: "abcd1234",
+                            created_at: "2026-11-15T10:00:00Z",
+                        },
+                    ],
+                    pending_requests: [
+                        {
+                            request_id: "req-1",
+                            request_code: "ABCDE-FGHIJ-KLMNO-PQRST",
+                            status: "pending",
+                            expires_at: "2026-11-18T10:00:00Z",
+                        },
+                    ],
+                }),
+                { status: 200, headers: { "Content-Type": "application/json" } },
+            );
+        });
+
+        const summary = await adminClient.getUserEscrowDeposits(77);
+        expect(summary.user_id).toBe(77);
+        expect(summary.mode).toBe("managed");
+        expect(summary.kek_version).toBe("v1");
+        expect(summary.last_deposit_at).toBe("2026-11-15T10:00:00Z");
+        expect(summary.deposits).toHaveLength(1);
+        expect(summary.pending_requests[0]?.request_code).toBe("ABCDE-FGHIJ-KLMNO-PQRST");
+        expect(summary.service_available).toBe(true);
+    });
+
+    it("should gracefully fall back when escrow service is offline or returns 404", async () => {
+        globalThis.fetch = vi.fn().mockImplementation(async () => {
+            return new Response(JSON.stringify({ error: "Not Found" }), { status: 404 });
+        });
+
+        const summary = await adminClient.getUserEscrowDeposits(88);
+        expect(summary.user_id).toBe(88);
+        expect(summary.mode).toBe("managed");
+        expect(summary.cipher_suite).toBe("X-Wing MLKEM768-X25519");
+        expect(summary.deposits).toEqual([]);
+        expect(summary.service_available).toBe(false);
+
+        const auditEntries = await adminClient.getEscrowAuditLog(20);
+        expect(auditEntries).toEqual([]);
+    });
+
+    it("should fetch escrow audit log entries when available", async () => {
+        globalThis.fetch = vi.fn().mockImplementation(async () => {
+            return new Response(
+                JSON.stringify({
+                    entries: [
+                        {
+                            id: 1,
+                            user_id: 77,
+                            actor_type: "admin",
+                            actor_id: "founder",
+                            action: "approve_recovery",
+                            prev_hash: "00",
+                            entry_hash: "ff",
+                            created_at: "2026-11-15T12:00:00Z",
+                        },
+                    ],
+                }),
+                { status: 200, headers: { "Content-Type": "application/json" } },
+            );
+        });
+
+        const entries = await adminClient.getEscrowAuditLog(10);
+        expect(entries).toHaveLength(1);
+        expect(entries[0]?.action).toBe("approve_recovery");
     });
 });
