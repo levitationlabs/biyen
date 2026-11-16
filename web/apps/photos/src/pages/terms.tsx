@@ -78,7 +78,7 @@ export default function TermsPage(): React.JSX.Element {
                                 variant="small"
                                 sx={{ color: "text.muted", display: "block", mb: 4 }}
                             >
-                                Terakhir diperbarui: 12 November 2026 &bull; Dikelola oleh Levitation
+                                Terakhir diperbarui: 16 November 2026 &bull; Dikelola oleh Levitation
                             </Typography>
 
                             <Stack spacing={3} sx={{ color: "text.primary", lineHeight: 1.7 }}>
@@ -95,10 +95,10 @@ export default function TermsPage(): React.JSX.Element {
 
                                 <Box>
                                     <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                                        2. Tanggung Jawab Kunci Enkripsi
+                                        2. Tanggung Jawab Kunci Enkripsi &amp; Mode Perlindungan
                                     </Typography>
                                     <Typography variant="body" sx={{ color: "text.muted", display: "block" }}>
-                                        Biyen Photos menggunakan enkripsi end-to-end tanpa pintu belakang (zero-knowledge). Kata sandi dan kunci pemulihan (recovery key) Anda dipegang sepenuhnya oleh Anda. Jika Anda kehilangan kata sandi dan kunci pemulihan, data Anda tidak dapat dipulihkan oleh pihak manapun termasuk tim Biyen.
+                                        Peladen Biyen Photos tidak pernah menyimpan kata sandi maupun kunci dekripsi mentah Anda. Jika memilih Mode Terkelola (Blind Vault Post-Quantum MLKEM768-X25519), pemulihan saat kehilangan kata sandi dan 24 kata hanya dilakukan melalui verifikasi identitas resmi Biyen Support dan persetujuan Admin offline menggunakan Kode Permintaan 20 karakter (tanpa pemulihan OTP otomatis di VPS). Jika memilih Mode Zero-Knowledge Murni (berlaku jeda pengaman 7 hari saat beralih dari Mode Terkelola), akun tidak dapat dipulihkan oleh pihak mana pun termasuk tim Biyen apabila kata sandi dan 24 kata hilang.
                                     </Typography>
                                 </Box>
 

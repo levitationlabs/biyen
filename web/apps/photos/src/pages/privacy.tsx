@@ -78,16 +78,16 @@ export default function PrivacyPage(): React.JSX.Element {
                                 variant="small"
                                 sx={{ color: "text.muted", display: "block", mb: 4 }}
                             >
-                                Terakhir diperbarui: 12 November 2026 &bull; Dikelola oleh Levitation
+                                Terakhir diperbarui: 16 November 2026 &bull; Dikelola oleh Levitation
                             </Typography>
 
                             <Stack spacing={3} sx={{ color: "text.primary", lineHeight: 1.7 }}>
                                 <Box>
                                     <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                                        1. Prinsip Nol-Pengetahuan (Zero-Knowledge)
+                                        1. Enkripsi End-to-End &amp; Dua Mode Kunci Pemulihan
                                     </Typography>
                                     <Typography variant="body" sx={{ color: "text.muted", display: "block" }}>
-                                        Biyen Photos beroperasi dengan arsitektur enkripsi end-to-end (E2EE). Foto, video, dan metadata Anda dienkripsi secara lokal di perangkat Anda menggunakan kunci rahasia yang diturunkan dari kata sandi Anda sebelum dikirim ke server. Levitation tidak memiliki kemampuan teknis untuk melihat, membuka, atau menjual konten kenangan Anda.
+                                        Biyen Photos selalu mengenkripsi foto, video, dan metadata secara lokal di perangkat Anda (Argon2id + XChaCha20-Poly1305 / AES-256-GCM) sebelum diunggah, sehingga peladen kami tidak pernah bisa membaca konten kenangan Anda. Untuk kunci pemulihan 24-kata, Anda dapat memilih: (a) Mode Terkelola (Blind Vault Post-Quantum HPKE X-Wing MLKEM768-X25519) yang menitipkan salinan terenkripsi ke Admin Custody Key yang kunci privatnya disimpan offline (tidak pernah berada di VPS), agar akun tetap dapat dipulihkan via Biyen Support + Admin offline menggunakan Kode Permintaan 20 karakter; atau (b) Mode Zero-Knowledge Murni tanpa cadangan escrow apa pun.
                                     </Typography>
                                 </Box>
 
@@ -101,9 +101,11 @@ export default function PrivacyPage(): React.JSX.Element {
                                         Kami membatasi pengumpulan data seminimal mungkin untuk pengoperasian layanan:
                                     </Typography>
                                     <Box component="ul" sx={{ pl: 3, color: "text.muted", mt: 1 }}>
-                                        <li>Alamat email untuk autentikasi akun dan verifikasi sesi.</li>
-                                        <li>Blob data terenkripsi dan ciphertext yang Anda simpan.</li>
-                                        <li>Metrik performa dasar yang dianonimkan tanpa pelacak pihak ketiga atau iklan.</li>
+                                        <li>Alamat email untuk autentikasi akun, notifikasi keamanan, dan verifikasi sesi.</li>
+                                        <li>Blob media dan metadata terenkripsi (ciphertext) yang Anda simpan.</li>
+                                        <li>Khusus Mode Terkelola: blob escrow terenkripsi X-Wing (hingga 5 versi terakhir) beserta komitmen SHA-512, tanpa kunci privat pembuka di peladen VPS.</li>
+                                        <li>Saat mengajukan pemulihan escrow: kunci publik sementara perangkat, Kode Permintaan 20 karakter, referensi support, dan catatan audit log berantai hash SHA-512.</li>
+                                        <li>Metrik performa dasar tanpa pelacak iklan pihak ketiga.</li>
                                     </Box>
                                 </Box>
 
@@ -122,10 +124,10 @@ export default function PrivacyPage(): React.JSX.Element {
 
                                 <Box>
                                     <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                                        4. Hak Pengguna & Penghapusan Akun
+                                        4. Hak Pengguna, Peralihan Mode &amp; Penghapusan Akun
                                     </Typography>
                                     <Typography variant="body" sx={{ color: "text.muted", display: "block" }}>
-                                        Anda memiliki hak penuh untuk mengekspor data Anda kapan saja atau menghapus akun Anda secara permanen. Setelah penghapusan dikonfirmasi, seluruh salinan data terenkripsi di server penyimpanan akan dimusnahkan.
+                                        Anda memiliki hak penuh untuk mengekspor data Anda kapan saja, beralih antara Mode Terkelola dan Mode Zero-Knowledge Murni (dengan jeda pengaman 7 hari anti-sabotase saat menonaktifkan escrow), atau menghapus akun Anda secara permanen beserta seluruh berkas dan deposit escrow di peladen aktif.
                                     </Typography>
                                 </Box>
 
