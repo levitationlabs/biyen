@@ -1,0 +1,33 @@
+services:
+  museum:
+    image: ghcr.io/levitationlabs/biyen-museum:latest
+    container_name: biyen-museum
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ENVIRONMENT: production
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./museum.yaml:/etc/ente/museum.yaml:ro
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: biyen-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${BIYEN_PG_USER:-biyen_pg}
+      POSTGRES_PASSWORD: ${BIYEN_PG_PASSWORD:?Set BIYEN_PG_PASSWORD in .env}
+      POSTGRES_DB: ${BIYEN_PG_DB:-ente_db}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - biyen-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  biyen-postgres-data:

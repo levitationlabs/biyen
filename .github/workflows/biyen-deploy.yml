@@ -1,0 +1,211 @@
+name: Biyen CI/CD (CF Pages Web + Museum Docker)
+
+on:
+  push:
+    branches:
+      - biyen
+    paths:
+      - "web/**"
+      - "rust/**"
+      - "server/**"
+      - ".github/workflows/biyen-deploy.yml"
+  workflow_dispatch:
+    inputs:
+      deploy_web:
+        description: "Build & deploy static web apps to Cloudflare Pages"
+        type: boolean
+        default: true
+      deploy_museum:
+        description: "Build, push, and deploy Museum Go API image"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  packages: write
+  deployments: write
+
+concurrency:
+  group: biyen-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      web: ${{ steps.filter.outputs.web }}
+      museum: ${{ steps.filter.outputs.museum }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+
+      - name: Determine targets
+        id: filter
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "web=${{ inputs.deploy_web }}" >> "${GITHUB_OUTPUT}"
+            echo "museum=${{ inputs.deploy_museum }}" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
+          changed="$(git diff --name-only HEAD~1 HEAD || true)"
+          if echo "${changed}" | grep -qE '^(web/|rust/|\.github/workflows/biyen-deploy\.yml)'; then
+            echo "web=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "web=false" >> "${GITHUB_OUTPUT}"
+          fi
+          if echo "${changed}" | grep -qE '^(server/|\.github/workflows/biyen-deploy\.yml)'; then
+            echo "museum=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "museum=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+  deploy-web:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_PUBLIC_ENTE_ENDPOINT: ${{ vars.BIYEN_API_URL || 'https://api-biyen.levitation.web.id' }}
+      NEXT_PUBLIC_PAYMENTS_ENDPOINT: ${{ vars.BIYEN_PAYMENTS_URL || 'https://payments-biyen.levitation.web.id' }}
+      VITE_ENTE_ENDPOINT: ${{ vars.BIYEN_API_URL || 'https://api-biyen.levitation.web.id' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Node 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Ensure Rust wasm32 target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: Cache Rust WASM crates
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          workspaces: rust
+          shared-key: biyen-rust-wasm
+
+      - name: Install web dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Build static web modules (photos, albums, accounts, admin, payments)
+        working-directory: web
+        run: |
+          npm run build:photos
+          npm run build:albums
+          npm run build:accounts
+          npm run build:admin
+          npm run build:payments
+
+      - name: Deploy biyen-photos to Cloudflare Pages
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy web/apps/photos/out --project-name=biyen-photos --branch=main --commit-dirty=true
+
+      - name: Deploy biyen-albums to Cloudflare Pages
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy web/apps/albums/out --project-name=biyen-albums --branch=main --commit-dirty=true
+
+      - name: Deploy biyen-accounts to Cloudflare Pages
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy web/apps/accounts/out --project-name=biyen-accounts --branch=main --commit-dirty=true
+
+      - name: Deploy biyen-admin to Cloudflare Pages
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy web/apps/admin/out --project-name=biyen-admin --branch=main --commit-dirty=true
+
+      - name: Deploy biyen-payments to Cloudflare Pages
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy web/apps/payments/dist --project-name=biyen-payments --branch=main --commit-dirty=true
+
+  deploy-museum:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.museum == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v5
+        with:
+          go-version-file: server/go.mod
+
+      - name: Test Biyen FOSSBilling module
+        working-directory: server
+        run: go test ./pkg/external/fossbilling/...
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Normalize lowercase GHCR owner
+        id: repo
+        run: echo "owner=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> "${GITHUB_OUTPUT}"
+
+      - name: Build and push biyen-museum image
+        uses: docker/build-push-action@v6
+        with:
+          context: server
+          file: server/Dockerfile
+          push: true
+          build-args: |
+            GIT_COMMIT=${{ github.sha }}
+          tags: |
+            ghcr.io/${{ steps.repo.outputs.owner }}/biyen-museum:latest
+            ghcr.io/${{ steps.repo.outputs.owner }}/biyen-museum:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Deploy Museum container to VPS over SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_DEPLOY_DIR: ${{ secrets.VPS_DEPLOY_DIR }}
+        run: |
+          if [[ -z "${VPS_HOST}" || -z "${VPS_USER}" || -z "${VPS_SSH_KEY}" || -z "${VPS_DEPLOY_DIR}" ]]; then
+            echo "Skipping SSH deploy: set VPS_HOST, VPS_USER, VPS_SSH_KEY, and VPS_DEPLOY_DIR secrets to enable auto-deploy."
+            exit 0
+          fi
+
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${VPS_SSH_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          port="${VPS_PORT:-22}"
+          ssh-keyscan -p "${port}" -H "${VPS_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          ssh -i ~/.ssh/deploy_key -p "${port}" "${VPS_USER}@${VPS_HOST}" \
+            "cd '${VPS_DEPLOY_DIR}' && docker compose -f biyen-compose.yml pull museum && docker compose -f biyen-compose.yml up -d museum && docker image prune -f"
+          rm -f ~/.ssh/deploy_key
