@@ -8,7 +8,6 @@ import {
 } from "@/public-album/components/ActionIcons";
 import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { Box, Button, IconButton, styled } from "@mui/material";
-import { t } from "i18next";
 import { useState } from "react";
 
 interface TopNavButtonsProps {

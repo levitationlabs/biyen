@@ -9,11 +9,9 @@ import {
 } from "@/public-album/media/processing/convert";
 import { fetchPublicCollectionFile } from "ente-base/file-download";
 import {
-    authenticatedPublicAlbumsRequestHeaders,
     retryEnsuringHTTPOk,
     type PublicAlbumsCredentials,
 } from "ente-base/http";
-import { customAPIOrigin } from "ente-base/origins";
 import {
     createDownloadManager,
     type FileDownloadOpts,

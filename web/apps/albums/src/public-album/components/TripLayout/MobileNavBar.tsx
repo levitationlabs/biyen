@@ -9,7 +9,6 @@ import {
 import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { Box, Button, IconButton, styled } from "@mui/material";
 import { EnteLogo } from "ente-base/components/EnteLogo";
-import { t } from "i18next";
 import { useState } from "react";
 
 interface MobileNavBarProps {

@@ -6,12 +6,10 @@ import {
 import { blobCache, type BlobCache } from "ente-base/blob-cache";
 import { fetchPublicCollectionFile } from "ente-base/file-download";
 import {
-    authenticatedPublicAlbumsRequestHeaders,
     retryEnsuringHTTPOk,
     type PublicAlbumsCredentials,
 } from "ente-base/http";
 import log from "ente-base/log";
-import { customAPIOrigin } from "ente-base/origins";
 import type { EnteFile } from "ente-media/file";
 import { decryptThumbnailBlobBytes } from "./thumbnail-crypto";
 

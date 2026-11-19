@@ -15,6 +15,7 @@ export const appHomeRoute: string = {
     locker: "/locker",
     legacy: "/",
     space: "/app",
+    admin: "/",
 }[appName];
 
 let _stashedRedirect: string | undefined;
