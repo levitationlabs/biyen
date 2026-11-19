@@ -27,8 +27,6 @@ abstract final class RewindAssets {
   static const crowdHeroTop1 = "$_images/crowd-hero-top1.webp";
   static const crowdBack = "$_images/crowd-back.webp";
   static const crowdFront = "$_images/crowd-front.webp";
-  static const crowdHeroBackLeft = "$_images/crowd-hero-b0.webp";
-  static const crowdHeroBackRight = "$_images/crowd-hero-b1.webp";
   static const crowdHeroLeft = "$_images/crowd-hero-left.webp";
   static const crowdHeroMiddle = "$_images/crowd-hero-mid.webp";
   static const crowdHeroRight = "$_images/crowd-hero-right.webp";
@@ -40,11 +38,16 @@ abstract final class RewindAssets {
   static const fireSticker = "$_images/sticker-fire.png";
   static const cameraOnPole = "$_images/camera-on-pole.png";
   static const compactHeader = "$_images/rewind-compact-header.png";
+  static const yellowSparkle = "$_images/sparkle-yellow.svg";
+  static const smallYellowSparkle = "$_images/sparkle-yellow-small.svg";
+  static const lightningSticker = "$_images/lightning-sticker.svg";
+  static const artCloth = "$_images/art-cloth.svg";
+
+  static String artTwin(String colour) => "$_images/art-twin-$colour.webp";
 
   static const introDucky = "$_rive/ente-rewind-intro-ducky.riv";
   static const paletteDucky = "$_rive/ente-rewind-palette-ducky.riv";
   static const globeDucky = "$_rive/ente-rewind-globe-ducky.riv";
-  static const chairDucky = "$_rive/ente-rewind-chair-ducky.riv";
   static const hugDucky = "$_rive/ente-rewind-hug-ducky.riv";
   static const famDucky = "$_rive/ente-rewind-fam-ducky.riv";
   static const photosDucky = "$_rive/ente-rewind-photos-ducky.riv";

@@ -1,11 +1,9 @@
 package api
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"strconv"
-	"strings"
 
 	"github.com/ente/museum/ente"
 	"github.com/ente/museum/pkg/utils/auth"
@@ -64,80 +62,6 @@ type AbuseReportItem struct {
 	UserAgent  string          `json:"user_agent"`
 	CreatedAt  int64           `json:"created_at"`
 	IsDisabled bool            `json:"is_disabled"`
-}
-
-// SuspendUser suspends an active user account, invalidates sessions, and sends notification email.
-func (h *AdminHandler) SuspendUser(c *gin.Context) {
-	if err := h.isFreshAdminToken(c); err != nil {
-		handler.Error(c, stacktrace.Propagate(err, ""))
-		return
-	}
-
-	var req SuspendUserRequest
-	if err := handler.BindJSON(c, &req); err != nil {
-		handler.Error(c, stacktrace.Propagate(err, "Bad request"))
-		return
-	}
-
-	userID := req.GetUserID()
-	if userID <= 0 {
-		handler.Error(c, stacktrace.Propagate(ente.ErrBadRequest, "valid userID is required"))
-		return
-	}
-
-	reason := strings.TrimSpace(req.Reason)
-	if reason == "" {
-		handler.Error(c, stacktrace.Propagate(ente.ErrBadRequest, "reason is required"))
-		return
-	}
-
-	adminID := auth.GetUserID(c.Request.Header)
-	h.notifyAdminAction(adminID, "suspending user %d for reason: %s", userID, reason)
-
-	query := `UPDATE users SET is_suspended = TRUE, suspend_reason = $1 WHERE user_id = $2`
-	if _, err := h.UserRepo.DB.ExecContext(c.Request.Context(), query, reason, userID); err != nil {
-		handler.Error(c, stacktrace.Propagate(err, "failed to update user suspension in database"))
-		return
-	}
-
-	h.cacheUserSuspended(userID)
-	h.sendUserSuspendedEmail(userID, reason)
-	h.terminateAllSessions(c.Request.Context(), userID)
-
-	c.JSON(http.StatusOK, gin.H{"status": "ok"})
-}
-
-// UnsuspendUser lifts the suspension of a user account.
-func (h *AdminHandler) UnsuspendUser(c *gin.Context) {
-	if err := h.isFreshAdminToken(c); err != nil {
-		handler.Error(c, stacktrace.Propagate(err, ""))
-		return
-	}
-
-	var req UnsuspendUserRequest
-	if err := handler.BindJSON(c, &req); err != nil {
-		handler.Error(c, stacktrace.Propagate(err, "Bad request"))
-		return
-	}
-
-	userID := req.GetUserID()
-	if userID <= 0 {
-		handler.Error(c, stacktrace.Propagate(ente.ErrBadRequest, "valid userID is required"))
-		return
-	}
-
-	adminID := auth.GetUserID(c.Request.Header)
-	h.notifyAdminAction(adminID, "unsuspending user %d", userID)
-
-	query := `UPDATE users SET is_suspended = FALSE, suspend_reason = '' WHERE user_id = $1`
-	if _, err := h.UserRepo.DB.ExecContext(c.Request.Context(), query, userID); err != nil {
-		handler.Error(c, stacktrace.Propagate(err, "failed to update user unsuspend in database"))
-		return
-	}
-
-	h.invalidateUserSuspensionCache(userID)
-
-	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
 
 // GetAbuseReports returns all abuse reports joined with public collection share tokens.
@@ -261,22 +185,5 @@ func (h *AdminHandler) sendUserSuspendedEmail(userID int64, reason string) {
 	)
 	if emailErr != nil {
 		logrus.WithError(emailErr).WithField("user_id", userID).Warn("Failed to send suspension email to user")
-	}
-}
-
-func (h *AdminHandler) terminateAllSessions(ctx context.Context, userID int64) {
-	if h.UserController != nil {
-		if err := h.UserController.DeleteUserTokens(userID); err != nil {
-			logrus.WithError(err).WithField("user_id", userID).Warn("Failed to delete user tokens via UserController")
-		}
-		if h.UserController.SpaceAccessResetter != nil {
-			_ = h.UserController.SpaceAccessResetter.RevokeBrowserSessions(ctx, userID)
-		}
-		return
-	}
-	if h.UserAuthRepo != nil {
-		if _, err := h.UserAuthRepo.DeleteUserTokens(userID); err != nil {
-			logrus.WithError(err).WithField("user_id", userID).Warn("Failed to delete user tokens via UserAuthRepo")
-		}
 	}
 }

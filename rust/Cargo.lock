@@ -65,6 +65,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "aes"
+version = "0.9.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fc0fc36d7440d015b45468ba08a21e80e056ebbd014c611c6298bb7503e04bd1"
+dependencies = [
+ "cipher 0.5.2",
+ "cpubits",
+ "cpufeatures 0.3.0",
+ "zeroize",
+]
+
+[[package]]
+name = "aes-gcm"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7f2b8006a0c83f52b62ba44a97b58bf76fe2f70a329e588f67f89691d93d498f"
+dependencies = [
+ "aead 0.6.1",
+ "aes 0.9.4",
+ "cipher 0.5.2",
+ "ctr",
+ "ctutils",
+ "ghash",
+ "zeroize",
+]
+
+[[package]]
 name = "aho-corasick"
 version = "1.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -526,13 +553,13 @@ checksum = "8b75356056920673b02621b35afd0f7dda9306d03c79a30f5c56c44cf256e3de"
 
 [[package]]
 name = "async-trait"
-version = "0.1.89"
+version = "0.1.92"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9035ad2d096bed7955a320ee7e2230574d28fd3c3a0f186cbea1ff3c7eed5dbb"
+checksum = "82f6aeea286b8eb4dd3431a1be1b59d290ace00f5bfd8e2a159bc2a05e2c1667"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.117",
+ "syn 3.0.6",
 ]
 
 [[package]]
@@ -904,6 +931,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "block-padding"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "710f1dd022ef4e93f8a438b4ba958de7f64308434fa6a87104481645cc30068b"
+dependencies = [
+ "hybrid-array",
+]
+
+[[package]]
 name = "block2"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1177,6 +1213,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "cbc"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ce2dc9ee5f88d11e0beb842c88b33c8a5cf0d1329c4b19494af42b07dbfe8896"
+dependencies = [
+ "cipher 0.5.2",
+]
+
+[[package]]
 name = "cbindgen"
 version = "0.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1325,6 +1370,7 @@ dependencies = [
  "block-buffer 0.12.0",
  "crypto-common 0.2.2",
  "inout 0.2.2",
+ "zeroize",
 ]
 
 [[package]]
@@ -1756,7 +1802,7 @@ dependencies = [
  "cipher 0.4.4",
  "generic-array",
  "poly1305 0.8.0",
- "salsa20",
+ "salsa20 0.10.2",
  "subtle",
  "zeroize",
 ]
@@ -1803,6 +1849,15 @@ name = "ctor"
 version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2e30e509674ef0ec91e21a7735766db37d163d46151b6a361d8b83dd79116bd"
+
+[[package]]
+name = "ctr"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "baaca1c4b237092596f64d571e9db6ce4109c4ef9742e27590f1709594461f21"
+dependencies = [
+ "cipher 0.5.2",
+]
 
 [[package]]
 name = "ctutils"
@@ -1985,9 +2040,9 @@ version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "708b509edf7889e53d7efb0ffadd994cc6c2345ccb62f55cfd6b0682165e4fa6"
 dependencies = [
- "aes",
- "block-padding",
- "cbc",
+ "aes 0.8.4",
+ "block-padding 0.3.3",
+ "cbc 0.1.2",
  "dbus",
  "fastrand",
  "hkdf 0.12.4",
@@ -2405,9 +2460,20 @@ dependencies = [
 name = "ente-auth"
 version = "0.0.0"
 dependencies = [
+ "aes 0.9.4",
+ "aes-gcm",
+ "argon2",
+ "cbc 0.2.1",
  "ente-core",
+ "hex",
+ "hmac 0.13.0",
+ "pbkdf2",
+ "scrypt",
  "serde",
  "serde_json",
+ "sha1 0.11.0",
+ "sha2 0.11.1",
+ "subtle",
  "thiserror 2.0.21",
  "url",
  "urlencoding",
@@ -2419,6 +2485,7 @@ dependencies = [
 name = "ente-auth-frb"
 version = "0.0.0"
 dependencies = [
+ "ente-auth",
  "ente-frb-lib",
  "flutter_rust_bridge",
 ]
@@ -2435,9 +2502,15 @@ name = "ente-cast"
 version = "0.0.0"
 dependencies = [
  "ente-core",
+ "ente-live-photo",
+ "futures-util",
+ "mockito",
  "serde",
  "serde_json",
+ "tempfile",
  "thiserror 2.0.21",
+ "tokio",
+ "zip",
 ]
 
 [[package]]
@@ -2466,7 +2539,7 @@ dependencies = [
 
 [[package]]
 name = "ente-cli"
-version = "0.4.4"
+version = "0.4.6"
 dependencies = [
  "anyhow",
  "chrono",
@@ -2548,7 +2621,7 @@ dependencies = [
  "mockito",
  "rand_core 0.6.4",
  "reqwest 0.12.28",
- "salsa20",
+ "salsa20 0.10.2",
  "serde",
  "serde_json",
  "sha1 0.11.0",
@@ -2603,6 +2676,8 @@ dependencies = [
  "ente-core",
  "ente-ensu",
  "ente-uniffi-log",
+ "rusqlite",
+ "tempfile",
  "thiserror 2.0.21",
  "uniffi",
  "uuid",
@@ -2659,6 +2734,7 @@ dependencies = [
  "fast_image_resize",
  "heic_decoder",
  "image",
+ "jpeg-encoder",
  "jxl",
  "kamadak-exif",
  "log",
@@ -2668,6 +2744,7 @@ dependencies = [
  "tempfile",
  "thiserror 2.0.21",
  "tiff",
+ "zune-jpeg 0.5.16-rc3",
 ]
 
 [[package]]
@@ -3742,7 +3819,7 @@ dependencies = [
  "i_overlay",
  "log",
  "num-traits",
- "rand 0.10.1",
+ "rand 0.10.3",
  "rand_pcg",
  "robust",
  "rstar",
@@ -3807,6 +3884,16 @@ dependencies = [
  "r-efi 6.0.0",
  "rand_core 0.10.1",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "ghash"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2eecf2d5dc9b66b732b97707a0210906b1d30523eb773193ab777c0c84b3e8d5"
+dependencies = [
+ "polyval",
+ "zeroize",
 ]
 
 [[package]]
@@ -4134,7 +4221,7 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 [[package]]
 name = "heic_decoder"
 version = "0.2.0"
-source = "git+https://github.com/ente/heic-decoder.git?rev=288c4213e283042416e690788ba1ef631d789f53#288c4213e283042416e690788ba1ef631d789f53"
+source = "git+https://github.com/ente/heic-decoder.git?rev=5fbe1d24fe0708d9e4a8ed1e9c4891108fbbffaf#5fbe1d24fe0708d9e4a8ed1e9c4891108fbbffaf"
 dependencies = [
  "archmage",
  "brotli 8.0.2",
@@ -4996,8 +5083,8 @@ dependencies = [
  "rayon",
  "rgb",
  "tiff",
- "zune-core",
- "zune-jpeg",
+ "zune-core 0.5.1",
+ "zune-jpeg 0.5.15",
 ]
 
 [[package]]
@@ -5023,7 +5110,7 @@ dependencies = [
  "itertools 0.14.0",
  "nalgebra",
  "num",
- "rand 0.10.1",
+ "rand 0.10.3",
  "rand_distr",
  "rayon",
  "rustdct",
@@ -5146,7 +5233,7 @@ version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "879f10e63c20629ecabbb64a8010319738c66a5cd0c29b02d63d272b03751d01"
 dependencies = [
- "block-padding",
+ "block-padding 0.3.3",
  "generic-array",
 ]
 
@@ -5156,6 +5243,7 @@ version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4250ce6452e92010fdf7268ccc5d14faa80bb12fc741938534c58f16804e03c7"
 dependencies = [
+ "block-padding 0.4.2",
  "hybrid-array",
 ]
 
@@ -6833,6 +6921,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df94ce210e5bc13cb6651479fa48d14f601d9858cfe0467f43ae157023b938d3"
 
 [[package]]
+name = "pbkdf2"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "112d82ceb8c5bf524d9af484d4e4970c9fd5a0cc15ba14ad93dccd28873b0629"
+dependencies = [
+ "digest 0.11.3",
+ "hmac 0.13.0",
+]
+
+[[package]]
 name = "percent-encoding"
 version = "2.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7034,6 +7132,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "polyval"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0fa31d631f2b2cb2a544d0aa321ce847a94764d701ca2becc411138b93d49cd"
+dependencies = [
+ "cpubits",
+ "cpufeatures 0.3.0",
+ "universal-hash 0.6.1",
+ "zeroize",
+]
+
+[[package]]
 name = "portable-atomic"
 version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7050,57 +7160,54 @@ dependencies = [
 
 [[package]]
 name = "postgresql_archive"
-version = "0.20.4"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf41d656e8c357185ccab494989fad336a9eb16ebd689fcf4efce35a9a55726a"
+checksum = "48e79dc46e8a3f913dda09f54815bb8583a9db3d1cbe0d90751c99c8e44347a7"
 dependencies = [
  "async-trait",
  "flate2",
  "futures-util",
  "hex",
  "regex-lite",
- "reqwest 0.13.4",
+ "reqwest 0.13.5",
  "reqwest-middleware",
  "reqwest-retry",
  "reqwest-tracing",
  "semver",
  "serde",
  "serde_json",
- "sha2 0.10.9",
+ "sha2 0.11.1",
  "tar",
- "target-triple",
+ "target-tuple",
  "tempfile",
- "thiserror 2.0.21",
  "tracing",
  "url",
 ]
 
 [[package]]
 name = "postgresql_commands"
-version = "0.20.4"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2af4eb3d074b22c7f07e35ab891093c48dc1f9514a52e54b250a1ae47f311df3"
+checksum = "dcb516dddcb0eac0bf360564b2dd086eceddb2779ed7fcd97b32135521ddec80"
 dependencies = [
- "thiserror 2.0.21",
  "tokio",
  "tracing",
 ]
 
 [[package]]
 name = "postgresql_embedded"
-version = "0.20.4"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ec95242c7e52d7a286f35f10cf143f5fb02255bbdd41b5b2eba05dbbcd79334"
+checksum = "402b68210be4ef25bf9903b530ecf522ca76699dced416b847aa73e0c9dc5f44"
 dependencies = [
  "anyhow",
  "postgresql_archive",
  "postgresql_commands",
- "rand 0.10.1",
+ "rand 0.10.3",
  "semver",
  "sqlx",
- "target-triple",
+ "target-tuple",
  "tempfile",
- "thiserror 2.0.21",
  "tokio",
  "tracing",
  "url",
@@ -7306,7 +7413,7 @@ dependencies = [
  "bytes",
  "getrandom 0.4.3",
  "lru-slab",
- "rand 0.10.1",
+ "rand 0.10.3",
  "rand_pcg",
  "ring",
  "rustc-hash",
@@ -7377,9 +7484,9 @@ dependencies = [
 
 [[package]]
 name = "rand"
-version = "0.10.1"
+version = "0.10.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2e8e8bcc7961af1fdac401278c6a831614941f6164ee3bf4ce61b7edb162207"
+checksum = "65c9fb96cbc91e3478eaae79a69fcd3f1ae4ad052e471fe6732fff548984b4af"
 dependencies = [
  "chacha20 0.10.2",
  "getrandom 0.4.3",
@@ -7437,7 +7544,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4d431c2703ccf129de4d45253c03f49ebb22b97d6ad79ee3ecfc7e3f4862c1d8"
 dependencies = [
  "num-traits",
- "rand 0.10.1",
+ "rand 0.10.3",
 ]
 
 [[package]]
@@ -7712,11 +7819,11 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.13.4"
+version = "0.13.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "219c5811de6525e5416c7d5d53bb656d3afdbc6c5af816e0802bcfa42dbdc1c3"
+checksum = "16a1cfa75cc186dd73d5818e510e042e40927bccc9c236b061cea97e1eb08029"
 dependencies = [
- "base64 0.22.1",
+ "base64 0.23.1",
  "bytes",
  "futures-core",
  "futures-util",
@@ -7761,7 +7868,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "http",
- "reqwest 0.13.4",
+ "reqwest 0.13.5",
  "serde",
  "thiserror 2.0.21",
  "tower-service",
@@ -7779,7 +7886,7 @@ dependencies = [
  "getrandom 0.2.17",
  "http",
  "hyper",
- "reqwest 0.13.4",
+ "reqwest 0.13.5",
  "reqwest-middleware",
  "retry-policies",
  "thiserror 2.0.21",
@@ -7799,7 +7906,7 @@ dependencies = [
  "getrandom 0.2.17",
  "http",
  "matchit",
- "reqwest 0.13.4",
+ "reqwest 0.13.5",
  "reqwest-middleware",
  "tracing",
 ]
@@ -7810,7 +7917,7 @@ version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc05fbf560421a0357a750cbe78c7ca19d4923918490daabba313d5dbc871e47"
 dependencies = [
- "rand 0.10.1",
+ "rand 0.10.3",
 ]
 
 [[package]]
@@ -8087,6 +8194,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "salsa20"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2f874456e72520ff1375a06c588eaf074b0f01f9e9e1aada45bd9b7954a6e42c"
+dependencies = [
+ "cfg-if",
+ "cipher 0.5.2",
+]
+
+[[package]]
 name = "same-file"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8188,6 +8305,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "scrypt"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d87af57419b594aa23fa95f09f0e06d80d84ba01c26148c43844cad6ff4485f0"
+dependencies = [
+ "cfg-if",
+ "pbkdf2",
+ "salsa20 0.11.0",
+ "sha2 0.11.1",
+]
+
+[[package]]
 name = "scuffle-bytes-util"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8236,8 +8365,8 @@ version = "4.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e4d35ad99a181be0a60ffcbe85d680d98f87bdc4d7644ade319b87076b9dbfd4"
 dependencies = [
- "aes",
- "cbc",
+ "aes 0.8.4",
+ "cbc 0.1.2",
  "futures-util",
  "generic-array",
  "hkdf 0.12.4",
@@ -8931,7 +9060,7 @@ dependencies = [
  "log",
  "md-5 0.11.0",
  "memchr",
- "rand 0.10.1",
+ "rand 0.10.3",
  "serde",
  "serde_json",
  "sha2 0.11.1",
@@ -9233,10 +9362,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "61c41af27dd6d1e27b1b16b489db798443478cef1f06a660c96db617ba5de3b1"
 
 [[package]]
-name = "target-triple"
-version = "1.0.0"
+name = "target-tuple"
+version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "591ef38edfb78ca4771ee32cf494cb8771944bee237a9b91fc9c1424ac4b777b"
+checksum = "876fef147edbcbddc8ac5cbbba92c7b86519e314e86638596c09673b2ed01e7f"
 
 [[package]]
 name = "tauri"
@@ -9268,7 +9397,7 @@ dependencies = [
  "percent-encoding",
  "plist",
  "raw-window-handle",
- "reqwest 0.13.4",
+ "reqwest 0.13.5",
  "serde",
  "serde_json",
  "serde_repr",
@@ -9475,7 +9604,7 @@ dependencies = [
  "minisign-verify",
  "osakit",
  "percent-encoding",
- "reqwest 0.13.4",
+ "reqwest 0.13.5",
  "rustls",
  "semver",
  "serde",
@@ -9692,7 +9821,7 @@ dependencies = [
  "half",
  "quick-error",
  "weezl",
- "zune-jpeg",
+ "zune-jpeg 0.5.15",
 ]
 
 [[package]]
@@ -11835,6 +11964,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cb8a0807f7c01457d0379ba880ba6322660448ddebc890ce29bb64da71fb40f9"
 
 [[package]]
+name = "zune-core"
+version = "0.5.3"
+source = "git+https://github.com/etemesi254/zune-image.git?rev=2f9086b07cdf5a36621ce18f79d310f99b751de9#2f9086b07cdf5a36621ce18f79d310f99b751de9"
+
+[[package]]
 name = "zune-inflate"
 version = "0.2.54"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -11849,7 +11983,15 @@ version = "0.5.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "27bc9d5b815bc103f142aa054f561d9187d191692ec7c2d1e2b4737f8dbd7296"
 dependencies = [
- "zune-core",
+ "zune-core 0.5.1",
+]
+
+[[package]]
+name = "zune-jpeg"
+version = "0.5.16-rc3"
+source = "git+https://github.com/etemesi254/zune-image.git?rev=2f9086b07cdf5a36621ce18f79d310f99b751de9#2f9086b07cdf5a36621ce18f79d310f99b751de9"
+dependencies = [
+ "zune-core 0.5.3",
 ]
 
 [[package]]

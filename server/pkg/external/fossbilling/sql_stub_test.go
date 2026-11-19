@@ -122,8 +122,8 @@ func (c *memConn) queryUserByID(id int64) (driver.Rows, error) {
 		return nil, err
 	}
 	return &memRows{
-		cols: []string{"user_id", "encrypted_email", "email_decryption_nonce", "email_hash", "family_admin_id", "creation_time", "is_two_factor_enabled", "email_mfa"},
-		data: [][]driver.Value{{u.ID, enc.Cipher, enc.Nonce, u.Hash, nil, int64(1), false, false}},
+		cols: []string{"user_id", "encrypted_email", "email_decryption_nonce", "email_hash", "family_admin_id", "creation_time", "is_two_factor_enabled", "email_mfa", "is_suspended"},
+		data: [][]driver.Value{{u.ID, enc.Cipher, enc.Nonce, u.Hash, nil, int64(1), false, false, false}},
 	}, nil
 }
 

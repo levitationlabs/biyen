@@ -4,6 +4,7 @@ import "package:package_info_plus/package_info_plus.dart";
 import "package:photos/core/configuration.dart";
 import "package:photos/db/files_db.dart";
 import "package:photos/db/social_db.dart";
+import "package:photos/models/collection/collection.dart";
 import "package:photos/models/file/file.dart";
 import "package:photos/models/file/file_type.dart";
 import "package:photos/models/metadata/common_keys.dart";
@@ -16,6 +17,7 @@ import "package:photos/services/machine_learning/face_ml/person/person_service.d
 import "package:photos/services/memories/memory_sources.dart";
 import "package:photos/services/rewind/rewind_edition.dart";
 import "package:photos/src/rust/api/rewind_api.dart" as rust;
+import "package:photos/utils/contact_string_util.dart";
 
 bool get rewindUsesMl =>
     hasGrantedMLConsent && localSettings.isMLLocalIndexingEnabled;
@@ -28,7 +30,9 @@ Future<rust.RewindRequest> buildRewindRequest(DateTime now) async {
   final persons = isLocalGalleryMode || !rewindUsesMl
       ? const <PersonEntity>[]
       : await PersonService.instance.getPersons();
-  final email = isLocalGalleryMode ? null : Configuration.instance.getEmail();
+  final email = isLocalGalleryMode
+      ? null
+      : normalizeContactLinkEmail(Configuration.instance.getEmail());
   return rust.RewindRequest(
     year: RewindEdition.year,
     now: now.microsecondsSinceEpoch,
@@ -48,7 +52,10 @@ Future<rust.RewindRequest> buildRewindRequest(DateTime now) async {
     mePersonId: email == null
         ? null
         : persons
-              .firstWhereOrNull((person) => person.data.email == email)
+              .firstWhereOrNull(
+                (person) =>
+                    normalizeContactLinkEmail(person.data.email) == email,
+              )
               ?.remoteID,
   );
 }
@@ -233,16 +240,21 @@ class _Albums {
       },
       shared: {
         for (final collection in collections.getActiveCollections())
-          if (!collection.isHidden() &&
-              (collection.hasSharees ||
-                  collection.hasLink ||
-                  !collection.isOwner(userID)))
-            collection.id,
+          if (_isSharedAlbum(collection, userID)) collection.id,
       },
       favourites:
           (await FavoritesService.instance.getFavoritesCollection())?.id,
     );
   }
+
+  static bool _isSharedAlbum(Collection collection, int userID) =>
+      (collection.type == CollectionType.album ||
+          collection.type == CollectionType.folder) &&
+      !collection.isQuickLinkCollection() &&
+      !collection.isHidden() &&
+      (collection.hasSharees ||
+          collection.hasLink ||
+          !collection.isOwner(userID));
 
   rust.RewindVisibility visibility(EnteFile file, Set<int> collectionIDs) {
     final fileVisibility = file.magicMetadata.visibility;

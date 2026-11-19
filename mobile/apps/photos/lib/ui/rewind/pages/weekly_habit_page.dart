@@ -6,6 +6,7 @@ import "package:photos/ui/rewind/shell/rewind_page.dart";
 import "package:photos/ui/rewind/shell/rewind_share.dart";
 import "package:photos/ui/rewind/theme/rewind_assets.dart";
 import "package:photos/ui/rewind/theme/rewind_colors.dart";
+import "package:photos/ui/rewind/theme/rewind_motion.dart";
 import "package:photos/ui/rewind/theme/rewind_text_styles.dart";
 import "package:photos/ui/rewind/widgets/rewind_backdrop.dart";
 import "package:photos/ui/rewind/widgets/rewind_elapsed.dart";
@@ -33,11 +34,16 @@ class WeeklyHabitPage extends RewindPage {
   const WeeklyHabitPage(this.habit);
 
   static const _clock = Rect.fromLTWH(72.2, 157.9, 237.583, 237.583);
+  static const _tilesTop = 455.0;
 
   final rust.WeeklyHabit habit;
 
   @override
   String get key => "weekly_habit";
+
+  @override
+  Duration? get reelHold =>
+      const Duration(milliseconds: 5100 + RewindMotion.reelReadingMs);
 
   @override
   RewindChrome get chrome => RewindChrome.dark;
@@ -51,8 +57,9 @@ class WeeklyHabitPage extends RewindPage {
     final day = (habit.weekday - 1).clamp(0, 6);
     final hour = _clockHour(habit.hour);
     final title = "${_weekdays[day]}s, $hour";
-    final line =
-        "${habit.percent}% of your photos were taken on ${_weekdays[day]}s.";
+    final share = "${habit.percent}%";
+    final weekdays = "${_weekdays[day]}s";
+    final line = "$share of your photos were taken on $weekdays.";
     final dayLeft = 37.0 + 46 * day;
     return RewindShareable(
       child: Stack(
@@ -97,8 +104,8 @@ class WeeklyHabitPage extends RewindPage {
                                 ),
                               ),
                               Positioned(
-                                left: 254 - 32.2,
-                                top: 177 - 117.9,
+                                left: 255 - 32.2,
+                                top: 173 - 117.9,
                                 child: FractionalTranslation(
                                   translation: const Offset(-0.5, -0.5),
                                   child: _HourTag(hour),
@@ -111,13 +118,13 @@ class WeeklyHabitPage extends RewindPage {
                     ),
                   ),
                   _layer(
-                    rect: Rect.fromLTWH(dayLeft - 43, 377, 110, 128),
+                    rect: Rect.fromLTWH(dayLeft - 29.4, 389, 97, 113.1),
                     position: position,
                     child: _Fire(active: isActive, delayMs: 3150),
                   ),
                   for (var i = 0; i < 7; i++)
                     _layer(
-                      rect: Rect.fromLTWH(37.0 + 46 * i, 455, 40, 72),
+                      rect: Rect.fromLTWH(37.0 + 46 * i, _tilesTop, 40, 72),
                       position: position,
                       child: RewindEntrance(
                         preset: RewindPreset.bubble,
@@ -131,7 +138,7 @@ class WeeklyHabitPage extends RewindPage {
                       ),
                     ),
                   _layer(
-                    rect: const Rect.fromLTWH(37, 91, 179, 354),
+                    rect: const Rect.fromLTWH(37, 89.7, 178.6, 354),
                     position: position,
                     child: RewindEntrance(
                       preset: RewindPreset.drop,
@@ -143,7 +150,7 @@ class WeeklyHabitPage extends RewindPage {
                     ),
                   ),
                   _layer(
-                    rect: const Rect.fromLTWH(0, 60, 210, 245),
+                    rect: const Rect.fromLTWH(-0.3, 40.3, 209.4, 244.1),
                     position: position,
                     child: _Fire(active: isActive, delayMs: 2950),
                   ),
@@ -155,12 +162,16 @@ class WeeklyHabitPage extends RewindPage {
                     position: position,
                     active: isActive,
                     delayMs: 4000,
-                    child: Text(
-                      "YOUR WEEKLY RITUAL",
-                      style: RewindTextStyles.display(
-                        17,
-                        color: RewindColors.ink,
-                        height: 1.05,
+                    child: RewindVoice(
+                      you: "YOUR WEEKLY RITUAL",
+                      me: "MY WEEKLY RITUAL",
+                      builder: (text) => Text(
+                        text,
+                        style: RewindTextStyles.display(
+                          17,
+                          color: RewindColors.ink,
+                          height: 1.05,
+                        ),
                       ),
                     ),
                   ),
@@ -193,9 +204,16 @@ class WeeklyHabitPage extends RewindPage {
                     position: position,
                     active: isActive,
                     delayMs: 4500,
-                    child: Text(
-                      line,
-                      style: RewindTextStyles.body(17, color: RewindColors.ink),
+                    child: RewindVoice(
+                      you: line,
+                      me: "$share of my photos were taken on $weekdays.",
+                      builder: (text) => Text(
+                        text,
+                        style: RewindTextStyles.body(
+                          17,
+                          color: RewindColors.ink,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -299,7 +317,7 @@ class _HourTag extends StatelessWidget {
     return Transform.rotate(
       angle: -6 * pi / 180,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(18, 7, 18, 6),
+        padding: const EdgeInsets.symmetric(horizontal: 15.84, vertical: 4.75),
         decoration: BoxDecoration(
           color: RewindColors.hotPink,
           border: Border.all(color: RewindColors.ink, width: 3.49),

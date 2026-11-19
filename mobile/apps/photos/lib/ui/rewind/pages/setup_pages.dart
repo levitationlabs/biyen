@@ -1,6 +1,7 @@
 import "package:flutter/painting.dart";
 import "package:photos/ui/rewind/pages/setup_page.dart";
 import "package:photos/ui/rewind/shell/rewind_page.dart";
+import "package:photos/ui/rewind/story/rewind_rituals.dart";
 import "package:photos/ui/rewind/theme/rewind_assets.dart";
 import "package:photos/ui/rewind/theme/rewind_colors.dart";
 import "package:photos/ui/rewind/widgets/rewind_entrance.dart";
@@ -14,15 +15,15 @@ const paletteSetupPage = SetupPage(
   chrome: RewindChrome.dark,
   headlines: [
     SetupHeadline(
-      "YOUR YEAR\nHAD A COLOUR\nPALETTE.",
+      "YOUR YEAR\nHAD A COLOR",
       at: Offset(32, 126),
-      size: 47,
+      size: 56,
       height: 0.84,
       width: 326,
     ),
   ],
   callout: SetupCallout(
-    "AND IT WAS\nVERY YOU.",
+    "IT LOOKS GOOD\nON YOU!",
     center: Offset(178, 422.5),
     delayMs: 600,
     onTop: true,
@@ -58,29 +59,6 @@ const placesSetupPage = SetupPage(
   ),
 );
 
-const spotsSetupPage = SetupPage(
-  key: "spots_setup",
-  color: Color(0xFFFFCA39),
-  pattern: Color(0xFFFFD24E),
-  ink: RewindColors.ink,
-  chrome: RewindChrome.dark,
-  headlines: [
-    SetupHeadline("YOU HAVE\nYOUR SPOTS.", at: Offset(24, 140), size: 54),
-  ],
-  callout: SetupCallout(
-    "WE NOTICED.",
-    center: Offset(215.2, 385.5),
-    delayMs: 600,
-  ),
-  art: SetupArt.ducky(
-    RewindAssets.chairDucky,
-    Rect.fromLTWH(22, 401, 310.4, 373.1),
-    ticks: [(RewindTick.forward, Rect.fromLTWH(229, 423, 11, 18))],
-    pivot: Offset(176, 752),
-    delayMs: 780,
-  ),
-);
-
 const peopleSetupPage = SetupPage(
   key: "people_setup",
   color: Color(0xFF9D4AE4),
@@ -109,8 +87,8 @@ const peopleSetupPage = SetupPage(
 
 const busiestDaySetupPage = SetupPage(
   key: "busiest_day_setup",
-  color: Color(0xFFFF6727),
-  pattern: Color(0xFFFC5D19),
+  color: Color(0xFFF72F33),
+  pattern: Color(0xFFF02525),
   ink: RewindColors.cream,
   headlines: [
     SetupHeadline("ONE DAY,\nTHINGS GOT", at: Offset(24, 140), size: 59),
@@ -130,15 +108,15 @@ const busiestDaySetupPage = SetupPage(
 
 const newFacesSetupPage = SetupPage(
   key: "new_faces_setup",
-  color: Color(0xFF1EB736),
-  pattern: Color(0xFF1DB034),
+  color: Color(0xFF3366D3),
+  pattern: Color(0xFF3B6ED7),
   ink: RewindColors.cream,
   headlines: [
-    SetupHeadline("THE CAST GOT\nBIGGER", at: Offset(24, 140), size: 39),
+    SetupHeadline("THE CAST GOT\nBIGGER", at: Offset(24, 140), size: 49.578),
   ],
   callout: SetupCallout(
-    "WELCOME TO FAM!",
-    center: Offset(186.6, 334.2),
+    "WELCOME TO THE FAM!",
+    center: Offset(195, 334.2),
     turn: -4.5,
   ),
   art: SetupArt.ducky(
@@ -154,10 +132,14 @@ const favouritesSetupPage = SetupPage(
   pattern: Color(0xFFFF4D9F),
   ink: RewindColors.cream,
   headlines: [
-    SetupHeadline("SOME PHOTOS\nHIT DIFFERENT.", at: Offset(24, 140), size: 48),
+    SetupHeadline(
+      "SOME PHOTOS JUST\nHIT DIFFERENT.",
+      at: Offset(24, 140),
+      size: 48,
+    ),
   ],
   callout: SetupCallout(
-    "AND THEY GOT A STAR!",
+    "THEY DESERVE A STAR!",
     center: Offset(199, 391),
     size: 29.01,
   ),
@@ -198,15 +180,46 @@ const ritualSetupPage = SetupPage(
   ),
 );
 
+SetupPage ritualStreakSetupPage(RewindRituals rituals) => SetupPage(
+  key: ritualStreakSetupKey,
+  color: const Color(0xFFE86436),
+  pattern: const Color(0xFFF0713F),
+  ink: RewindColors.cream,
+  headlines: [
+    SetupHeadline(
+      switch ((rituals.built, rituals.started)) {
+        (1, 1) => "YOU BUILT\nA NEW\nRITUAL.",
+        (1, _) => "YOU BUILT\nA HABIT.",
+        _ => "YOU BUILT\nRITUALS.",
+      },
+      at: const Offset(24, 140),
+      size: 66,
+    ),
+  ],
+  callout: const SetupCallout(
+    "ONE PHOTO A DAY.",
+    center: Offset(195, 398.5),
+    delayMs: 600,
+  ),
+  art: const SetupArt.ducky(
+    RewindAssets.cameraDucky,
+    Rect.fromLTWH(46.5, 441, 265.3, 334),
+    pivot: Offset(179, 775),
+    delayMs: 780,
+  ),
+);
+
+const ritualStreakSetupKey = "ritual_streak_setup";
+
 const likesSetupPage = SetupPage(
   key: "likes_setup",
   color: Color(0xFF2F65D7),
   pattern: Color(0xFF3670EB),
   ink: RewindColors.cream,
   headlines: [
-    SetupHeadline("SOME PHOTOS\nGOT LIKES.", at: Offset(24, 140), size: 48),
+    SetupHeadline("YOUR FEED\nWAS LIT!", at: Offset(24, 140), size: 48),
   ],
-  callout: SetupCallout("ONE GOT A LOT.", center: Offset(188.2, 383.5)),
+  callout: SetupCallout("’SPECIALLY THIS ONE.", center: Offset(188.2, 383.5)),
   art: SetupArt.image(
     RewindAssets.polaroidHugDucky,
     Rect.fromLTWH(46, 434, 296, 328),
@@ -219,11 +232,7 @@ const badgeSetupPage = SetupPage(
   pattern: Color(0xFF11B72A),
   ink: RewindColors.cream,
   headlines: [
-    SetupHeadline(
-      "WE STUDIED\nYOUR CAMERA\nROLL.",
-      at: Offset(24, 140),
-      size: 45,
-    ),
+    SetupHeadline("BASED ON\nYOUR GALLERY…", at: Offset(24, 140), size: 45),
   ],
   callout: SetupCallout(
     "I HAVE A THEORY ABOUT YOU",
@@ -241,7 +250,6 @@ const badgeSetupPage = SetupPage(
 const setupPages = [
   paletteSetupPage,
   placesSetupPage,
-  spotsSetupPage,
   peopleSetupPage,
   busiestDaySetupPage,
   newFacesSetupPage,

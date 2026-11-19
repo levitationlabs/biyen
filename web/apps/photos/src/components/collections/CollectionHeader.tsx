@@ -1,4 +1,8 @@
 import type { RemotePullOpts } from "@/components/gallery";
+import {
+    headerIconButtonSx,
+    headerIconSize,
+} from "@/components/gallery/header-styles";
 import { usePhotosNavigation } from "@/components/gallery/navigation/PhotosNavigationContext";
 import { downloadAndSaveCollectionFiles } from "@/services/save";
 import {
@@ -14,6 +18,7 @@ import {
     PinOffIcon,
     PlaySquareIcon,
     RemoveCircleIcon,
+    Share08Icon,
     Sorting05Icon,
     StarIcon,
     Unarchive03Icon,
@@ -167,9 +172,9 @@ export const CollectionHeader: React.FC<CollectionHeaderProps> = (props) => {
                             <IconButton
                                 aria-label={t("go_back")}
                                 onClick={backToAlbums}
-                                sx={{ width: 32, height: 32, flexShrink: 0 }}
+                                sx={headerIconButtonSx}
                             >
-                                <ArrowBackIcon sx={{ fontSize: 20 }} />
+                                <ArrowBackIcon />
                             </IconButton>
                         </Tooltip>
                     )}
@@ -578,7 +583,11 @@ const CollectionHeaderOptions: React.FC<CollectionHeaderProps> = ({
                         </ContextMenuItem>
                     )
                 ) : undefined,
-                <ContextMenuItem key="leave" onClick={confirmLeaveSharedAlbum}>
+                <ContextMenuItem
+                    key="leave"
+                    destructive
+                    onClick={confirmLeaveSharedAlbum}
+                >
                     <HugeiconsIcon icon={Logout01Icon} size={20} />
                     {t("leave_album")}
                 </ContextMenuItem>,
@@ -760,7 +769,9 @@ const CollectionHeaderOptions: React.FC<CollectionHeaderProps> = ({
         <Box
             sx={{
                 display: "inline-flex",
+                alignItems: "center",
                 gap: "16px",
+                "& .MuiIconButton-root": headerIconButtonSx,
                 flexShrink: 0,
                 mt: isAlbumSummary(collectionSummary)
                     ? { xs: 0, sm: "3px" }
@@ -788,6 +799,7 @@ const CollectionHeaderOptions: React.FC<CollectionHeaderProps> = ({
                     <IconButton
                         aria-label={t("more_options")}
                         id="collection-options-trigger"
+                        disabled={hasActiveFileSelection}
                         aria-controls={
                             menuAnchorEl ? "collection-options" : undefined
                         }
@@ -890,7 +902,10 @@ const QuickOptions: React.FC<QuickOptionsProps> = ({
                 showDownloadQuickOption(collectionSummary) &&
                 collectionSummary.fileCount > 0 &&
                 (isDownloadInProgress() ? (
-                    <ActivityIndicator size="20px" sx={{ m: "12px" }} />
+                    <ActivityIndicator
+                        size={headerIconSize}
+                        sx={{ m: "11px" }}
+                    />
                 ) : (
                     <DownloadQuickOption
                         collectionSummary={collectionSummary}
@@ -1112,7 +1127,15 @@ const ShareQuickOption: React.FC<ShareQuickOptionProps> = ({
                     justifyContent: "center",
                 }}
             >
-                {isQuickLinkAlbum ? <LinkIcon /> : <ShareIcon />}
+                {isQuickLinkAlbum ? (
+                    <LinkIcon />
+                ) : (
+                    <HugeiconsIcon
+                        icon={Share08Icon}
+                        size={headerIconSize}
+                        aria-hidden
+                    />
+                )}
             </Box>
         </IconButton>
     </Tooltip>

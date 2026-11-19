@@ -46,9 +46,9 @@ func TestSuspendAndUnsuspendUser(t *testing.T) {
 	targetEmailHash := fmt.Sprintf("target_hash_%d", nowMicro)
 
 	var adminID, targetUserID int64
-	err := db.QueryRow(`INSERT INTO users(email_hash, creation_time) VALUES($1, $2) RETURNING user_id`, adminEmailHash, nowMicro).Scan(&adminID)
+	err := db.QueryRow(`INSERT INTO users(email_hash, encrypted_email, email_decryption_nonce, creation_time) VALUES($1, 'enc', 'nonce', $2) RETURNING user_id`, adminEmailHash, nowMicro).Scan(&adminID)
 	require.NoError(t, err)
-	err = db.QueryRow(`INSERT INTO users(email_hash, creation_time) VALUES($1, $2) RETURNING user_id`, targetEmailHash, nowMicro).Scan(&targetUserID)
+	err = db.QueryRow(`INSERT INTO users(email_hash, encrypted_email, email_decryption_nonce, creation_time) VALUES($1, 'enc', 'nonce', $2) RETURNING user_id`, targetEmailHash, nowMicro).Scan(&targetUserID)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {

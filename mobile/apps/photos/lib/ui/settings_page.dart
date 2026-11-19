@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:ente_components/ente_components.dart";
+import "package:ente_components/hugeicons.dart";
 import "package:ente_lock_screen/local_authentication_service.dart";
 import "package:ente_pure_utils/ente_pure_utils.dart";
 import "package:ente_strings/ente_strings.dart";
@@ -8,7 +9,6 @@ import "package:ente_ui/components/settings/app_version_widget.dart";
 import "package:ente_ui/pages/settings_search_page.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:hugeicons/hugeicons.dart";
 import "package:photos/core/configuration.dart";
 import "package:photos/emergency/emergency_page.dart";
 import "package:photos/models/user_details.dart";
@@ -398,6 +398,7 @@ class _SettingsBody extends StatelessWidget {
   List<Widget> _buildHeaderActions(BuildContext context) {
     return [
       IconButtonComponent(
+        tooltip: context.strings.search,
         variant: IconButtonComponentVariant.primary,
         shouldSurfaceExecutionStates: false,
         icon: const HugeIcon(icon: HugeIcons.strokeRoundedSearch01),

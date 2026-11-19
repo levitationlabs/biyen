@@ -1,3 +1,4 @@
+import { headerIconSize } from "@/components/gallery/header-styles";
 import { SearchBar } from "@/components/SearchBar";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useIsOffline } from "@/components/utils/use-is-offline";
@@ -295,7 +296,7 @@ const NormalHeaderContents: React.FC<
                     }}
                 >
                     <SvgIcon
-                        sx={{ fontSize: 20, fill: "none" }}
+                        sx={{ fontSize: headerIconSize, fill: "none" }}
                         stroke="currentColor"
                         strokeWidth="1.8"
                         strokeLinecap="round"
@@ -371,7 +372,12 @@ const NormalNavigationRail = ({
                   navigation.overlay?.section !== "search" &&
                   navigation.destination.section === id;
             return (
-                <Tooltip key={id} title={rail.label()}>
+                <Tooltip
+                    key={id}
+                    title={rail.label()}
+                    placement="right"
+                    disableInteractive
+                >
                     <FocusVisibleButton
                         color="secondary"
                         aria-label={rail.label()}
@@ -407,7 +413,7 @@ const NormalNavigationRail = ({
             );
         })}
         <Box sx={{ flex: 1 }} />
-        <Tooltip title={t("settings")}>
+        <Tooltip title={t("settings")} placement="right" disableInteractive>
             <FocusVisibleButton
                 color="secondary"
                 aria-label={t("settings")}
@@ -436,7 +442,7 @@ const NormalNavigationRail = ({
 const HomeButton: React.FC<{ selected: boolean }> = ({ selected }) => {
     const { goHome } = usePhotosNavigation();
     return (
-        <Tooltip title={ut("Home")}>
+        <Tooltip title={ut("Home")} placement="right" disableInteractive>
             <FocusVisibleButton
                 color="secondary"
                 aria-label={ut("Home")}
@@ -467,7 +473,11 @@ const UploadButton: React.FC<ButtonishProps> = ({ onClick }) => {
     const isSmallWidth = useIsSmallWidth();
 
     const icon = (
-        <HugeiconsIcon icon={Upload01Icon} size={20} strokeWidth={1.8} />
+        <HugeiconsIcon
+            icon={Upload01Icon}
+            size={headerIconSize}
+            strokeWidth={1.8}
+        />
     );
 
     return (

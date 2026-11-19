@@ -1,5 +1,5 @@
+import "package:ente_components/hugeicons.dart";
 import 'package:flutter/material.dart';
-import "package:hugeicons/hugeicons.dart";
 import "package:photos/core/event_bus.dart";
 import "package:photos/events/tab_changed_event.dart";
 import "package:photos/models/home_tab.dart";

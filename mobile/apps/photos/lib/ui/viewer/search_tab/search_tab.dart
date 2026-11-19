@@ -14,7 +14,6 @@ import "package:photos/service_locator.dart";
 import "package:photos/states/all_sections_examples_state.dart";
 import "package:photos/theme/ente_theme.dart";
 import "package:photos/ui/components/banners/ml_progress_banner.dart";
-import "package:photos/ui/rewind/entry/rewind_search_ticket.dart";
 import "package:photos/ui/rituals/rituals_banner.dart";
 import "package:photos/ui/viewer/search/result/no_result_widget.dart";
 import "package:photos/ui/viewer/search/search_suggestions.dart";
@@ -270,6 +269,17 @@ class _AllSearchSectionsState extends State<AllSearchSections> {
           final hasSurfacedFaces =
               resultsBySection[SectionType.face]!.isNotEmpty;
           final sectionWidgets = [
+            // RewindSearchTicket held for Biyen Photos
+            hasSurfacedFaces
+                ? const SizedBox.shrink()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: searchTabSectionHorizontalPadding,
+                    ),
+                    child: MLProgressBanner(
+                      isOnSearchTab: widget.isOnSearchTab,
+                    ),
+                  ),
             if (hasGrantedMLConsent)
               PeopleSection(
                 examples: examplesFor(SectionType.face),
@@ -287,7 +297,6 @@ class _AllSearchSectionsState extends State<AllSearchSections> {
               _RitualsDiscoverySection(
                 resultLimit: widget.previewLimits.ritualResults,
               ),
-            // RewindSearchTicket held for Biyen Photos
             ContactsSectionLoader(
               resultLimit: widget.previewLimits.contactResults,
             ),
@@ -299,23 +308,8 @@ class _AllSearchSectionsState extends State<AllSearchSections> {
                   bottom: bottomPadding,
                 ),
                 physics: const BouncingScrollPhysics(),
-                itemCount: sectionWidgets.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    if (hasSurfacedFaces) {
-                      return const SizedBox.shrink();
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: searchTabSectionHorizontalPadding,
-                      ),
-                      child: MLProgressBanner(
-                        isOnSearchTab: widget.isOnSearchTab,
-                      ),
-                    );
-                  }
-                  return sectionWidgets[index - 1];
-                },
+                itemCount: sectionWidgets.length,
+                itemBuilder: (context, index) => sectionWidgets[index],
               )
               .animate(delay: const Duration(milliseconds: 150))
               .slide(
