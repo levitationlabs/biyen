@@ -223,6 +223,9 @@ func (h *BillingHandler) StripeUpdateSubscription(c *gin.Context) {
 
 func (h *BillingHandler) StripeCancelSubscription(c *gin.Context) {
 	userID := auth.GetUserID(c.Request.Header)
+	if h.rejectExternalBillingMutation(c, userID) {
+		return
+	}
 	subscription, err := h.StripeController.UpdateSubscriptionCancellationStatus(userID, true)
 	if err != nil {
 		handler.Error(c, stacktrace.Propagate(err, ""))
@@ -233,6 +236,9 @@ func (h *BillingHandler) StripeCancelSubscription(c *gin.Context) {
 
 func (h *BillingHandler) StripeActivateSubscription(c *gin.Context) {
 	userID := auth.GetUserID(c.Request.Header)
+	if h.rejectExternalBillingMutation(c, userID) {
+		return
+	}
 	subscription, err := h.StripeController.UpdateSubscriptionCancellationStatus(userID, false)
 	if err != nil {
 		handler.Error(c, stacktrace.Propagate(err, ""))
@@ -243,6 +249,17 @@ func (h *BillingHandler) StripeActivateSubscription(c *gin.Context) {
 
 func (h *BillingHandler) GetStripeCustomerPortal(c *gin.Context) {
 	userID := auth.GetUserID(c.Request.Header)
+	if portalURL, handled, err := h.Controller.TryExternalCustomerPortalURL(
+		c.Request.Context(),
+		userID,
+		c.Query("redirectURL"),
+	); err != nil {
+		handler.Error(c, stacktrace.Propagate(err, ""))
+		return
+	} else if handled {
+		c.JSON(http.StatusOK, gin.H{"url": portalURL})
+		return
+	}
 	redirectRootURL, err := h.Controller.GetRedirectURL(c)
 	if err != nil {
 		handler.Error(c, stacktrace.Propagate(err, ""))
@@ -254,4 +271,17 @@ func (h *BillingHandler) GetStripeCustomerPortal(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"url": url})
+}
+
+func (h *BillingHandler) rejectExternalBillingMutation(c *gin.Context, userID int64) bool {
+	isExternal, err := h.Controller.IsExternalBillingSubscriber(userID)
+	if err != nil {
+		handler.Error(c, stacktrace.Propagate(err, ""))
+		return true
+	}
+	if isExternal {
+		handler.Error(c, ente.NewBadRequestWithMessage("Please manage your subscription via the billing portal"))
+		return true
+	}
+	return false
 }

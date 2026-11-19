@@ -1,6 +1,78 @@
 {
   "US": [
     {
+      "id": "20gb_monthly_v4",
+      "androidID": "20gb_monthly_v4",
+      "iosID": "20gb_monthly_v4",
+      "stripeID": "20gb_monthly_v4",
+      "storage": 21474836480,
+      "price": "$0.99",
+      "period": "month"
+    },
+    {
+      "id": "100gb_monthly_v4",
+      "androidID": "100gb_monthly_v4",
+      "iosID": "100gb_monthly_v4",
+      "stripeID": "100gb_monthly_v4",
+      "storage": 107374182400,
+      "price": "$1.99",
+      "period": "month"
+    },
+    {
+      "id": "500gb_monthly_v4",
+      "androidID": "500gb_monthly_v4",
+      "iosID": "500gb_monthly_v4",
+      "stripeID": "500gb_monthly_v4",
+      "storage": 536870912000,
+      "price": "$5.99",
+      "period": "month"
+    },
+    {
+      "id": "1000gb_monthly_v4",
+      "androidID": "1000gb_monthly_v4",
+      "iosID": "1000gb_monthly_v4",
+      "stripeID": "1000gb_monthly_v4",
+      "storage": 1073741824000,
+      "price": "$9.99",
+      "period": "month"
+    },
+    {
+      "id": "20gb_yearly_v4",
+      "androidID": "20gb_yearly_v4",
+      "iosID": "20gb_yearly_v4",
+      "stripeID": "20gb_yearly_v4",
+      "storage": 21474836480,
+      "price": "$9.99",
+      "period": "year"
+    },
+    {
+      "id": "100gb_yearly_v4",
+      "androidID": "100gb_yearly_v4",
+      "iosID": "100gb_yearly_v4",
+      "stripeID": "100gb_yearly_v4",
+      "storage": 107374182400,
+      "price": "$19.99",
+      "period": "year"
+    },
+    {
+      "id": "500gb_yearly_v4",
+      "androidID": "500gb_yearly_v4",
+      "iosID": "500gb_yearly_v4",
+      "stripeID": "500gb_yearly_v4",
+      "storage": 536870912000,
+      "price": "$59.99",
+      "period": "year"
+    },
+    {
+      "id": "1000gb_yearly_v4",
+      "androidID": "1000gb_yearly_v4",
+      "iosID": "1000gb_yearly_v4",
+      "stripeID": "1000gb_yearly_v4",
+      "storage": 1073741824000,
+      "price": "$99.99",
+      "period": "year"
+    },
+    {
       "id": "50gb_monthly_v4",
       "androidID": "50gb_monthly_v4",
       "iosID": "50gb_monthly_v4",
@@ -16,15 +88,6 @@
       "stripeID": "200gb_monthly_v4",
       "storage": 214748364800,
       "price": "$4.99",
-      "period": "month"
-    },
-    {
-      "id": "1000gb_monthly_v4",
-      "androidID": "1000gb_monthly_v4",
-      "iosID": "1000gb_monthly_v4",
-      "stripeID": "1000gb_monthly_v4",
-      "storage": 1073741824000,
-      "price": "$9.99",
       "period": "month"
     },
     {
@@ -55,15 +118,6 @@
       "period": "year"
     },
     {
-      "id": "1000gb_yearly_v4",
-      "androidID": "1000gb_yearly_v4",
-      "iosID": "1000gb_yearly_v4",
-      "stripeID": "1000gb_yearly_v4",
-      "storage": 1073741824000,
-      "price": "$99.99",
-      "period": "year"
-    },
-    {
       "id": "2000gb_yearly_v4",
       "androidID": "2000gb_yearly_v4",
       "iosID": "2000gb_yearly_v4",
@@ -74,6 +128,78 @@
     }
   ],
   "ID": [
+    {
+      "id": "20gb_monthly_v4",
+      "androidID": "20gb_monthly_v4",
+      "iosID": "20gb_monthly_v4",
+      "stripeID": "20gb_monthly_v4",
+      "storage": 21474836480,
+      "price": "Rp 9.900",
+      "period": "month"
+    },
+    {
+      "id": "100gb_monthly_v4",
+      "androidID": "100gb_monthly_v4",
+      "iosID": "100gb_monthly_v4",
+      "stripeID": "100gb_monthly_v4",
+      "storage": 107374182400,
+      "price": "Rp 29.900",
+      "period": "month"
+    },
+    {
+      "id": "500gb_monthly_v4",
+      "androidID": "500gb_monthly_v4",
+      "iosID": "500gb_monthly_v4",
+      "stripeID": "500gb_monthly_v4",
+      "storage": 536870912000,
+      "price": "Rp 89.900",
+      "period": "month"
+    },
+    {
+      "id": "1000gb_monthly_v4",
+      "androidID": "1000gb_monthly_v4",
+      "iosID": "1000gb_monthly_v4",
+      "stripeID": "1000gb_monthly_v4",
+      "storage": 1073741824000,
+      "price": "Rp 149.000",
+      "period": "month"
+    },
+    {
+      "id": "20gb_yearly_v4",
+      "androidID": "20gb_yearly_v4",
+      "iosID": "20gb_yearly_v4",
+      "stripeID": "20gb_yearly_v4",
+      "storage": 21474836480,
+      "price": "Rp 99.000",
+      "period": "year"
+    },
+    {
+      "id": "100gb_yearly_v4",
+      "androidID": "100gb_yearly_v4",
+      "iosID": "100gb_yearly_v4",
+      "stripeID": "100gb_yearly_v4",
+      "storage": 107374182400,
+      "price": "Rp 299.000",
+      "period": "year"
+    },
+    {
+      "id": "500gb_yearly_v4",
+      "androidID": "500gb_yearly_v4",
+      "iosID": "500gb_yearly_v4",
+      "stripeID": "500gb_yearly_v4",
+      "storage": 536870912000,
+      "price": "Rp 899.000",
+      "period": "year"
+    },
+    {
+      "id": "1000gb_yearly_v4",
+      "androidID": "1000gb_yearly_v4",
+      "iosID": "1000gb_yearly_v4",
+      "stripeID": "1000gb_yearly_v4",
+      "storage": 1073741824000,
+      "price": "Rp 1.490.000",
+      "period": "year"
+    },
     {
       "id": "50gb_monthly_v4",
       "androidID": "50gb_monthly_v4",
@@ -90,15 +216,6 @@
       "stripeID": "200gb_monthly_v4",
       "storage": 214748364800,
       "price": "Rp 45.000",
-      "period": "month"
-    },
-    {
-      "id": "1000gb_monthly_v4",
-      "androidID": "1000gb_monthly_v4",
-      "iosID": "1000gb_monthly_v4",
-      "stripeID": "1000gb_monthly_v4",
-      "storage": 1073741824000,
-      "price": "Rp 150.000",
       "period": "month"
     },
     {
@@ -126,15 +243,6 @@
       "stripeID": "200gb_yearly_v4",
       "storage": 214748364800,
       "price": "Rp 450.000",
-      "period": "year"
-    },
-    {
-      "id": "1000gb_yearly_v4",
-      "androidID": "1000gb_yearly_v4",
-      "iosID": "1000gb_yearly_v4",
-      "stripeID": "1000gb_yearly_v4",
-      "storage": 1073741824000,
-      "price": "Rp 1.500.000",
       "period": "year"
     },
     {

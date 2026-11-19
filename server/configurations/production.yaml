@@ -7,3 +7,12 @@ stripe:
     path:
         success: ?status=success&session_id={CHECKOUT_SESSION_ID}
         cancel: ?status=fail&reason=canceled
+
+# FOSSBilling SaaS & Indonesian Payment Gateway Integration (Tripay + Manual QRIS/Bank)
+# Populate shared-secret via environment or production override before starting museum.
+fossbilling:
+    base-url: https://billing-biyen.levitation.web.id
+    app-id: biyen
+    shared-secret: ""
+    portal-url: https://billing-biyen.levitation.web.id/order/service
+    max-drift-seconds: 300

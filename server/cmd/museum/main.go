@@ -56,6 +56,7 @@ import (
 	"github.com/ente/museum/pkg/controller/storagebonus"
 	"github.com/ente/museum/pkg/controller/user"
 	userEntityCtrl "github.com/ente/museum/pkg/controller/userentity"
+	"github.com/ente/museum/pkg/external/fossbilling"
 	"github.com/ente/museum/pkg/middleware"
 	"github.com/ente/museum/pkg/repo"
 	authenticatorRepo "github.com/ente/museum/pkg/repo/authenticator"
@@ -954,6 +955,23 @@ func main() {
 	paymentJwtAuthAPI.GET("/billing/stripe-account-country", billingHandler.GetStripeAccountCountry)
 	paymentJwtAuthAPI.GET("/billing/stripe/checkout-session", billingHandler.GetCheckoutSession)
 	paymentJwtAuthAPI.POST("/billing/stripe/update-subscription", billingHandler.StripeUpdateSubscription)
+
+	fossbillingModule, err := fossbilling.NewModuleFromViper(fossbilling.ModuleDeps{
+		UserRepo:    userRepo,
+		BillingRepo: billingRepo,
+		BillingCtrl: billingController,
+		EmailCtrl:   emailNotificationCtrl,
+		DiscordCtrl: discordController,
+	})
+	if err != nil {
+		log.WithError(err).Fatal("Failed to initialize FOSSBilling module")
+	}
+	if fossbillingModule.IsConfigured() {
+		userController.PostSignupBillingHook = fossbillingModule.Service
+		userController.EmailChangeBillingHook = fossbillingModule.Service
+		billingController.ExternalBillingHook = fossbillingModule.Service
+	}
+	fossbillingModule.RegisterRoutes(publicAPI, privateAPI, paymentJwtAuthAPI)
 
 	storageBonusHandler := &api.StorageBonusHandler{
 		Controller: storageBonusCtrl,

@@ -119,14 +119,14 @@ func GetFreePlan() ente.FreePlan {
 
 func GetActivePlanIDs() []string {
 	return []string{
-		"50gb_monthly_v4",
-		"200gb_monthly_v4",
+		"20gb_monthly_v4",
+		"100gb_monthly_v4",
+		"500gb_monthly_v4",
 		"1000gb_monthly_v4",
-		"2000gb_monthly_v4",
-		"50gb_yearly_v4",
-		"200gb_yearly_v4",
+		"20gb_yearly_v4",
+		"100gb_yearly_v4",
+		"500gb_yearly_v4",
 		"1000gb_yearly_v4",
-		"2000gb_yearly_v4",
 	}
 }
 

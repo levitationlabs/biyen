@@ -2,6 +2,7 @@ package user
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha256"
 	"database/sql"
 	"encoding/base64"
@@ -360,6 +361,7 @@ func (c *UserController) UpdateEmail(ctx *gin.Context, userID int64, email strin
 				"user_id": userID,
 			}).Error("stripe update email failed")
 	}
+	c.notifyBillingEmailChangedAsync(userID, email)
 
 	// Mailing list failures must not block email changes.
 	go func() {
@@ -378,6 +380,21 @@ func (c *UserController) UpdateEmail(ctx *gin.Context, userID int64, email strin
 	}()
 
 	return nil
+}
+
+func (c *UserController) notifyBillingEmailChangedAsync(userID int64, newEmail string) {
+	hook := c.EmailChangeBillingHook
+	if hook == nil {
+		hook, _ = c.PostSignupBillingHook.(EmailChangeBillingHook)
+	}
+	if hook == nil {
+		return
+	}
+	go func() {
+		if err := hook.OnEmailChanged(context.Background(), userID, newEmail); err != nil {
+			log.WithError(err).WithField("user_id", userID).Error("external billing email update failed")
+		}
+	}()
 }
 
 func (c *UserController) touchContactsAfterEmailUpdate(ctx *gin.Context, userID int64) {

@@ -1,123 +1,110 @@
 import { loadStripe } from "@stripe/stripe-js";
+import * as fb from "./fossbilling";
+import type { FOSSBillingCheckoutRequest, PendingPaymentContext, StripeAccountCountry } from "./fossbilling";
 
-export const parseAndHandleRequest = async () => {
-    if (window.location.pathname == "/desktop-redirect") {
-        const desktopRedirectURL = new URL("biyen://app/gallery");
-        desktopRedirectURL.search = new URL(window.location.href).search;
-        window.location.href = desktopRedirectURL.href;
+export * from "./fossbilling";
+
+const PAYMENT_INTENT_POLL_INTERVAL_MS = 2_000;
+const PAYMENT_INTENT_POLL_TIMEOUT_MS = 300_000;
+const STRIPE_PROVIDER_NAME = "stripe";
+const DEFAULT_STRIPE_US_KEY =
+    "pk_live_51LZ9P4G1ITnQlpAnrP6pcS7NiuJo3SnJ7gibjJlMRatkrd2EY1zlMVTVQG5RkSpLPbsHQzFfnEtgHnk1PiylIFkk00tC0LWXwi";
+const DEFAULT_STRIPE_IN_KEY =
+    "pk_live_51HAhqDK59oeucIMOiTI6MDDM2UWUbCAJXJCGsvjJhiO8nYJz38rQq5T4iyQLDMKxqEDUfU5Hopuj4U5U4dff23oT00fHvZeodC";
+
+type StripeJS = NonNullable<Awaited<ReturnType<typeof loadStripe>>>;
+type PaymentStatus = "success" | "requires_action" | "requires_payment_method";
+
+interface UpdateStripeSubscriptionResponse {
+    status: PaymentStatus;
+    clientSecret: string;
+}
+
+const isStripeProviderConfigured = (): boolean =>
+    import.meta.env.VITE_PAYMENT_PROVIDER === STRIPE_PROVIDER_NAME;
+
+export const parseAndHandleRequest = async (): Promise<void> => {
+    if (window.location.pathname === fb.DESKTOP_REDIRECT_PATH) {
+        fb.redirectDesktopGallery(window.location.search);
         return;
     }
 
     try {
         const urlParams = new URLSearchParams(window.location.search);
-        const paymentIntentClientSecret = urlParams.get(
-            "payment_intent_client_secret",
-        );
+        if (fb.handleFOSSBillingReturnCallback(urlParams)) return;
+
+        if (urlParams.get("payment_intent_client_secret")) {
+            await handlePaymentIntentCallback(urlParams);
+            return;
+        }
+
         const productID = urlParams.get("productID");
         const paymentToken = urlParams.get("paymentToken");
         const action = urlParams.get("action");
         const redirectURL = urlParams.get("redirectURL");
-        const accountCountry = urlParams.get("accountCountry");
-
-        if (paymentIntentClientSecret) {
-            const pendingPaymentContext = getPendingPaymentContext();
-            const clientRedirectURL =
-                redirectURL ?? pendingPaymentContext?.redirectURL ?? null;
-            const clientAccountCountry = isStripeAccountCountry(accountCountry)
-                ? accountCountry
-                : (pendingPaymentContext?.accountCountry ?? null);
-            try {
-                await handlePaymentIntentRedirect(
-                    paymentIntentClientSecret,
-                    clientAccountCountry,
-                    clientRedirectURL,
-                );
-            } catch (error) {
-                console.error(error);
-                clearPendingPaymentContext();
-                if (clientRedirectURL) {
-                    redirectToApp(clientRedirectURL, "fail", "server_error");
-                    return;
-                }
-                throw ensureError(error);
-            }
-            return;
-        }
 
         if (!action && !paymentToken && !productID && !redirectURL) {
-            console.log(
-                "None of the required query parameters were supplied, redirecting to app-biyen.levitation.web.id",
-            );
-            redirectHome();
+            fb.redirectHome();
             return;
         }
-
         if (!action || !paymentToken || !productID || !redirectURL) {
-            throw Error("Required query parameter was not provided");
+            throw new Error("Required query parameter was not provided");
+        }
+        if (!fb.isCheckoutAction(action)) {
+            throw new Error(`Unsupported action ${action}`);
         }
 
-        switch (action) {
-            case "buy":
-                await buySubscription(productID, paymentToken, redirectURL);
-                break;
-            case "update":
-                await updateSubscription(productID, paymentToken, redirectURL);
-                break;
-            default:
-                throw Error(`Unsupported action ${action}`);
+        const req: FOSSBillingCheckoutRequest = { productID, paymentToken, action, redirectURL };
+        if (!isStripeProviderConfigured()) {
+            await fb.handleFOSSBillingCheckout(req);
+            return;
         }
-    } catch (e) {
-        console.error(e);
-        throw ensureError(e);
+        if (action === "buy") {
+            await buySubscription(req);
+            return;
+        }
+        await updateSubscription(req);
+    } catch (error) {
+        console.error(error);
+        throw fb.ensureError(error);
     }
 };
 
-const apiOrigin =
-    import.meta.env.VITE_ENTE_ENDPOINT ??
-    import.meta.env.VITE_BIYEN_ENDPOINT ??
-    "https://api-biyen.levitation.web.id";
-const paymentIntentPollIntervalMs = 2_000;
-const paymentIntentPollTimeoutMs = 300_000;
-const pendingPaymentContextStorageKey = "biyen.payments.pending-context";
+const handlePaymentIntentCallback = async (urlParams: URLSearchParams): Promise<void> => {
+    const clientSecret = urlParams.get("payment_intent_client_secret") ?? "";
+    const redirectURL = urlParams.get("redirectURL");
+    const accountCountry = urlParams.get("accountCountry");
+    const pending = fb.getPendingPaymentContext();
+    const clientRedirectURL = redirectURL ?? pending?.redirectURL ?? null;
+    const clientAccountCountry = fb.isStripeAccountCountry(accountCountry)
+        ? accountCountry
+        : (pending?.accountCountry ?? null);
 
-type StripeJS = NonNullable<Awaited<ReturnType<typeof loadStripe>>>;
-
-const ensureError = (error: unknown) =>
-    error instanceof Error ? error : new Error(String(error));
-
-type StripeAccountCountry = "US" | "IN";
-
-interface PendingPaymentContext {
-    accountCountry: StripeAccountCountry;
-    redirectURL: string;
-}
-
-const isStripeAccountCountry = (c: unknown): c is StripeAccountCountry =>
-    c == "US" || c == "IN";
-
-const stripePublishableKey = (accountCountry: StripeAccountCountry) => {
-    switch (accountCountry) {
-        case "US":
-            return (
-                import.meta.env.VITE_STRIPE_US_PUBLISHABLE_KEY ??
-                "pk_live_51LZ9P4G1ITnQlpAnrP6pcS7NiuJo3SnJ7gibjJlMRatkrd2EY1zlMVTVQG5RkSpLPbsHQzFfnEtgHnk1PiylIFkk00tC0LWXwi"
-            );
-        case "IN":
-            return (
-                import.meta.env.VITE_STRIPE_IN_PUBLISHABLE_KEY ??
-                "pk_live_51HAhqDK59oeucIMOiTI6MDDM2UWUbCAJXJCGsvjJhiO8nYJz38rQq5T4iyQLDMKxqEDUfU5Hopuj4U5U4dff23oT00fHvZeodC"
-            );
+    try {
+        await handlePaymentIntentRedirect(clientSecret, clientAccountCountry, clientRedirectURL);
+    } catch (error) {
+        console.error(error);
+        fb.clearPendingPaymentContext();
+        if (clientRedirectURL) {
+            fb.redirectToApp(clientRedirectURL, "fail", "server_error");
+            return;
+        }
+        throw fb.ensureError(error);
     }
 };
 
-const getUserStripeAccountCountry = async (paymentToken: string) => {
-    const url = `${apiOrigin}/billing/stripe-account-country`;
+const stripePublishableKey = (accountCountry: StripeAccountCountry): string =>
+    accountCountry === "US"
+        ? (import.meta.env.VITE_STRIPE_US_PUBLISHABLE_KEY ?? DEFAULT_STRIPE_US_KEY)
+        : (import.meta.env.VITE_STRIPE_IN_PUBLISHABLE_KEY ?? DEFAULT_STRIPE_IN_KEY);
+
+const getUserStripeAccountCountry = async (paymentToken: string): Promise<StripeAccountCountry> => {
+    const url = `${fb.getApiOrigin()}/billing/stripe-account-country`;
     const res = await fetch(url, { headers: { "X-Auth-Token": paymentToken } });
     if (!res.ok) throw new Error(`Failed to fetch ${url}: HTTP ${res.status}`);
     const json: unknown = await res.json();
-    if (json && typeof json === "object" && "stripeAccountCountry" in json) {
-        const c = json.stripeAccountCountry;
-        if (isStripeAccountCountry(c)) return c;
+    if (fb.isRecord(json) && fb.isStripeAccountCountry(json.stripeAccountCountry)) {
+        return json.stripeAccountCountry;
     }
     throw new Error(`Unexpected response for ${url}: ${JSON.stringify(json)}`);
 };
@@ -125,190 +112,157 @@ const getUserStripeAccountCountry = async (paymentToken: string) => {
 const getStripe = async (
     redirectURL: string,
     accountCountry: StripeAccountCountry,
-) => {
-    const publishableKey = stripePublishableKey(accountCountry);
+): Promise<StripeJS> => {
     try {
-        const stripe = await loadStripe(publishableKey);
+        const stripe = await loadStripe(stripePublishableKey(accountCountry));
         if (!stripe) throw new Error("Failed to load Stripe");
         return stripe;
-    } catch (e) {
-        redirectToApp(redirectURL, "fail", "stripe_error");
-        throw ensureError(e);
+    } catch (error) {
+        fb.redirectToApp(redirectURL, "fail", "stripe_error");
+        throw fb.ensureError(error);
     }
 };
 
-const buySubscription = async (
-    productID: string,
-    paymentToken: string,
-    redirectURL: string,
-) => {
+const buySubscription = async (req: FOSSBillingCheckoutRequest): Promise<void> => {
     try {
-        const accountCountry = await getUserStripeAccountCountry(paymentToken);
-        const stripe = await getStripe(redirectURL, accountCountry);
-        const sessionId = await createCheckoutSession(
-            productID,
-            paymentToken,
-            redirectURL,
-        );
+        const country = await getUserStripeAccountCountry(req.paymentToken);
+        const stripe = await getStripe(req.redirectURL, country);
+        const sessionId = await createStripeCheckoutSession(req);
         await stripe.redirectToCheckout({ sessionId });
-    } catch (e) {
-        redirectToApp(redirectURL, "fail", "server_error");
-        throw ensureError(e);
+    } catch (error) {
+        fb.redirectToApp(req.redirectURL, "fail", "server_error");
+        throw fb.ensureError(error);
     }
 };
 
-const createCheckoutSession = async (
-    productID: string,
-    paymentToken: string,
-    redirectURL: string,
-): Promise<string> => {
-    const params = new URLSearchParams({ productID, redirectURL });
-    const url = `${apiOrigin}/billing/stripe/checkout-session?${params.toString()}`;
-    const res = await fetch(url, { headers: { "X-Auth-Token": paymentToken } });
+const createStripeCheckoutSession = async (req: FOSSBillingCheckoutRequest): Promise<string> => {
+    const params = new URLSearchParams({
+        productID: req.productID,
+        redirectURL: req.redirectURL,
+    });
+    const url = `${fb.getApiOrigin()}/billing/stripe/checkout-session?${params.toString()}`;
+    const res = await fetch(url, { headers: { "X-Auth-Token": req.paymentToken } });
     if (!res.ok) throw new Error(`Failed to fetch ${url}: HTTP ${res.status}`);
     const json: unknown = await res.json();
-    if (json && typeof json == "object" && "sessionID" in json) {
-        const sid = json.sessionID;
-        if (typeof sid == "string") return sid;
+    if (fb.isRecord(json) && typeof json.sessionID === "string") {
+        return json.sessionID;
     }
     throw new Error(`Unexpected response for ${url}: ${JSON.stringify(json)}`);
 };
 
-const updateSubscription = async (
-    productID: string,
-    paymentToken: string,
-    redirectURL: string,
-) => {
+const updateSubscription = async (req: FOSSBillingCheckoutRequest): Promise<void> => {
     try {
-        const accountCountry = await getUserStripeAccountCountry(paymentToken);
-        const stripe = await getStripe(redirectURL, accountCountry);
+        const country = await getUserStripeAccountCountry(req.paymentToken);
+        const stripe = await getStripe(req.redirectURL, country);
         const { status, clientSecret } = await updateStripeSubscription(
-            paymentToken,
-            productID,
+            req.paymentToken,
+            req.productID,
         );
-        switch (status) {
-            case "success": {
-                redirectToApp(redirectURL, "success");
-                return;
-            }
-
-            case "requires_payment_method":
-                redirectToApp(redirectURL, "fail", "requires_payment_method");
-                return;
-
-            case "requires_action": {
-                setPendingPaymentContext({ accountCountry, redirectURL });
-                const result = await stripe.confirmPayment({
-                    clientSecret,
-                    confirmParams: {
-                        return_url: stripeConfirmationReturnURL(
-                            redirectURL,
-                            accountCountry,
-                        ),
-                    },
-                    redirect: "if_required",
-                });
-                if (result.error) {
-                    clearPendingPaymentContext();
-                    const { error } = result;
-                    console.error("Failed to confirm payment", error);
-                    if (error.type == "card_error") {
-                        redirectToApp(
-                            redirectURL,
-                            "fail",
-                            "requires_payment_method",
-                        );
-                    } else if (
-                        error.type == "authentication_error" ||
-                        error.code == "payment_intent_authentication_failure"
-                    ) {
-                        redirectToApp(
-                            redirectURL,
-                            "fail",
-                            "authentication_failed",
-                        );
-                    } else {
-                        redirectToApp(redirectURL, "fail");
-                    }
-                    return;
-                }
-
-                const status = await waitForTerminalPaymentIntentStatus(
-                    stripe,
-                    clientSecret,
-                    result.paymentIntent.status,
-                );
-                clearPendingPaymentContext();
-                redirectForPaymentIntentStatus(redirectURL, status);
-                return;
-            }
+        if (status === "success") {
+            fb.redirectToApp(req.redirectURL, "success");
+            return;
         }
-    } catch (e) {
-        redirectToApp(redirectURL, "fail", "server_error");
-        throw ensureError(e);
+        if (status === "requires_payment_method") {
+            fb.redirectToApp(req.redirectURL, "fail", "requires_payment_method");
+            return;
+        }
+        await confirmStripeActionRequired(stripe, clientSecret, {
+            accountCountry: country,
+            redirectURL: req.redirectURL,
+        });
+    } catch (error) {
+        fb.redirectToApp(req.redirectURL, "fail", "server_error");
+        throw fb.ensureError(error);
     }
 };
 
-type PaymentStatus = "success" | "requires_action" | "requires_payment_method";
+const confirmStripeActionRequired = async (
+    stripe: StripeJS,
+    clientSecret: string,
+    context: PendingPaymentContext,
+): Promise<void> => {
+    fb.setPendingPaymentContext(context);
+    const returnUrl = stripeConfirmationReturnURL(context.redirectURL, context.accountCountry);
+    const result = await stripe.confirmPayment({
+        clientSecret,
+        confirmParams: { return_url: returnUrl },
+        redirect: "if_required",
+    });
+    if (result.error) {
+        fb.clearPendingPaymentContext();
+        handleStripeConfirmError(context.redirectURL, result.error);
+        return;
+    }
+    const terminalStatus = await waitForTerminalPaymentIntentStatus(
+        stripe,
+        clientSecret,
+        result.paymentIntent.status,
+    );
+    fb.clearPendingPaymentContext();
+    fb.redirectForPaymentIntentStatus(context.redirectURL, terminalStatus);
+};
+
+const handleStripeConfirmError = (
+    redirectURL: string,
+    error: { type?: string; code?: string },
+): void => {
+    if (error.type === "card_error") {
+        fb.redirectToApp(redirectURL, "fail", "requires_payment_method");
+        return;
+    }
+    if (
+        error.type === "authentication_error" ||
+        error.code === "payment_intent_authentication_failure"
+    ) {
+        fb.redirectToApp(redirectURL, "fail", "authentication_failed");
+        return;
+    }
+    fb.redirectToApp(redirectURL, "fail");
+};
 
 const isPaymentStatus = (s: unknown): s is PaymentStatus =>
-    s == "success" || s == "requires_action" || s == "requires_payment_method";
-
-interface UpdateStripeSubscriptionResponse {
-    status: PaymentStatus;
-    clientSecret: string;
-}
+    s === "success" || s === "requires_action" || s === "requires_payment_method";
 
 const handlePaymentIntentRedirect = async (
     clientSecret: string,
     accountCountry: StripeAccountCountry | null,
     redirectURL: string | null,
-) => {
+): Promise<void> => {
     if (!accountCountry || !redirectURL) {
-        throw new Error(
-            "Required query parameter was not provided for payment confirmation",
-        );
+        throw new Error("Required query parameter was not provided for payment confirmation");
     }
-
     const stripe = await getStripe(redirectURL, accountCountry);
     const result = await stripe.retrievePaymentIntent(clientSecret);
-    if (result.error) throw ensureError(result.error);
+    if (result.error) throw fb.ensureError(result.error);
     const status = await waitForTerminalPaymentIntentStatus(
         stripe,
         clientSecret,
         result.paymentIntent.status,
     );
-    clearPendingPaymentContext();
-    redirectForPaymentIntentStatus(redirectURL, status);
+    fb.clearPendingPaymentContext();
+    fb.redirectForPaymentIntentStatus(redirectURL, status);
 };
 
 const waitForTerminalPaymentIntentStatus = async (
     stripe: StripeJS,
     clientSecret: string,
     initialStatus: string,
-) => {
+): Promise<string> => {
     let status = initialStatus;
-    const deadline = Date.now() + paymentIntentPollTimeoutMs;
-
-    while (status == "processing" && Date.now() < deadline) {
-        await delay(paymentIntentPollIntervalMs);
+    const deadline = Date.now() + PAYMENT_INTENT_POLL_TIMEOUT_MS;
+    while (status === "processing" && Date.now() < deadline) {
+        await new Promise((r) => setTimeout(r, PAYMENT_INTENT_POLL_INTERVAL_MS));
         const result = await stripe.retrievePaymentIntent(clientSecret);
-        if (result.error) throw ensureError(result.error);
+        if (result.error) throw fb.ensureError(result.error);
         status = result.paymentIntent.status;
     }
-
     return status;
 };
-
-const delay = (ms: number) =>
-    new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
 
 const stripeConfirmationReturnURL = (
     redirectURL: string,
     accountCountry: StripeAccountCountry,
-) => {
+): string => {
     const url = new URL(window.location.href);
     url.searchParams.delete("paymentToken");
     url.searchParams.delete("productID");
@@ -318,81 +272,11 @@ const stripeConfirmationReturnURL = (
     return url.href;
 };
 
-const getPendingPaymentContext = (): PendingPaymentContext | null => {
-    try {
-        const value = sessionStorage.getItem(pendingPaymentContextStorageKey);
-        if (!value) return null;
-        const json: unknown = JSON.parse(value);
-        if (
-            json &&
-            typeof json == "object" &&
-            "accountCountry" in json &&
-            "redirectURL" in json &&
-            isStripeAccountCountry(json.accountCountry) &&
-            typeof json.redirectURL == "string"
-        ) {
-            return {
-                accountCountry: json.accountCountry,
-                redirectURL: json.redirectURL,
-            };
-        }
-    } catch (error) {
-        console.error("Failed to read pending payment context", error);
-    }
-
-    return null;
-};
-
-const setPendingPaymentContext = (context: PendingPaymentContext) => {
-    try {
-        sessionStorage.setItem(
-            pendingPaymentContextStorageKey,
-            JSON.stringify(context),
-        );
-    } catch (error) {
-        console.error("Failed to persist pending payment context", error);
-    }
-};
-
-const clearPendingPaymentContext = () => {
-    try {
-        sessionStorage.removeItem(pendingPaymentContextStorageKey);
-    } catch (error) {
-        console.error("Failed to clear pending payment context", error);
-    }
-};
-
-const redirectForPaymentIntentStatus = (
-    redirectURL: string,
-    status: string,
-) => {
-    switch (status) {
-        case "succeeded":
-            redirectToApp(redirectURL, "success");
-            return;
-        case "processing":
-            redirectToApp(redirectURL, "fail", "server_error");
-            return;
-        case "requires_payment_method":
-            redirectToApp(redirectURL, "fail", "requires_payment_method");
-            return;
-        case "requires_action":
-            redirectToApp(redirectURL, "fail", "authentication_failed");
-            return;
-        case "canceled":
-            redirectToApp(redirectURL, "fail", "canceled");
-            return;
-        default:
-            console.error("Unhandled PaymentIntent status", status);
-            redirectToApp(redirectURL, "fail");
-    }
-};
-
-async function updateStripeSubscription(
+const updateStripeSubscription = async (
     paymentToken: string,
     productID: string,
-): Promise<UpdateStripeSubscriptionResponse> {
-    const url = `${apiOrigin}/billing/stripe/update-subscription`;
+): Promise<UpdateStripeSubscriptionResponse> => {
+    const url = `${fb.getApiOrigin()}/billing/stripe/update-subscription`;
     const res = await fetch(url, {
         method: "POST",
         headers: { "X-Auth-Token": paymentToken },
@@ -400,72 +284,13 @@ async function updateStripeSubscription(
     });
     if (!res.ok) throw new Error(`Failed to fetch ${url}: HTTP ${res.status}`);
     const json: unknown = await res.json();
-    if (json && typeof json == "object" && "result" in json) {
-        const result = json.result;
-        if (
-            result &&
-            typeof result == "object" &&
-            "status" in result &&
-            "clientSecret" in result
-        ) {
-            const status = result.status;
-            const clientSecret = result.clientSecret;
-            if (isPaymentStatus(status) && typeof clientSecret == "string") {
-                return { status, clientSecret };
-            }
-        }
+    if (
+        fb.isRecord(json) &&
+        fb.isRecord(json.result) &&
+        isPaymentStatus(json.result.status) &&
+        typeof json.result.clientSecret === "string"
+    ) {
+        return { status: json.result.status, clientSecret: json.result.clientSecret };
     }
     throw new Error(`Unexpected response for ${url}: ${JSON.stringify(json)}`);
-}
-
-type RedirectStatus = "success" | "fail";
-
-type FailureReason =
-    | "authentication_failed"
-    | "requires_payment_method"
-    | "stripe_error"
-    | "canceled"
-    | "server_error";
-
-const isEnteHostname = (hostname: string) =>
-    hostname.endsWith(".ente.com") ||
-    hostname.endsWith(".ente.io") ||
-    hostname.endsWith(".ente.sh");
-
-// Assigning window.location.href does not stop script execution; statements
-// after a redirect still run, so callers must return explicitly.
-const redirectToApp = (
-    redirectURL: string,
-    status: RedirectStatus,
-    reason?: FailureReason,
-) => {
-    let url = new URL(redirectURL);
-    if (url.protocol != "http:" && url.protocol != "https:") {
-        throw new Error("Invalid payment redirect URL");
-    }
-
-    const isSameOrigin = url.origin == window.location.origin;
-    const isDevURL =
-        import.meta.env.DEV && url.hostname == window.location.hostname;
-    const isEnteURL =
-        url.protocol == "https:" &&
-        url.port == "" &&
-        isEnteHostname(url.hostname);
-    const isAllowedURL = isSameOrigin || isDevURL || isEnteURL;
-    if (!isAllowedURL) {
-        throw new Error("Invalid payment redirect URL");
-    }
-
-    if (isSameOrigin && url.pathname == "/desktop-redirect") {
-        url = new URL("ente://app/gallery");
-    }
-
-    url.searchParams.set("status", status);
-    if (reason) url.searchParams.set("reason", reason);
-    else url.searchParams.delete("reason");
-    window.location.href = url.href;
-};
-
-const redirectHome = () => {
-    window.location.href = "https://app-biyen.levitation.web.id";
 };

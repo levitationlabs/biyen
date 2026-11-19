@@ -199,6 +199,8 @@ class _PaymentWebPageState extends State<PaymentWebPage> {
     _logger.info('handle payment response with status $paymentStatus');
     if (paymentStatus == 'success') {
       await _handlePaymentSuccess(queryParams);
+    } else if (paymentStatus == 'pending') {
+      await _handlePaymentPending();
     } else if (paymentStatus == 'fail') {
       final reason = queryParams['reason'] ?? '';
       await _handlePaymentFailure(reason);
@@ -209,6 +211,14 @@ class _PaymentWebPageState extends State<PaymentWebPage> {
         error: Exception("expected payment status $paymentStatus"),
       );
     }
+  }
+
+  Future<void> _handlePaymentPending() async {
+    await _showExitPageDialog(
+      title: context.strings.thankYou,
+      content:
+          "Konfirmasi pembayaran manual Anda telah diterima dan sedang menunggu verifikasi admin. Kuota akan aktif otomatis setelah disetujui.",
+    );
   }
 
   Future<void> _handlePaymentFailure(String reason) async {

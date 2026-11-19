@@ -295,6 +295,14 @@ stripe:
         success: ?status=success&session_id={CHECKOUT_SESSION_ID}
         cancel: ?status=fail&reason=canceled
 
+# FOSSBilling SaaS & Indonesian Payment Gateway Integration (optional)
+fossbilling:
+    base-url:
+    app-id: biyen
+    shared-secret:
+    portal-url:
+    max-drift-seconds: 300
+
 # Passkey support (optional)
 # Use case: MFA
 webauthn:

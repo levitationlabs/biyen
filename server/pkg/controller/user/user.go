@@ -43,6 +43,14 @@ type SpaceAccountDeletionAccessResetter interface {
 	ResetAccountDeletionAccess(ctx context.Context, userID int64) error
 }
 
+type PostSignupBillingHook interface {
+	ClaimPrePurchasedPlan(ctx context.Context, userID int64, email string) error
+}
+
+type EmailChangeBillingHook interface {
+	OnEmailChanged(ctx context.Context, userID int64, newEmail string) error
+}
+
 type UserController struct {
 	UserRepo                *repo.UserRepository
 	TwoFactorRecoveryRepo   *two_factor_recovery.Repository
@@ -65,6 +73,8 @@ type UserController struct {
 	MailingListsController  *controller.MailingListsController
 	PushController          *controller.PushController
 	SpaceAccessResetter     SpaceAccessResetter
+	PostSignupBillingHook   PostSignupBillingHook
+	EmailChangeBillingHook  EmailChangeBillingHook
 	ContactRepo             *contactrepo.Repository
 	HashingKey              []byte
 	SecretEncryptionKey     []byte
@@ -445,6 +455,17 @@ func (c *UserController) createUser(ctx context.Context, email string, source *s
 	}
 	if err := transaction.Commit(); err != nil {
 		return -1, ente.Subscription{}, stacktrace.Propagate(err, "failed to commit user creation")
+	}
+	if c.PostSignupBillingHook != nil {
+		billingHook := c.PostSignupBillingHook
+		go func() {
+			if err := billingHook.ClaimPrePurchasedPlan(context.Background(), userID, email); err != nil {
+				logrus.WithError(err).WithFields(logrus.Fields{
+					"user_id": userID,
+					"email":   email,
+				}).Error("post-signup billing entitlement claim failed")
+			}
+		}()
 	}
 	// Mailing list failures must not block user creation.
 	go func() {

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"slices"
 	"strconv"
+	"strings"
 
 	"github.com/ente/museum/pkg/controller/commonbilling"
 
@@ -25,6 +26,14 @@ import (
 	"github.com/ente/museum/pkg/repo"
 )
 
+const externalBillingTxnPrefix = "fb:"
+
+type ExternalBillingAccountHook interface {
+	OnAccountDeleted(ctx context.Context, userID int64) error
+	GetCustomerPortalURL(ctx context.Context, userID int64, redirectURL string) (string, error)
+	ClaimPrePurchasedPlan(ctx context.Context, userID int64, email string) error
+}
+
 type BillingController struct {
 	BillingPlansPerAccount ente.BillingPlansPerAccount
 	BillingRepo            *repo.BillingRepository
@@ -37,6 +46,7 @@ type BillingController struct {
 	DiscordController      *discord.DiscordController
 	EmailNotificationCtrl  *email.EmailNotificationController
 	CommonBillCtrl         *commonbilling.Controller
+	ExternalBillingHook    ExternalBillingAccountHook
 }
 
 func NewBillingController(
@@ -190,6 +200,9 @@ func (c *BillingController) VerifySubscription(
 	if productID == ente.FreePlanProductID {
 		return c.BillingRepo.GetUserSubscription(userID)
 	}
+	if sub, handled, extErr := c.tryVerifyExternalSubscription(userID, paymentProvider, verificationData); handled {
+		return sub, extErr
+	}
 	var newSubscription ente.Subscription
 	var err error
 	switch paymentProvider {
@@ -317,10 +330,75 @@ func (c *BillingController) getAllPlans(countryCode string, stripeAccountCountry
 	return countryWisePlans[defaultCountry]
 }
 
+func (c *BillingController) tryVerifyExternalSubscription(
+	userID int64,
+	paymentProvider ente.PaymentProvider,
+	verificationData string,
+) (ente.Subscription, bool, error) {
+	isExternalCall := string(paymentProvider) == "fossbilling" ||
+		(paymentProvider == ente.Stripe && strings.TrimSpace(verificationData) == "")
+	if !isExternalCall {
+		return ente.Subscription{}, false, nil
+	}
+	currentSub, err := c.BillingRepo.GetUserSubscription(userID)
+	if err != nil {
+		return ente.Subscription{}, true, stacktrace.Propagate(err, "")
+	}
+	if isExternalFOSSBillingSubscription(currentSub) {
+		return currentSub, true, nil
+	}
+	if c.ExternalBillingHook == nil {
+		return ente.Subscription{}, false, nil
+	}
+	user, userErr := c.UserRepo.Get(userID)
+	if userErr != nil {
+		return ente.Subscription{}, true, stacktrace.Propagate(userErr, "")
+	}
+	if claimErr := c.ExternalBillingHook.ClaimPrePurchasedPlan(context.Background(), userID, user.Email); claimErr != nil {
+		log.WithError(claimErr).WithField("user_id", userID).Warn("FOSSBilling entitlement refresh during verify failed")
+	}
+	refreshedSub, refreshErr := c.BillingRepo.GetUserSubscription(userID)
+	if refreshErr != nil {
+		return ente.Subscription{}, true, stacktrace.Propagate(refreshErr, "")
+	}
+	return refreshedSub, true, nil
+}
+
+func isExternalFOSSBillingSubscription(subscription ente.Subscription) bool {
+	return strings.HasPrefix(subscription.OriginalTransactionID, externalBillingTxnPrefix) ||
+		strings.HasPrefix(subscription.Attributes.CustomerID, externalBillingTxnPrefix)
+}
+
+func (c *BillingController) IsExternalBillingSubscriber(userID int64) (bool, error) {
+	subscription, err := c.BillingRepo.GetUserSubscription(userID)
+	if err != nil {
+		return false, stacktrace.Propagate(err, "")
+	}
+	return isExternalFOSSBillingSubscription(subscription), nil
+}
+
+func (c *BillingController) TryExternalCustomerPortalURL(ctx context.Context, userID int64, redirectURL string) (string, bool, error) {
+	subscription, err := c.BillingRepo.GetUserSubscription(userID)
+	if err != nil {
+		return "", false, stacktrace.Propagate(err, "")
+	}
+	if !isExternalFOSSBillingSubscription(subscription) || c.ExternalBillingHook == nil {
+		return "", false, nil
+	}
+	portalURL, err := c.ExternalBillingHook.GetCustomerPortalURL(ctx, userID, redirectURL)
+	if err != nil {
+		return "", true, stacktrace.Propagate(err, "")
+	}
+	return portalURL, true, nil
+}
+
 func (c *BillingController) UpdateBillingEmail(userID int64, newEmail string) error {
 	subscription, err := c.BillingRepo.GetUserSubscription(userID)
 	if err != nil {
 		return stacktrace.Propagate(err, "")
+	}
+	if isExternalFOSSBillingSubscription(subscription) {
+		return nil
 	}
 	hasStripeSubscription := subscription.PaymentProvider == ente.Stripe
 	if hasStripeSubscription {
@@ -380,6 +458,17 @@ func (c *BillingController) HandleAccountDeletion(ctx context.Context, userID in
 		return false, stacktrace.NewError("unexpected product id %s", subscription.ProductID)
 	}
 	isCancelled = subscription.Attributes.IsCancelled
+	if isExternalFOSSBillingSubscription(subscription) {
+		if c.ExternalBillingHook != nil {
+			if hookErr := c.ExternalBillingHook.OnAccountDeleted(ctx, userID); hookErr != nil {
+				billingLogger.WithError(hookErr).Error("external billing account deletion failed")
+			}
+		}
+		if err := c.BillingRepo.UpdateTransactionIDOnDeletion(userID); err != nil {
+			return false, stacktrace.Propagate(err, "")
+		}
+		return true, nil
+	}
 	if subscription.PaymentProvider == ente.Stripe {
 		err = c.StripeController.CancelSubAndDeleteCustomer(subscription, billingLogger)
 		if err != nil {

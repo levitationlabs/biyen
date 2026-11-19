@@ -23,6 +23,16 @@ export const useSubscriptionCompletionRedirect = () => {
         if (status == "success") {
             try {
                 const subscription = await verifyStripeSubscription(sessionID);
+                if (subscription.productID === "free") {
+                    showMiniDialog({
+                        title: t("thank_you"),
+                        message:
+                            "Pembayaran Anda telah diterima dan sedang diproses. Kuota penyimpanan akan segera diperbarui.",
+                        continue: { text: t("ok") },
+                        cancel: false,
+                    });
+                    return;
+                }
                 showMiniDialog({
                     title: t("thank_you"),
                     message: (
@@ -40,6 +50,14 @@ export const useSubscriptionCompletionRedirect = () => {
                     errorDialogAttributes(t("subscription_verification_error")),
                 );
             }
+        } else if (status == "pending") {
+            showMiniDialog({
+                title: "Menunggu Verifikasi Pembayaran",
+                message:
+                    "Konfirmasi pembayaran manual (QRIS / Transfer Bank) Anda telah diterima. Kuota penyimpanan akan aktif otomatis setelah disetujui admin.",
+                continue: { text: t("ok") },
+                cancel: false,
+            });
         } else if (status == "fail") {
             log.error(`Subscription purchase failed`, reason);
             switch (reason) {
