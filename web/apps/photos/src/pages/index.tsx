@@ -1,13 +1,11 @@
 import { DevSettingsDialog } from "@/components/auth/DevSettingsDialog";
 import { PhotosAuthShell } from "@/components/PhotosAuthShell";
-import { WebMaintenanceView } from "@/components/WebMaintenanceView";
 import { LoginContents } from "ente-accounts/components/LoginContents";
 import { SignUpContents } from "ente-accounts/components/SignUpContents";
 import { savedPartialLocalUser } from "ente-accounts/services/accounts-db";
 import { CenteredFill } from "ente-base/components/containers";
 import { ActivityIndicator } from "ente-base/components/mui/ActivityIndicator";
 import { useBaseContext } from "ente-base/context";
-import { isDevBuild } from "ente-base/env";
 import {
     JOIN_ALBUM_CONTEXT_KEY,
     type JoinAlbumContext,
@@ -29,19 +27,6 @@ const Page: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [showLogin, setShowLogin] = useState(true);
     const [host, setHost] = useState<string | undefined>(undefined);
-    const [isDev, setIsDev] = useState(isDevBuild);
-
-    useEffect(() => {
-        if (
-            isDevBuild ||
-            window.location.hostname === "localhost" ||
-            window.location.hostname === "127.0.0.1" ||
-            new URLSearchParams(window.location.search).get("dev") === "true" ||
-            window.localStorage?.getItem("biyen_dev_mode") === "true"
-        ) {
-            setIsDev(true);
-        }
-    }, []);
 
     const router = useRouter();
 
@@ -127,7 +112,7 @@ const Page: React.FC = () => {
         <TappableContainer onMaybeChangeHost={refreshHost}>
             {loading ? (
                 <ActivityIndicator />
-            ) : isDev ? (
+            ) : (
                 <PhotosAuthShell>
                     {showLogin ? (
                         <LoginContents
@@ -140,10 +125,6 @@ const Page: React.FC = () => {
                             onLogin={handleShowLogin}
                         />
                     )}
-                </PhotosAuthShell>
-            ) : (
-                <PhotosAuthShell>
-                    <WebMaintenanceView onBypass={() => setIsDev(true)} />
                 </PhotosAuthShell>
             )}
         </TappableContainer>

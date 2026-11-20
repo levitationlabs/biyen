@@ -14,7 +14,7 @@ export const BIYEN_BRAND = {
     photosUrl: "https://app-biyen.levitation.web.id",
     albumsUrl: "https://albums-biyen.levitation.web.id",
     apiDefaultEndpoint: "https://api-biyen.levitation.web.id",
-    uploaderDefaultEndpoint: "https://uploader-biyen.levitation.web.id",
+    uploaderDefaultEndpoint: "https://api-biyen.levitation.web.id",
     privacyUrl: "https://biyen.levitation.web.id/privacy",
     termsUrl: "https://biyen.levitation.web.id/terms",
     aboutAuditNotes:

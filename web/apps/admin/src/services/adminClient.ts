@@ -16,7 +16,7 @@ import type {
 } from "@/types/admin";
 import { authStore } from "./authStore";
 
-const DEFAULT_FALLBACK_ENDPOINT = "http://localhost:8080";
+const DEFAULT_FALLBACK_ENDPOINT = "https://api-biyen.levitation.web.id";
 const CLIENT_PACKAGE_HEADER = "id.web.levitation.biyen.admin";
 const TOKEN_TOO_OLD_MESSAGE = "Token is too old";
 const DEFAULT_ESCROW_KEK_VERSION = "v1";

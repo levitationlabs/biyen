@@ -22,9 +22,7 @@ export const apiURL = async (
 };
 
 export const customAPIOrigin = async () =>
-    (await getKVS("apiOrigin")) ??
-    buildEnvCustomAPIEndpoint ??
-    BIYEN_BRAND.apiDefaultEndpoint;
+    (await getKVS("apiOrigin")) ?? buildEnvCustomAPIEndpoint ?? undefined;
 
 // This ignores the KV custom server and only reflects the build-time override.
 export const isCustomAPIOrigin = !!buildEnvCustomAPIEndpoint;

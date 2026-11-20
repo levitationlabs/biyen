@@ -69,7 +69,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      NEXT_PUBLIC_ENTE_ENDPOINT: ${{ vars.BIYEN_API_URL || 'https://api-biyen.levitation.web.id' }}
       NEXT_PUBLIC_PAYMENTS_ENDPOINT: ${{ vars.BIYEN_PAYMENTS_URL || 'https://payments-biyen.levitation.web.id' }}
       VITE_ENTE_ENDPOINT: ${{ vars.BIYEN_API_URL || 'https://api-biyen.levitation.web.id' }}
     steps:
@@ -102,7 +101,7 @@ jobs:
           npm run build:photos
           npm run build:albums
           npm run build:accounts
-          npm run build:admin
+          NEXT_PUBLIC_ENTE_ENDPOINT="${{ vars.BIYEN_API_URL || 'https://api-biyen.levitation.web.id' }}" npm run build:admin
           npm run build:payments
 
       - name: Deploy biyen-photos to Cloudflare Pages
